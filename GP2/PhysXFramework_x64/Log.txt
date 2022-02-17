@@ -1,0 +1,17 @@
+[2022-2-14 - 12:1:57:812][DEBUG]   Adapter 0 : NVIDIA GeForce RTX 2060
+[2022-2-14 - 12:1:57:816][DEBUG]   Adapter 1 : Microsoft Basic Render Driver
+[2022-2-14 - 12:1:57:817][DEBUG]   2 Adapter(s) found
+[2022-2-14 - 12:1:57:819][DEBUG]   InitalizeAdapterAndOutput ok.
+[2022-2-14 - 12:1:57:824][DEBUG]   Window Class Created
+[2022-2-14 - 12:1:57:826][DEBUG]   Desktop resolution: 1920 x 1080
+[2022-2-14 - 12:1:57:986][DEBUG]   Window Opened
+[2022-2-14 - 12:1:58:851][DEBUG]   Direct3D Initialized
+[2022-2-14 - 12:2:0:9][DEBUG]   Managers Initialized!
+[2022-2-14 - 12:2:0:12][INFO]    Press 'Page Up' or 'Page Down' to cycle between the different scenes
+[2022-2-14 - 12:2:0:14][INFO]    Press 'I' to toggle the debug renderer.
+[2022-2-14 - 12:2:0:16][INFO]    Press 'M' to do physics stepping.
+[2022-2-14 - 12:2:0:18][INFO]    Press 'L' to stop doing physics stepping.
+[2022-2-14 - 12:2:0:83][DEBUG]   Scenes Initialized!
+[2022-2-14 - 12:2:0:85][INFO]    Scene Activated > "TestScene"
+[2022-2-14 - 12:2:0:216][DEBUG]   DebugRenderer::Draw() > Increasing Vertexbuffer Size!
+[2022-2-14 - 12:2:54:39][DEBUG]   Core Initialization Finished
