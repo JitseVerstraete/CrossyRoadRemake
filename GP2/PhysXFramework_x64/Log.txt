@@ -1,18 +1,18 @@
-[2022-2-18 - 11:50:6:361][DEBUG]   Adapter 0 : NVIDIA GeForce RTX 2080 SUPER
-[2022-2-18 - 11:50:6:362][DEBUG]   Adapter 1 : Microsoft Basic Render Driver
-[2022-2-18 - 11:50:6:363][DEBUG]   2 Adapter(s) found
-[2022-2-18 - 11:50:6:364][DEBUG]   InitalizeAdapterAndOutput ok.
-[2022-2-18 - 11:50:6:365][DEBUG]   Window Class Created
-[2022-2-18 - 11:50:6:366][DEBUG]   Desktop resolution: 2560 x 1440
-[2022-2-18 - 11:50:6:438][DEBUG]   Window Opened
-[2022-2-18 - 11:50:6:862][DEBUG]   Direct3D Initialized
-[2022-2-18 - 11:50:7:198][DEBUG]   Managers Initialized!
-[2022-2-18 - 11:50:7:200][INFO]    Press 'Page Up' or 'Page Down' to cycle between the different scenes
-[2022-2-18 - 11:50:7:201][INFO]    Press 'I' to toggle the debug renderer.
-[2022-2-18 - 11:50:7:202][INFO]    Press 'M' to do physics stepping.
-[2022-2-18 - 11:50:7:203][INFO]    Press 'L' to stop doing physics stepping.
-[2022-2-18 - 11:50:7:282][DEBUG]   Scenes Initialized!
-[2022-2-18 - 11:50:7:283][INFO]    Scene Activated > "TestScene"
-[2022-2-18 - 11:50:7:391][DEBUG]   DebugRenderer::Draw() > Increasing Vertexbuffer Size!
-[2022-2-18 - 11:51:16:716][INFO]    Scene Activated > "TestScene"
-[2022-2-18 - 11:51:26:746][DEBUG]   Core Initialization Finished
+[2022-2-18 - 20:22:50:322][DEBUG]   Adapter 0 : NVIDIA GeForce RTX 2080 SUPER
+[2022-2-18 - 20:22:50:324][DEBUG]   Adapter 1 : Microsoft Basic Render Driver
+[2022-2-18 - 20:22:50:325][DEBUG]   2 Adapter(s) found
+[2022-2-18 - 20:22:50:327][DEBUG]   InitalizeAdapterAndOutput ok.
+[2022-2-18 - 20:22:50:327][DEBUG]   Window Class Created
+[2022-2-18 - 20:22:50:328][DEBUG]   Desktop resolution: 2560 x 1440
+[2022-2-18 - 20:22:50:402][DEBUG]   Window Opened
+[2022-2-18 - 20:22:50:768][DEBUG]   Direct3D Initialized
+[2022-2-18 - 20:22:51:104][DEBUG]   Managers Initialized!
+[2022-2-18 - 20:22:51:107][INFO]    Press 'Page Up' or 'Page Down' to cycle between the different scenes
+[2022-2-18 - 20:22:51:108][INFO]    Press 'I' to toggle the debug renderer.
+[2022-2-18 - 20:22:51:109][INFO]    Press 'M' to do physics stepping.
+[2022-2-18 - 20:22:51:110][INFO]    Press 'L' to stop doing physics stepping.
+[2022-2-18 - 20:22:51:216][DEBUG]   Scenes Initialized!
+[2022-2-18 - 20:22:51:217][INFO]    Scene Activated > "TestScene"
+[2022-2-18 - 20:22:51:312][DEBUG]   DebugRenderer::Draw() > Increasing Vertexbuffer Size!
+[2022-2-18 - 20:22:54:924][DEBUG]   DebugRenderer::Draw() > Increasing Vertexbuffer Size!
+[2022-2-18 - 20:22:57:502][DEBUG]   Core Initialization Finished

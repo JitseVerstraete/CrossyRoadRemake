@@ -14,6 +14,7 @@
 #include "FrictionTestScene.h"
 #include "ForceTestScene.h"
 #include "TorqueTestScene.h"
+#include "CubeWallScene.h"
 #endif
 
 #ifdef W02
@@ -31,6 +32,7 @@ namespace dae
 		pSceneManager->AddGameScene(new FrictionTestScene());
 		pSceneManager->AddGameScene(new ForceTestScene());
 		pSceneManager->AddGameScene(new TorqueTestScene());
+		pSceneManager->AddGameScene(new CubeWallScene());
 #endif
 
 #ifdef W02

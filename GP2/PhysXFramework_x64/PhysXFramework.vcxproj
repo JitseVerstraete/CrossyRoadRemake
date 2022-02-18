@@ -87,6 +87,7 @@
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="CubePosColorNorm.h" />
+    <ClInclude Include="CubeWallScene.h" />
     <ClInclude Include="CustomSimulationFilterShader.h" />
     <ClInclude Include="CylinderPosColorNorm.h" />
     <ClInclude Include="D3D11.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="CubePosColorNorm.cpp" />
+    <ClCompile Include="CubeWallScene.cpp" />
     <ClCompile Include="CylinderPosColorNorm.cpp" />
     <ClCompile Include="D3D11.cpp" />
     <ClCompile Include="DdsTexLoader.cpp" />
