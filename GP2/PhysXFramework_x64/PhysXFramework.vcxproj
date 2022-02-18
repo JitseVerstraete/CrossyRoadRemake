@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClInclude Include="BaseCamera.h" />
     <ClInclude Include="BinaryReader.h" />
+    <ClInclude Include="BouncingBallsScene.h" />
     <ClInclude Include="ContentLoader.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="Core.h" />
@@ -93,7 +94,9 @@
     <ClInclude Include="DdsTexResource.h" />
     <ClInclude Include="DebugRenderer.h" />
     <ClInclude Include="EffectLoader.h" />
+    <ClInclude Include="ForceTestScene.h" />
     <ClInclude Include="FreeCamera.h" />
+    <ClInclude Include="FrictionTestScene.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameSettings.h" />
@@ -120,6 +123,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="TorqueTestScene.h" />
     <ClInclude Include="TorusPosColorNorm.h" />
     <ClInclude Include="TrackingCamera.h" />
     <ClInclude Include="VertexStructs.h" />
@@ -127,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="BaseCamera.cpp" />
     <ClCompile Include="BinaryReader.cpp" />
+    <ClCompile Include="BouncingBallsScene.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="CubePosColorNorm.cpp" />
@@ -136,7 +141,9 @@
     <ClCompile Include="DdsTexResource.cpp" />
     <ClCompile Include="DebugRenderer.cpp" />
     <ClCompile Include="EffectLoader.cpp" />
+    <ClCompile Include="ForceTestScene.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
+    <ClCompile Include="FrictionTestScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameTime.cpp" />
@@ -162,6 +169,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="TorqueTestScene.cpp" />
     <ClCompile Include="TorusPosColorNorm.cpp" />
     <ClCompile Include="TrackingCamera.cpp" />
   </ItemGroup>
