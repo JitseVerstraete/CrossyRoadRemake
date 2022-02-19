@@ -12,12 +12,12 @@ void CubeWallScene::Initialize()
 	const float sphereRadius{ 2.f };
 
 	//cubes
-	const float cubeSize{ 1.f };
-	const int cubeWallSize{ 5 };
+	const float cubeSize{ 2.f };
+	const int cubeWallSize{ 10 };
 
 
 	//Materials
-	PxMaterial* pSphereMaterial = PxGetPhysics().createMaterial(1.f, 1.f, 0.7f);
+	PxMaterial* pSphereMaterial = PxGetPhysics().createMaterial(1.f, 1.f, 0.2f);
 	PxMaterial* pCubeMaterial = PxGetPhysics().createMaterial(1.f, 1.f, 0.7f);
 	PxMaterial* pFloorMaterial = PxGetPhysics().createMaterial(1.f, 1.f, 0.7f);
 
@@ -25,14 +25,16 @@ void CubeWallScene::Initialize()
 	//Initialize sphere
 	m_pSphere = new SpherePosColorNorm(sphereRadius, 15, 15, XMFLOAT4(Colors::LightYellow));
 	AddGameObject(m_pSphere);
-	m_pSphere->Translate(0.f, 2.f, 0.f);
+	m_pSphere->Translate(0.f, sphereRadius , 0.f);
 
 	//AddSphereActor
 	PxRigidDynamic* pSphereActor = PxGetPhysics().createRigidDynamic(PxTransform{ PxIdentity });
 	PxRigidActorExt::createExclusiveShape(*pSphereActor, PxSphereGeometry(sphereRadius), *pSphereMaterial);
+	PxRigidBodyExt::setMassAndUpdateInertia(*pSphereActor, 1.f);
 	m_pSphere->AttachRigidActor(pSphereActor);
 
 
+	float startX{ ( (-cubeWallSize * cubeSize) / 2.f) + (cubeSize / 2.f) };
 	for (int i{}; i < cubeWallSize; i++)
 	{
 		for (int j{}; j < cubeWallSize; j++)
@@ -42,16 +44,17 @@ void CubeWallScene::Initialize()
 			AddGameObject(temp);
 			m_pCubes.push_back(temp);
 			
-
+			temp->Translate(startX + j * cubeSize, (cubeSize / 2) + i * cubeSize, 50.f);
 			
-
 			PxRigidDynamic* pCubeActor = PxGetPhysics().createRigidDynamic(PxTransform{ PxIdentity });
 			PxRigidActorExt::createExclusiveShape(*pCubeActor, PxBoxGeometry(cubeSize /2, cubeSize / 2, cubeSize /2), *pCubeMaterial);
+
+			PxRigidBodyExt::setMassAndUpdateInertia(*pCubeActor, 0.1f);
+			
 			temp->AttachRigidActor(pCubeActor);
+
 		}
 	}
-
-
 
 
 	//Add Ground Plane
@@ -85,11 +88,12 @@ void CubeWallScene::Initialize()
 	);
 
 
+
 }
 
 void CubeWallScene::Update()
 {
-
+	
 	const float sphereMovementForce{ 10.f };
 	const float jumpForce{ 12.f };
 
