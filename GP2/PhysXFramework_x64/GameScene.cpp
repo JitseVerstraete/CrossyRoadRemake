@@ -82,6 +82,8 @@ bool GameScene::RemoveGameObject(GameObject* pObject, bool deleteObject)
 	return false;
 }
 
+
+
 void GameScene::SetDebugRenderer(std::shared_ptr<DebugRenderer> pDebugRenderer)
 {
 	m_pDebugRenderer = pDebugRenderer;
@@ -105,6 +107,7 @@ void GameScene::RootInitialize()
 	m_pPhysxScene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
 	m_pPhysxScene->setVisualizationParameter(PxVisualizationParameter::eJOINT_LIMITS, 1.0f);
 	m_pPhysxScene->setVisualizationParameter(PxVisualizationParameter::eJOINT_LOCAL_FRAMES, 1.0f);
+	m_pPhysxScene->setVisualizationParameter(PxVisualizationParameter::eBODY_LIN_VELOCITY, 1.0f);
 #endif
 
 	m_pPhysxScene->setSimulationEventCallback(this);
