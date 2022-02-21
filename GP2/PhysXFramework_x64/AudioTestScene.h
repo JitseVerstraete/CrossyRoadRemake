@@ -5,7 +5,7 @@ class AudioTestScene : public GameScene
 {
 public:
 
-	AudioTestScene() :GameScene(L"BouncingBallsScene") {}
+	AudioTestScene() :GameScene(L"AudioTestScene") {}
 	~AudioTestScene() override = default;
 	AudioTestScene(const AudioTestScene& other) = delete;
 	AudioTestScene(AudioTestScene&& other) noexcept = delete;

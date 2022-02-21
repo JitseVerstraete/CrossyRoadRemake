@@ -4,7 +4,7 @@
 class PhysXMeshTestScene : public GameScene
 {
 public:
-	PhysXMeshTestScene() :GameScene(L"BouncingBallsScene") {}
+	PhysXMeshTestScene() :GameScene(L"PhysXMeshTestScene") {}
 	~PhysXMeshTestScene() override = default;
 	PhysXMeshTestScene(const PhysXMeshTestScene& other) = delete;
 	PhysXMeshTestScene(PhysXMeshTestScene&& other) noexcept = delete;
