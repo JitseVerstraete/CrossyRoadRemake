@@ -16,6 +16,8 @@ protected:
 	void Update() override;
 	void Draw() const override;
 
+	void onTrigger(PxTriggerPair* pairs, PxU32 count) override;
+
 private:
 	//static level
 	GameObject* m_pStaticLevel{};
@@ -23,14 +25,23 @@ private:
 	//player controlled sphere
 	GameObject* m_pPlayerSphere{};
 
-	//two other spheres
+	//two hatches that drop the spheres
+	GameObject* m_pBlueHatch{};
+	GameObject* m_pRedHatch{};
+
+	//two other spheres on the hatches
+	GameObject* m_pBlueSphere{};
+	GameObject* m_pRedSphere{};
 
 	//two destinct boxes
+	GameObject* m_pBlueBox{};
+	GameObject* m_pRedBox{};
 
 	//two corresponding triggers
-
-	//two hatches that drop the spheres
+	PxShape* m_pBlueTrigger{};
+	PxShape* m_pRedTrigger{};
 
 	//sounds
+	FMOD::Sound* m_pBellSound{};
 };
 

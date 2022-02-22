@@ -135,6 +135,8 @@ void PhysXMeshTestScene::onTrigger(PxTriggerPair* pairs, PxU32 count)
 		//get data about what actor entered the trigger
 		auto pUserData = static_cast<GameObject*>(triggerPair.otherActor->userData);
 
+		
+
 		if (triggerPair.status == PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{
 			Logger::GetInstance()->LogInfo(L"Something entered a trigger");
