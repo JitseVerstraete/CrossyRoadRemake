@@ -3,3 +3,5 @@ GP2/PhysXFramework_x64/_build/**
 GP2/PhysXFramework_x64/_intermediate/**
 GP2/OverlordEngine_x64/OverlordEngine/_build/**
 GP2/OverlordEngine_x64/.vs/**
+GP2/OverlordEngine_x64/_build/**
+GP2/OverlordEngine_x64/_intermediate/**
