@@ -83,7 +83,7 @@ public:
 	void RemoveCollider(const ColliderInfo& colliderInfo);
 	void RemoveColliders();
 	const std::vector<ColliderInfo>& GetColliders() const { return m_Colliders; }
-	const ColliderInfo& GetCollider(UINT colliderId) const;
+	ColliderInfo& GetCollider(UINT colliderId);
 
 protected:
 

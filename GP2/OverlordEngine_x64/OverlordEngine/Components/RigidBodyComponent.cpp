@@ -16,7 +16,7 @@ RigidBodyComponent::~RigidBodyComponent()
 	}
 }
 
-const ColliderInfo& RigidBodyComponent::GetCollider(UINT colliderId) const
+ColliderInfo& RigidBodyComponent::GetCollider(UINT colliderId)
 {
 	ASSERT_IF(colliderId >= m_Colliders.size(), L"Collider with Id={} cannot be retrieved. (Make sure the RigidBody is initialized before querying a collider.", colliderId);
 
