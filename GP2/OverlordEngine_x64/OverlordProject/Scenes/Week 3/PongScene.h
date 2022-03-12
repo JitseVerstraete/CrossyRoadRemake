@@ -13,9 +13,13 @@ public:
 
 protected:
 	void Initialize() override;
+	void Update() override;
 
 
 private:
 
+	GameObject* m_pLeftPallet;
+	GameObject* m_pRightPallet;
+	GameObject* m_pBall;
 };
 
