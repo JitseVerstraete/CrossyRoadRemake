@@ -16,10 +16,19 @@ protected:
 	void Update() override;
 
 
+
 private:
+	const float m_ballVelocity = 20.f;
 
 	GameObject* m_pLeftPallet;
 	GameObject* m_pRightPallet;
 	GameObject* m_pBall;
+
+	bool m_DoReset = false;
+
+	void Reset();
+	XMFLOAT3 CalulateBallVelocity(float velocity);
+
+	
 };
 
