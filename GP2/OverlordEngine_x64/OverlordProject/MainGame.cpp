@@ -72,8 +72,8 @@ void MainGame::Initialize()
 {
 #ifdef W3
 	SceneManager::Get()->AddGameScene(new PongScene());
-	SceneManager::Get()->AddGameScene(new ComponentTestScene());
-	SceneManager::Get()->AddGameScene(new MinionScene());
+	//SceneManager::Get()->AddGameScene(new ComponentTestScene());
+	//SceneManager::Get()->AddGameScene(new MinionScene());
 #endif
 
 #ifdef W4

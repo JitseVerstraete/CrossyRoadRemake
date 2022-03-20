@@ -6,6 +6,8 @@
 
 void PongScene::Initialize()
 {
+	GetSceneSettings().drawPhysXDebug = false;
+	GetSceneSettings().drawGrid = false;
 	GetSceneSettings().clearColor = XMFLOAT4(0.f, 0.f, 0.f, 1.f);
 	GetSceneContext().pCamera->GetTransform()->Translate(XMFLOAT3(0.f, 50.f, 0.f));
 	static_cast<FreeCamera*>(GetActiveCamera()->GetGameObject())->SetRotation(90.f, 0.f);

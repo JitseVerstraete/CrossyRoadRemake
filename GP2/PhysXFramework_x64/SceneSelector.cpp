@@ -6,7 +6,7 @@
 // W01 - W02  (#define ...)
 
 //#define W01
-#define W02
+#define MILESTONE
 
 #ifdef W01
 #include "TestScene.h"
@@ -23,14 +23,15 @@
 #include "W02_AssignmentScene.h"
 #endif
 
-#ifdef W02
-
+#ifdef MILESTONE
+#include "CubeWallScene.h"
+#include "W02_AssignmentScene.h"
 #endif
 
 
 namespace dae
 {
-	void AddScenes(SceneManager * pSceneManager)
+	void AddScenes(SceneManager* pSceneManager)
 	{
 
 #ifdef W01
@@ -47,6 +48,12 @@ namespace dae
 		pSceneManager->AddGameScene(new AudioTestScene());
 		pSceneManager->AddGameScene(new PhysXMeshTestScene());
 #endif
+
+#ifdef MILESTONE
+		pSceneManager->AddGameScene(new CubeWallScene());
+		pSceneManager->AddGameScene(new W02_AssignmentScene());
+#endif
+
 
 	}
 }
