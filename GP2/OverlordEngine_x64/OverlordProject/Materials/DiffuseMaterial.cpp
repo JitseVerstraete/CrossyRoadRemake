@@ -5,10 +5,11 @@ DiffuseMaterial::DiffuseMaterial(): Material<DiffuseMaterial>(L"Effects/PosNormT
 {
 }
 
-void DiffuseMaterial::SetDiffuseTexture(const std::wstring& path) const
+void DiffuseMaterial::SetDiffuseTexture(const std::wstring& path) 
 {
 	TextureData* texture = ContentManager::Load<TextureData>(path);
 	SetVariable_Texture(L"gDiffuseMap", texture);
+	m_pDiffuseTexture = texture;
 }
 
 void DiffuseMaterial::InitializeEffectVariables()
