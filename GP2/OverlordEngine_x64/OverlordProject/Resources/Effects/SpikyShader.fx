@@ -61,47 +61,39 @@ void CreateVertex(inout TriangleStream<GS_DATA> triStream, float3 pos, float3 no
 [maxvertexcount(9)]
 void SpikeGenerator(triangle VS_DATA vertices[3], inout TriangleStream<GS_DATA> triStream)
 {
-	//Use these variable names
-    float3 basePoint, top, left, right, spikeNormal;
-
-	
-	CreateVertex(triStream, vertices[0].Position, vertices[0].Normal);
-	CreateVertex(triStream, vertices[1].Position, vertices[1].Normal);
-	CreateVertex(triStream, vertices[2].Position, vertices[2].Normal);
 
 	//Step 1. Calculate CENTER_POINT
-	float3 centerPoint = (vertices[0].Position + vertices[1].Position + vertices[2].Position) / 3;
-	
+	float3 centerPoint = (vertices[0].Position + vertices[1].Position + vertices[2].Position) / 3.f;
 	//Step 2. Calculate Face Normal (Original Triangle)
-	float3 faceNormal = (vertices[0].Normal + vertices[1].Normal + vertices[2].Normal) / 3;
+	float3 normal = (vertices[0].Normal + vertices[1].Normal + vertices[2].Normal) / 3.f;
 	
 	//Step 3. Offset CENTER_POINT (use gSpikeLength)
-	centerPoint = centerPoint + (normalize(faceNormal) * gSpikeLength);
+	centerPoint = centerPoint + (normalize(normal) * gSpikeLength);
 	
 	//Step 4 + 5. Calculate Individual Face Normals (Cross Product of Face Edges) & Create Vertices for every face
 	
 
         //FACE 1
-        float3 faceNormal1 = cross((centerPoint - vertices[0].Position),(vertices[1].Position - vertices[0].Position));
-        CreateVertex(triStream, vertices[0].Position, faceNormal1);
-        CreateVertex(triStream, vertices[1].Position, faceNormal1);
-        CreateVertex(triStream, centerPoint, faceNormal1);
+        float3 faceNormal = cross(centerPoint - vertices[1].Position, centerPoint - vertices[0].Position);
+        CreateVertex(triStream, vertices[0].Position, faceNormal);
+        CreateVertex(triStream, vertices[1].Position, faceNormal);
+        CreateVertex(triStream, centerPoint, faceNormal);
 		
 		triStream.RestartStrip();
 
         //FACE 2
-        float3 faceNormal2 = cross((centerPoint - vertices[1].Position),(vertices[2].Position - vertices[1].Position));
-        CreateVertex(triStream, vertices[1].Position, faceNormal2);
-        CreateVertex(triStream, vertices[2].Position, faceNormal2);
-        CreateVertex(triStream, centerPoint, faceNormal2);
+        faceNormal = cross(centerPoint - vertices[2].Position, centerPoint - vertices[1].Position);
+        CreateVertex(triStream, vertices[1].Position, faceNormal);
+        CreateVertex(triStream, vertices[2].Position, faceNormal);
+        CreateVertex(triStream, centerPoint, faceNormal);
 		
 		triStream.RestartStrip();
 
         //Face 3
-		 float3 faceNormal3 = cross((centerPoint - vertices[2].Position),(vertices[0].Position - vertices[2].Position));
-        CreateVertex(triStream, vertices[2].Position, faceNormal3);
-        CreateVertex(triStream, vertices[0].Position, faceNormal3);
-        CreateVertex(triStream, centerPoint, faceNormal3);
+		faceNormal = cross(centerPoint - vertices[0].Position, centerPoint - vertices[2].Position);
+        CreateVertex(triStream, vertices[2].Position, faceNormal);
+        CreateVertex(triStream, vertices[0].Position, faceNormal);
+        CreateVertex(triStream, centerPoint, faceNormal);
 		
 		triStream.RestartStrip();
 
@@ -120,7 +112,7 @@ float4 MainPS(GS_DATA input) : SV_TARGET
 //*************
 // TECHNIQUES *
 //*************
-technique10 Default //FXComposer >> Rename to "technique10 Default"
+technique11 Default //FXComposer >> Rename to "technique10 Default"
 {
     pass p0
     {

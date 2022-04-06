@@ -15,7 +15,10 @@ private:
 
 	void Initialize() override;
 	void OnGUI() override;
+	void Update() override;
 
+	float m_Roatation{};
+	GameObject* m_pBall{};
 	SpikyMaterial* m_pMat{};
 	float m_SpikeStrength{};
 	float m_DiffuseColor[4]{};

@@ -8,9 +8,9 @@ void SpikyScene::Initialize()
 	m_SceneContext.settings.enableOnGUI = true;
 
 	m_pMat = MaterialManager::Get()->CreateMaterial<SpikyMaterial>();
-	GameObject* pObject = AddChild(new GameObject());
-	pObject->GetTransform()->Scale(20.f);
-	ModelComponent* pModel = pObject->AddComponent(new ModelComponent(L"Meshes/OctaSphere.ovm"));
+	m_pBall = AddChild(new GameObject());
+	m_pBall->GetTransform()->Scale(20.f);
+	ModelComponent* pModel = m_pBall->AddComponent(new ModelComponent(L"Meshes/OctaSphere.ovm"));
 	pModel->SetMaterial(m_pMat);
 
 	m_pMat->GetVariable(L"gColorDiffuse")->AsVector()->GetFloatVector(m_DiffuseColor);
@@ -34,4 +34,11 @@ void SpikyScene::OnGUI()
 
 
 	ImGui::End();
+}
+
+void SpikyScene::Update()
+{
+	m_Roatation += 30.f * GetSceneContext().pGameTime->GetElapsed();
+	m_pBall->GetTransform()->Rotate(0.f, m_Roatation, 0.f);
+
 }
