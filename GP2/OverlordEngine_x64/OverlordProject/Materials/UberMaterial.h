@@ -1,5 +1,5 @@
 #pragma once
-#include "C:\DAE_Local\GraphicsProgramming2\GP2\OverlordEngine_x64\OverlordEngine\Misc\Material.h"
+
 class UberMaterial : public Material<UberMaterial>
 {
 public:

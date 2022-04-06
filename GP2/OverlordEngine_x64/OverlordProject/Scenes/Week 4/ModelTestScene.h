@@ -1,5 +1,5 @@
 #pragma once
-#include "C:\DAE_Local\GraphicsProgramming2\GP2\OverlordEngine_x64\OverlordEngine\Scenegraph\GameScene.h"
+
 class ModelTestScene : public GameScene
 {
 public:
