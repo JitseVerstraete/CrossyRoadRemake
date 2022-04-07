@@ -23,7 +23,5 @@ private:
 	float m_SpikeStrength{};
 	float m_DiffuseColor[4]{};
 
-
-
 };
 
