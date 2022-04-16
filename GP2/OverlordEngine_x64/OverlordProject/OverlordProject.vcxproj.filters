@@ -18,6 +18,10 @@
     <ClCompile Include="Scenes\Week 4\UberMaterialScene.cpp" />
     <ClCompile Include="Scenes\Week 4\SpikyScene.cpp" />
     <ClCompile Include="Materials\SpikyMaterial.cpp" />
+    <ClCompile Include="Scenes\Week 5\CharacterScene.cpp" />
+    <ClCompile Include="Scenes\Week 5\FontTestScene.cpp" />
+    <ClCompile Include="Scenes\Week 5\PickingScene.cpp" />
+    <ClCompile Include="Prefabs\Character.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -36,5 +40,9 @@
     <ClInclude Include="Scenes\Week 4\UberMaterialScene.h" />
     <ClInclude Include="Scenes\Week 4\SpikyScene.h" />
     <ClInclude Include="Materials\SpikyMaterial.h" />
+    <ClInclude Include="Scenes\Week 5\CharacterScene.h" />
+    <ClInclude Include="Scenes\Week 5\FontTestScene.h" />
+    <ClInclude Include="Scenes\Week 5\PickingScene.h" />
+    <ClInclude Include="Prefabs\Character.h" />
   </ItemGroup>
 </Project>

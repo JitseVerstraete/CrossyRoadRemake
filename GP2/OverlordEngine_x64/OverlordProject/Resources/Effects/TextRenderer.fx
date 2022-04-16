@@ -56,30 +56,50 @@ void CreateVertex(inout TriangleStream<GS_DATA> triStream, float3 pos, float4 co
 	//Create a new GS_DATA object
 	//Fill in all the fields
 	//Append it to the TriangleStream
+
+	GS_DATA vertex = (GS_DATA)0;
+	vertex.Position = mul(float4(pos, 1), gTransform);
+	vertex.Color = col;
+	vertex.TexCoord = texCoord;
+	vertex.Channel = channel;
+
+	triStream.Append(vertex);
+
 }
 
 [maxvertexcount(4)]
 void MainGS(point VS_DATA vertex[1], inout TriangleStream<GS_DATA> triStream)
 {
+	/*
 	//REMOVE THIS >
 	GS_DATA dummyData = (GS_DATA)0; //Just some dummy data
 	triStream.Append(dummyData); //The geometry shader needs to emit something, see what happens if it doesn't emit anything.
 	//< STOP REMOVING
+	*/
 
 	//Create a Quad using the character information of the given vertex
 	//Note that the Vertex.CharSize is in screenspace, TextureCoordinates aren't ;) [Range 0 > 1]
 
+	float3 pos = vertex[0].Position;
+	float2 size = vertex[0].CharSize;
+	float4 color = vertex[0].Color;
+
+
+	float2 texCoord = vertex[0].TexCoord;
+	float2 texSize = float2(size.x / gTextureSize.x, size.y / gTextureSize.y);
+
+
 	//1. Vertex Left-Top
-	//CreateVertex(...);
+	CreateVertex(triStream, pos, color, texCoord, vertex[0].Channel);
 
 	//2. Vertex Right-Top
-	//...
+	CreateVertex(triStream, float3(pos.x + size.x, pos.y, pos.z), color, float2(texCoord.x + texSize.x, texCoord.y), vertex[0].Channel);
 
 	//3. Vertex Left-Bottom
-	//...
+	CreateVertex(triStream, float3(pos.x, pos.y + size.y, pos.z), color, float2(texCoord.x, texCoord.y + texSize.y), vertex[0].Channel);
 
 	//4. Vertex Right-Bottom
-	//...
+	CreateVertex(triStream, float3(pos.x + size.x, pos.y + size.y, pos.z), color, float2(texCoord.x + texSize.x, texCoord.y + texSize.y), vertex[0].Channel);
 }
 
 //PIXEL SHADER
@@ -90,7 +110,12 @@ float4 MainPS(GS_DATA input) : SV_TARGET{
 	//You can iterate a float4 just like an array, using the index operator
 	//Also, don't forget to colorize ;) [Vertex.Color]
 
-	return input.Color; //TEMP
+	float3 color = gSpriteTexture.Sample(samPoint, input.TexCoord);
+	
+	float4 pixel = color[input.Channel] * input.Color;
+
+	return pixel; //TEMP
+
 }
 
 // Default Technique
