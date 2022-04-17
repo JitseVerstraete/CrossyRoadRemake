@@ -44,5 +44,6 @@ private:
 
 	float m_FarPlane{}, m_NearPlane{}, m_FOV{}, m_Size{};
 	bool m_IsActive{}, m_PerspectiveProjection{};
+
 };
 

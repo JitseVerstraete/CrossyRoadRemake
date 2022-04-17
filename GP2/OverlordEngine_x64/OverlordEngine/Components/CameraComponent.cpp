@@ -17,6 +17,7 @@ CameraComponent::CameraComponent() :
 
 void CameraComponent::Update(const SceneContext& sceneContext)
 {
+
 	// see https://stackoverflow.com/questions/21688529/binary-directxxmvector-does-not-define-this-operator-or-a-conversion
 	using namespace DirectX;
 
@@ -60,11 +61,89 @@ void CameraComponent::SetActive(bool active)
 	ASSERT_IF(!pScene, L"Failed to set active camera. Parent game scene is null");
 
 	m_IsActive = active;
-	pScene->SetActiveCamera(active?this:nullptr); //Switch to default camera if active==false
+	pScene->SetActiveCamera(active ? this : nullptr); //Switch to default camera if active==false
 }
 
-GameObject* CameraComponent::Pick(CollisionGroup /*ignoreGroups*/) const
+GameObject* CameraComponent::Pick(CollisionGroup ignoreGroups) const
 {
-	TODO_W5(L"Implement Picking Logic")
+	const auto pGameObject = GetGameObject();
+	ASSERT_IF(!pGameObject, L"Parteng Game Object is nullptr");
+
+	if (!pGameObject) return nullptr;
+	const auto pScene = pGameObject->GetScene();
+	ASSERT_IF(!pScene, L"Parent Scene is nullptr");
+	
+	//convert mouse pos to NDC
+	POINT mousePos = InputManager::GetMousePosition();
+	XMFLOAT2 halfScreenSize = XMFLOAT2(pScene->GetSceneContext().windowWidth / 2, pScene->GetSceneContext().windowHeight / 2);
+	XMFLOAT3 ndc{ (mousePos.x - halfScreenSize.x) / halfScreenSize.x , (halfScreenSize.y - mousePos.y) / halfScreenSize.y , 0.f };
+
+	//near point
+	XMVECTOR point = XMLoadFloat3(&ndc);
+	XMMATRIX viewProjInv = XMLoadFloat4x4(&m_ViewProjectionInverse);
+	XMVECTOR nearPos = XMVector3TransformCoord(point, viewProjInv);
+
+	//far point
+	ndc.z = 1.f;
+	point = XMLoadFloat3(&ndc);
+	XMVECTOR farPos = XMVector3TransformCoord(point, viewProjInv);
+	XMVECTOR rayDir = farPos - nearPos;
+	rayDir = XMVector3Normalize(rayDir);
+
+	XMFLOAT3 rayOrigin{};
+	XMStoreFloat3(&rayOrigin, nearPos);
+	XMFLOAT3 rayDirection{};
+	XMStoreFloat3(&rayDirection, rayDir);
+
+
+	PxQueryFilterData filterData{};
+	filterData.data.word0 = UINT(ignoreGroups);
+	PxRaycastBuffer hit{};
+	if (pScene->GetPhysxProxy()->Raycast(PhysxHelper::ToPxVec3(rayOrigin), PhysxHelper::ToPxVec3(rayDirection), PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData))
+	{
+		RigidBodyComponent* pRigidBodyComponent = reinterpret_cast<RigidBodyComponent*>(hit.block.actor->userData);
+		std::cout << "thing hit!\n";
+		return pRigidBodyComponent->GetGameObject();
+	}
 	return nullptr;
+	
+
+	/*
+	
+	//mouse coordinates to NDC
+	POINT mousePos = InputManager::GetMousePosition();
+	float halfWidth = m_pScene->GetSceneContext().windowWidth / 2.f;
+	float halfHeight = m_pScene->GetSceneContext().windowHeight / 2.f;
+	XMFLOAT3 ndc{ (mousePos.x - halfWidth) / halfWidth,  (halfHeight - mousePos.y) / halfHeight, 0.f };
+	//calculate near and far point
+	//near
+	XMVECTOR position = DirectX::XMLoadFloat3(&ndc);
+	const XMMATRIX viewProjectionInv = DirectX::XMLoadFloat4x4(&m_ViewProjectionInverse);
+	XMVECTOR nearPoint = DirectX::XMVector3TransformCoord(position, viewProjectionInv);
+	//far
+	ndc.z = 1.f;
+	position = DirectX::XMLoadFloat3(&ndc);
+	XMVECTOR farPoint = DirectX::XMVector3TransformCoord(position, viewProjectionInv);
+	XMVECTOR direction = farPoint - nearPoint;
+	direction = DirectX::XMVector3Normalize(direction);
+
+	XMFLOAT3 rayStart{};
+	DirectX::XMStoreFloat3(&rayStart, nearPoint);
+	XMFLOAT3 rayDirection{};
+	DirectX::XMStoreFloat3(&rayDirection, direction);
+
+
+	//raycast
+	PxQueryFilterData filterData{};
+	filterData.data.word0 = ~UINT(ignoreGroups);
+
+	PxRaycastBuffer hit{};
+	if (m_pScene->GetPhysxProxy()->Raycast(PhysxHelper::ToPxVec3(rayStart), PhysxHelper::ToPxVec3(rayDirection), PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData))
+	{
+		RigidBodyComponent* pRigidBodyComponent = reinterpret_cast<RigidBodyComponent*>(hit.block.actor->userData);
+		return pRigidBodyComponent->GetGameObject();
+	}
+
+	return nullptr;
+	*/
 }
