@@ -10,7 +10,16 @@ void ControllerComponent::Initialize(const SceneContext& /*sceneContext*/)
 {
 	if(!m_IsInitialized)
 	{
-		TODO_W5(L"Complete the ControllerComponent Intialization")
+		m_ControllerDesc.position = PhysxHelper::ToPxExtendedVec3(GetTransform()->GetPosition());
+		m_ControllerDesc.userData = static_cast<void*>(this);
+	
+		auto pScene = GetScene();
+		m_pController = pScene->GetPhysxProxy()->GetControllerManager()->createController(m_ControllerDesc);
+		ASSERT_NULL(m_pController, L"controller is null");
+		m_pController->getActor()->userData = static_cast<void*>(this);
+		SetCollisionGroup(CollisionGroup(m_CollisionGroups.word0));
+		SetCollisionIgnoreGroup(CollisionGroup(m_CollisionGroups.word1));
+
 	}
 }
 
