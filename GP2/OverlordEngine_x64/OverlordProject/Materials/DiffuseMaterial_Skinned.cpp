@@ -27,6 +27,4 @@ void DiffuseMaterial_Skinned::OnUpdateModelVariables(const SceneContext&, const 
 	ASSERT_NULL(pAnim, L"animator is null");
 	auto bones = pAnim->GetBoneTransforms();
 	SetVariable_MatrixArray(L"gBones", (float*)bones.data(), (UINT)bones.size());
-
-
 }

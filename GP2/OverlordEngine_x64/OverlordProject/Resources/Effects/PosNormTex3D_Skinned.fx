@@ -81,44 +81,6 @@ VS_OUTPUT VS(VS_INPUT input) {
 	return output;
 
 
-
-
-
-	/*
-	VS_OUTPUT output;
-	float4 transformedPosition;
-	float3 transformedNormal;
-
-	//for each bone
-	for (int i = 0; i < 4; ++i)
-	{
-		float index = input.blendIndices[i];
-		if (index >= 0.f)
-		{
-			float4 bonePos = mul(float4(input.pos, 1.0f), gBones[index]);
-			float3 boneNormal = mul(input.normal, (float3x3)gBones[index]);
-
-			transformedPosition = transformedPosition + (bonePos * input.blendWeights[i]);
-			transformedNormal = transformedNormal + (boneNormal * input.blendWeights[i]);
-		}
-	}
-
-	output.pos.w = 1;
-	// Step 1:    convert position into float4 and multiply with matWorldViewProj
-	output.pos = mul(float4(transformedPosition.xyz, 1.0f), gWorldViewProj);
-	// Step 2:    rotate the normal: NO TRANSLATION
-	//            this is achieved by clipping the 4x4 to a 3x3 matrix, 
-	//            thus removing the postion row of the matrix
-	output.normal = normalize(mul(transformedNormal, (float3x3)gWorld));
-	output.texCoord = input.texCoord;
-
-
-
-
-	return output;
-	*/
-
-
 }
 
 //--------------------------------------------------------------------------------------

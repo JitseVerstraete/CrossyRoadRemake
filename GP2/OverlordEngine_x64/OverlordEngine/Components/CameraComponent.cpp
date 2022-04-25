@@ -102,48 +102,8 @@ GameObject* CameraComponent::Pick(CollisionGroup ignoreGroups) const
 	if (pScene->GetPhysxProxy()->Raycast(PhysxHelper::ToPxVec3(rayOrigin), PhysxHelper::ToPxVec3(rayDirection), PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData))
 	{
 		RigidBodyComponent* pRigidBodyComponent = reinterpret_cast<RigidBodyComponent*>(hit.block.actor->userData);
-		std::cout << "thing hit!\n";
 		return pRigidBodyComponent->GetGameObject();
 	}
 	return nullptr;
 	
-
-	/*
-	
-	//mouse coordinates to NDC
-	POINT mousePos = InputManager::GetMousePosition();
-	float halfWidth = m_pScene->GetSceneContext().windowWidth / 2.f;
-	float halfHeight = m_pScene->GetSceneContext().windowHeight / 2.f;
-	XMFLOAT3 ndc{ (mousePos.x - halfWidth) / halfWidth,  (halfHeight - mousePos.y) / halfHeight, 0.f };
-	//calculate near and far point
-	//near
-	XMVECTOR position = DirectX::XMLoadFloat3(&ndc);
-	const XMMATRIX viewProjectionInv = DirectX::XMLoadFloat4x4(&m_ViewProjectionInverse);
-	XMVECTOR nearPoint = DirectX::XMVector3TransformCoord(position, viewProjectionInv);
-	//far
-	ndc.z = 1.f;
-	position = DirectX::XMLoadFloat3(&ndc);
-	XMVECTOR farPoint = DirectX::XMVector3TransformCoord(position, viewProjectionInv);
-	XMVECTOR direction = farPoint - nearPoint;
-	direction = DirectX::XMVector3Normalize(direction);
-
-	XMFLOAT3 rayStart{};
-	DirectX::XMStoreFloat3(&rayStart, nearPoint);
-	XMFLOAT3 rayDirection{};
-	DirectX::XMStoreFloat3(&rayDirection, direction);
-
-
-	//raycast
-	PxQueryFilterData filterData{};
-	filterData.data.word0 = ~UINT(ignoreGroups);
-
-	PxRaycastBuffer hit{};
-	if (m_pScene->GetPhysxProxy()->Raycast(PhysxHelper::ToPxVec3(rayStart), PhysxHelper::ToPxVec3(rayDirection), PX_MAX_F32, hit, PxHitFlag::eDEFAULT, filterData))
-	{
-		RigidBodyComponent* pRigidBodyComponent = reinterpret_cast<RigidBodyComponent*>(hit.block.actor->userData);
-		return pRigidBodyComponent->GetGameObject();
-	}
-
-	return nullptr;
-	*/
 }

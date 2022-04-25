@@ -39,7 +39,6 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 		}
 
 
-
 		//3.
 		//Find the enclosing keys
 		AnimationKey keyA, keyB;
@@ -67,7 +66,6 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 		}
 
 
-
 		//4.
 		//Interpolate between keys
 		//Figure out the BlendFactor (See lab document)
@@ -82,10 +80,13 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 		//	Compose a transformation matrix with the lerp-results
 		//	Add the resulting matrix to the m_Transforms vector
 
-		float tickDiff = keyB.tick = keyA.tick;
+		float tickDiff = keyB.tick - keyA.tick;
 		float blendFactor = (m_TickCount - keyA.tick) / tickDiff;
 
 
+		std::cout << blendFactor << std::endl;
+
+		ASSERT_IF((blendFactor < 0 || blendFactor > 1), L"blendfactor is not between 0 and 1");
 
 		m_Transforms.clear();
 
@@ -95,36 +96,32 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 			auto transformB = XMLoadFloat4x4(&keyB.boneTransforms[i]);
 
 			XMVECTOR posA{};
-			XMVECTOR posB{};
-
 			XMVECTOR rotA{};
-			XMVECTOR rotB{};
-
 			XMVECTOR scaleA{};
+
+			XMVECTOR posB{};
+			XMVECTOR rotB{};
 			XMVECTOR scaleB{};
 
-			XMMatrixDecompose(&posA, &rotA, &scaleA, transformA);
-			XMMatrixDecompose(&posB, &rotB, &scaleB, transformB);
+
+			XMMatrixDecompose(&scaleA, &rotA, &posA, transformA);
+			XMMatrixDecompose(&scaleB, &rotB, &posB, transformB);
+
 
 			XMVECTOR pos = XMVectorLerp(posA, posB, blendFactor);
-			XMVECTOR rot = XMVectorLerp(rotA, rotB, blendFactor);
-			XMVECTOR scale =  XMVectorLerp(scaleA, scaleB, blendFactor);
+			XMVECTOR rot = XMQuaternionSlerp(rotA, rotB, blendFactor);
+			XMVECTOR scale = XMVectorLerp(scaleA, scaleB, blendFactor);
 
 			XMMATRIX transform =  XMMatrixAffineTransformation(scale, XMVectorZero(), rot, pos);
+
 			XMFLOAT4X4 finalTransform{};
 			XMStoreFloat4x4(&finalTransform, transform);
 
 			m_Transforms.push_back(finalTransform);
-
-
 		}
 
-
-		return;
-
-
-
 	}
+		return;
 }
 
 void ModelAnimator::SetAnimation(const std::wstring& clipName)
@@ -178,8 +175,6 @@ void ModelAnimator::SetAnimation(UINT clipNumber)
 		AnimationClip clip = m_pMeshFilter->m_AnimationClips[clipNumber];
 		SetAnimation(clip);
 	}
-
-
 }
 
 void ModelAnimator::SetAnimation(const AnimationClip& clip)
@@ -189,8 +184,8 @@ void ModelAnimator::SetAnimation(const AnimationClip& clip)
 
 	m_ClipSet = true;
 	m_CurrentClip = clip;
-	Reset(false);
 	//Call Reset(false)
+	Reset(false);
 }
 
 void ModelAnimator::Reset(bool pause)
