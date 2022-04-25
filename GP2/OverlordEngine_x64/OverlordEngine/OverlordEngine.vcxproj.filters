@@ -48,6 +48,9 @@
     <ClCompile Include="Utils\PhysxHelper.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="Utils\VertexHelper.cpp" />
+    <ClCompile Include="Managers\LightManager.cpp" />
+    <ClCompile Include="Graphics\ShadowMapRenderer.cpp" />
+    <ClCompile Include="Misc\ShadowMapMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -107,5 +110,8 @@
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Utils\VertexHelper.h" />
     <ClInclude Include="Lab_Todos.h" />
+    <ClInclude Include="Managers\LightManager.h" />
+    <ClInclude Include="Graphics\ShadowMapRenderer.h" />
+    <ClInclude Include="Misc\ShadowMapMaterial.h" />
   </ItemGroup>
 </Project>
