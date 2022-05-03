@@ -9,26 +9,50 @@ ShadowMapRenderer::~ShadowMapRenderer()
 
 void ShadowMapRenderer::Initialize()
 {
-	TODO_W8(L"Implement Initialize")
 	//1. Create a separate RenderTarget (see RenderTarget class), store in m_pShadowRenderTarget
 	//	- RenderTargets are initialized with the RenderTarget::Create function, requiring a RENDERTARGET_DESC
 	//	- Initialize the relevant fields of the RENDERTARGET_DESC (enableColorBuffer:false, enableDepthSRV:true, width & height)
+	
+	m_pShadowRenderTarget = new RenderTarget(m_GameContext.d3dContext);
+	RENDERTARGET_DESC renDesc{};
+	renDesc.enableColorBuffer = false;
+	renDesc.enableDepthSRV = true;
+	renDesc.width = 1280;
+	renDesc.height = 720;
+	m_pShadowRenderTarget->Create(renDesc);
 
 	//2. Create a new ShadowMapMaterial, this will be the material that 'generated' the ShadowMap, store in m_pShadowMapGenerator
 	//	- The effect has two techniques, one for static meshes, and another for skinned meshes (both very similar, the skinned version also transforms the vertices based on a given set of boneTransforms)
 	//	- We want to store the TechniqueContext (struct that contains information about the Technique & InputLayout required for rendering) for both techniques in the m_GeneratorTechniqueContexts array.
 	//	- Use the ShadowGeneratorType enum to retrieve the correct TechniqueContext by ID, and also use that ID to store it inside the array (see BaseMaterial::GetTechniqueContext)
+	m_pShadowMapGenerator = new ShadowMapMaterial();
+	m_pShadowMapGenerator->Initialize(m_GameContext.d3dContext, 0);
+	//m_pShadowMapGenerator->Initialize(m_GameContext.d3dContext, )
+	m_GeneratorTechniqueContexts[static_cast<int>(ShadowGeneratorType::Static)] =  m_pShadowMapGenerator->GetTechniqueContext(static_cast<int>(ShadowGeneratorType::Static));
+	m_GeneratorTechniqueContexts[static_cast<int>(ShadowGeneratorType::Skinned)] =  m_pShadowMapGenerator->GetTechniqueContext(static_cast<int>(ShadowGeneratorType::Skinned));
+
+
 }
 
-void ShadowMapRenderer::UpdateMeshFilter(const SceneContext& /*sceneContext*/, MeshFilter* /*pMeshFilter*/) const
+void ShadowMapRenderer::UpdateMeshFilter(const SceneContext& sceneContext, MeshFilter* pMeshFilter) const
 {
-	TODO_W8(L"Implement UpdateMeshFilter")
+	TODO_W8(L"Implement UpdateMeshFilter");
 	//Here we want to Update the MeshFilter of ModelComponents that need to be rendered to the ShadowMap
 	//Updating the MeshFilter means that we want to create a corresponding VertexBuffer for our ShadowGenerator material
 
 	//1. Figure out the correct ShadowGeneratorType (either Static, or Skinned) with information from the incoming MeshFilter
 	//2. Retrieve the corresponding TechniqueContext from m_GeneratorTechniqueContexts array (Static/Skinned)
 	//3. Build a corresponding VertexBuffer with data from the relevant TechniqueContext you retrieved in Step2 (MeshFilter::BuildVertexBuffer)
+	ShadowGeneratorType type{};
+	if (pMeshFilter->HasAnimations())
+		type = ShadowGeneratorType::Skinned;
+	else
+		type = ShadowGeneratorType::Static;
+
+	MaterialTechniqueContext teqContext =  m_GeneratorTechniqueContexts[static_cast<int>(type)];
+	pMeshFilter->BuildVertexBuffer(sceneContext, teqContext.inputLayoutID, teqContext.inputLayoutSize, teqContext.pInputLayoutDescriptions);
+
+
 }
 
 void ShadowMapRenderer::Begin(const SceneContext& /*sceneContext*/)
