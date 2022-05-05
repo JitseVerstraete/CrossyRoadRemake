@@ -1,5 +1,5 @@
 float4x4 gWorld : WORLD;
-float4x4 gWorldViewProj : WORLDVIEWPROJECTION; 
+float4x4 gWorldViewProj : WORLDVIEWPROJECTION;
 float4x4 gWorldViewProj_Light;
 float3 gLightDirection = float3(-0.577f, -0.577f, 0.577f);
 float gShadowMapBias = 0.01f;
@@ -21,9 +21,9 @@ SamplerComparisonState cmpSampler
 
 SamplerState samLinear
 {
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Wrap;// or Mirror or Clamp or Border
-    AddressV = Wrap;// or Mirror or Clamp or Border
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = Wrap;// or Mirror or Clamp or Border
+	AddressV = Wrap;// or Mirror or Clamp or Border
 };
 
 struct VS_INPUT
@@ -113,16 +113,16 @@ float EvaluateShadowMap(float4 lpos)
 
 	//re-homogenize
 	lpos.xyz /= lpos.w;
-	
+
 	//check if position is visible
 	if (lpos.x < -1.0f || lpos.x > 1.0f ||
 		lpos.y < -1.0f || lpos.y > 1.0f ||
 		lpos.z < 0.0f || lpos.z > 1.0f) return shadowVal;
-	
 
 
-	lpos.x = lpos.x/2 + 0.5;
-	lpos.y = lpos.y/-2 + 0.5;
+
+	lpos.x = lpos.x / 2 + 0.5;
+	lpos.y = lpos.y / -2 + 0.5;
 
 	lpos.z -= gShadowMapBias;
 
@@ -150,10 +150,10 @@ float4 PS(VS_OUTPUT input) : SV_TARGET
 {
 	float shadowValue = EvaluateShadowMap(input.lPos);
 
-	float4 diffuseColor = gDiffuseMap.Sample( samLinear,input.texCoord );
-	float3 color_rgb= diffuseColor.rgb;
+	float4 diffuseColor = gDiffuseMap.Sample(samLinear,input.texCoord);
+	float3 color_rgb = diffuseColor.rgb;
 	float color_a = diffuseColor.a;
-	
+
 	//HalfLambert Diffuse :)
 	float diffuseStrength = dot(input.normal, -gLightDirection);
 	diffuseStrength = diffuseStrength * 0.5 + 0.5;
@@ -161,7 +161,7 @@ float4 PS(VS_OUTPUT input) : SV_TARGET
 	color_rgb = color_rgb * diffuseStrength;
 
 
-	return float4( color_rgb * shadowValue, color_a );
+	return float4(color_rgb * shadowValue, color_a);
 }
 
 //--------------------------------------------------------------------------------------
@@ -169,14 +169,14 @@ float4 PS(VS_OUTPUT input) : SV_TARGET
 //--------------------------------------------------------------------------------------
 technique11 Default
 {
-    pass P0
-    {
+	pass P0
+	{
 		SetRasterizerState(NoCulling);
 		SetDepthStencilState(EnableDepth, 0);
 
-		SetVertexShader( CompileShader( vs_4_0, VS() ) );
-		SetGeometryShader( NULL );
-		SetPixelShader( CompileShader( ps_4_0, PS() ) );
-    }
+		SetVertexShader(CompileShader(vs_4_0, VS()));
+		SetGeometryShader(NULL);
+		SetPixelShader(CompileShader(ps_4_0, PS()));
+	}
 }
 

@@ -84,7 +84,7 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 		float blendFactor = (m_TickCount - keyA.tick) / tickDiff;
 
 
-		std::cout << blendFactor << std::endl;
+		//std::cout << blendFactor << std::endl;
 
 		ASSERT_IF((blendFactor < 0 || blendFactor > 1), L"blendfactor is not between 0 and 1");
 
