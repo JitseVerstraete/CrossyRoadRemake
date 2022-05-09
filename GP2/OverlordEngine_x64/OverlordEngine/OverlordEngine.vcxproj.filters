@@ -52,6 +52,7 @@
     <ClCompile Include="Graphics\ShadowMapRenderer.cpp" />
     <ClCompile Include="Misc\ShadowMapMaterial.cpp" />
     <ClCompile Include="Components\ParticleEmitterComponent.cpp" />
+    <ClCompile Include="Misc\ParticleMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -115,5 +116,6 @@
     <ClInclude Include="Graphics\ShadowMapRenderer.h" />
     <ClInclude Include="Misc\ShadowMapMaterial.h" />
     <ClInclude Include="Components\ParticleEmitterComponent.h" />
+    <ClInclude Include="Misc\ParticleMaterial.h" />
   </ItemGroup>
 </Project>

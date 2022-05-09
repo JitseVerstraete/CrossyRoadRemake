@@ -24,6 +24,7 @@ void ParticleScene::Initialize()
 	const auto pObject = AddChild(new GameObject);
 	m_pEmitter = pObject->AddComponent(new ParticleEmitterComponent(L"Textures/Smoke.png", settings, 200));
 
+	
 	//Teapot
 	m_pTeapot = AddChild(new GameObject());
 	const auto pModel = m_pTeapot->AddComponent(new ModelComponent(L"Meshes/Teapot.ovm"));
@@ -32,12 +33,15 @@ void ParticleScene::Initialize()
 	pMaterial->SetColor(XMFLOAT4{ Colors::White });
 	pModel->SetMaterial(pMaterial);
 	m_pTeapot->GetTransform()->Scale(.3f, .3f, .3f);
+	
 }
 
 void ParticleScene::Update()
 {
+	
 	//Rotate Teapot
 	m_pTeapot->GetTransform()->Rotate(.0f, XM_PIDIV2 * m_SceneContext.pGameTime->GetTotal(), .0f, false);
+	
 
 	//Move Particle System
 	auto particlePosition = m_pEmitter->GetTransform()->GetPosition();
