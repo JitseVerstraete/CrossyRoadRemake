@@ -7,6 +7,7 @@
 
 void ShadowMappingScene::Initialize()
 {
+	
 	m_SceneContext.settings.drawGrid = false;
 	m_SceneContext.settings.enableOnGUI = true;
 
@@ -48,6 +49,7 @@ void ShadowMappingScene::Initialize()
 	//Input
 	//*****
 	m_SceneContext.pInput->AddInputAction(InputAction(0, InputState::pressed, VK_SPACE));
+	
 }
 
 void ShadowMappingScene::Update()

@@ -4,7 +4,8 @@
 
 ShadowMapRenderer::~ShadowMapRenderer()
 {
-	SafeDelete(m_pShadowRenderTarget)
+	SafeDelete(m_pShadowRenderTarget);
+	SafeDelete(m_pShadowMapGenerator);
 }
 
 void ShadowMapRenderer::Initialize()
@@ -89,12 +90,14 @@ void ShadowMapRenderer::Begin(const SceneContext& sceneContext)
 	XMVECTOR lightDir = XMLoadFloat4(&sceneContext.pLights->GetDirectionalLight().direction);
 	XMMATRIX viewMatrix = XMMatrixLookAtLH(lightPos, (lightPos + lightDir), XMVECTOR{ 0.f, 1.f, 0.f, 0.f });
 
-	XMMATRIX viewProjMatrix = projMatrix * viewMatrix;
+	XMMATRIX viewProjMatrix = viewMatrix * projMatrix;
+
 
 	//3. Update this matrix (m_LightVP) on the ShadowMapMaterial effect
-	XMFLOAT4X4 viewProj{};
-	XMStoreFloat4x4(&viewProj, viewProjMatrix);
-	m_LightVP = viewProj;
+	//XMFLOAT4X4 viewProj{};
+	XMStoreFloat4x4(&m_LightVP, viewProjMatrix);
+	//m_LightVP = viewProj;
+	m_pShadowMapGenerator->SetVariable_Matrix(L"gLightViewProj", m_LightVP);
 
 	//4. Set the Main Game RenderTarget to m_pShadowRenderTarget (OverlordGame::SetRenderTarget) - Hint: every Singleton object has access to the GameContext...
 	m_GameContext.pGame->SetRenderTarget(m_pShadowRenderTarget);
@@ -128,6 +131,8 @@ void ShadowMapRenderer::DrawMesh(const SceneContext& sceneContext, MeshFilter* p
 		m_pShadowMapGenerator->SetVariable_MatrixArray(L"gBones", (float*)meshBones.data(), (UINT)meshBones.size());
 	}
 
+	
+
 
 	//4. Setup Pipeline for Drawing (Similar to ModelComponent::Draw, but for our ShadowMapMaterial)
 	//	- Set InputLayout (see TechniqueContext)
@@ -144,11 +149,11 @@ void ShadowMapRenderer::DrawMesh(const SceneContext& sceneContext, MeshFilter* p
 		auto pDeviceContext = sceneContext.d3dContext.pDeviceContext;
 
 		//input layout
-		pDeviceContext->IASetInputLayout(m_pShadowMapGenerator->GetTechniqueContext().pInputLayout);
+		pDeviceContext->IASetInputLayout(techContext.pInputLayout);
 
 		//vertex buffer
 		const UINT offset = 0;
-		const auto& vertexBufferData = pMeshFilter->GetVertexBufferData(sceneContext, m_pShadowMapGenerator, subMesh.id);
+		const auto& vertexBufferData = pMeshFilter->GetVertexBufferData(techContext.inputLayoutID, subMesh.id);
 		pDeviceContext->IASetVertexBuffers(0, 1, &vertexBufferData.pVertexBuffer, &vertexBufferData.VertexStride, &offset);
 
 		//index buffer
