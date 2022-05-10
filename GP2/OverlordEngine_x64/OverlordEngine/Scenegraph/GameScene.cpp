@@ -203,7 +203,7 @@ void GameScene::RootDraw()
 	//POST-PROCESSING_PASS
 	//++++++++++++++++++++
 
-	TODO_W10(L"Add Post-Processing PASS logic")
+	//TODO_W10(L"Add Post-Processing PASS logic")
 
 	//No need to swap RenderTargets is there aren't any PP Effects...
 	if (m_PostProcessingMaterials.size() > 0)
@@ -221,10 +221,29 @@ void GameScene::RootDraw()
 		//		- Else, reset the RenderTarget of the game to default (OverlordGame::SetRenderTarget)
 		//		- Use SpriteRenderer::DrawImmediate to render the ShaderResourceView from PREV_RT to the screen
 
+
+		RenderTarget* INIT_RT = m_pGame->GetRenderTarget();
+		RenderTarget* PREV_RT = INIT_RT;
+		
+		for (PostProcessingMaterial* pMat : m_PostProcessingMaterials)
+		{
+			if (!pMat->IsEnabled()) continue;
+
+			pMat->Draw(m_SceneContext, PREV_RT);
+			PREV_RT = pMat->GetOutput();
+		}
+
+		if (PREV_RT != INIT_RT)
+		{
+			m_pGame->SetRenderTarget(nullptr);
+			SpriteRenderer::Get()->DrawImmediate(m_SceneContext.d3dContext, PREV_RT->GetColorShaderResourceView(), XMFLOAT2());
+		}
+
+
 		//Done!
 	}
 #pragma endregion
-}
+}  
 
 void GameScene::RootOnSceneActivated()
 {

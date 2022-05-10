@@ -106,9 +106,9 @@ void PostProcessingMaterial::UpdateBaseEffectVariables(const SceneContext& /*sce
 	//In case we want to use pSource as a RTV (RenderTargetView, render to) we have to unbind it first as an SRV
 }
 
-void PostProcessingMaterial::DrawPass(const SceneContext& /*sceneContext*/, ID3DX11EffectTechnique* /*pTechnique*/, RenderTarget* /*pDestination*/)
+void PostProcessingMaterial::DrawPass(const SceneContext& sceneContext, ID3DX11EffectTechnique* pTechnique, RenderTarget* pDestination)
 {
-	TODO_W10(L"Implement PostProcessingMaterial Draw function")
+	//TODO_W10(L"Implement PostProcessingMaterial Draw function");
 	//This function invokes a Draw Call for our full screen quad
 	//The draw call uses pTechnique for rendering and renders to the given destination RenderTarget (pDestination)
 
@@ -127,4 +127,23 @@ void PostProcessingMaterial::DrawPass(const SceneContext& /*sceneContext*/, ID3D
 	//		- Iterate the technique passes (same as usual)
 	//			- apply the pass
 	//			- DRAW! (use the m_VertexCount constant for the number of vertices)
+
+	m_GameContext.pGame->SetRenderTarget(pDestination);
+	pDestination->Clear(XMFLOAT4(Colors::Yellow));
+	
+	//set the pipeline
+	sceneContext.d3dContext.pDeviceContext->IASetInputLayout(m_pDefaultInputLayout);
+	sceneContext.d3dContext.pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	UINT strides = sizeof(VertexPosTex);
+	UINT offset = 0;
+	sceneContext.d3dContext.pDeviceContext->IASetVertexBuffers(0, 1, &m_pDefaultVertexBuffer, &strides, &offset);
+
+	D3DX11_TECHNIQUE_DESC desc{};
+	pTechnique->GetDesc(&desc);
+	for (unsigned int p{}; p < desc.Passes; ++p)
+	{
+		pTechnique->GetPassByIndex(p)->Apply(0, sceneContext.d3dContext.pDeviceContext);
+		sceneContext.d3dContext.pDeviceContext->Draw(m_VertexCount, 0);
+	}
+
 }
