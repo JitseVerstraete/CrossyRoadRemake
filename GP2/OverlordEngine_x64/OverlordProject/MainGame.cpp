@@ -9,7 +9,9 @@
 //#define W7
 //#define W8
 //#define W9
-#define W10
+//#define W10
+
+#define CROSSYROAD
 
 /*MILESTONE Content*/
 //#define MILESTONE_1
@@ -56,6 +58,10 @@
 
 #ifdef W10
 #include "Scenes/Week 10/PostProcessingScene.h"
+#endif
+
+#ifdef CROSSYROAD
+#include "Scenes/CrossyRoad/CrossyRoadScene.h"
 #endif
 
 #ifdef MILESTONE_1
@@ -136,6 +142,11 @@ void MainGame::Initialize()
 #ifdef W10
 	SceneManager::Get()->AddGameScene(new PostProcessingScene());
 #endif
+
+#ifdef CROSSYROAD
+	SceneManager::Get()->AddGameScene(new CrossyRoadScene());
+#endif
+
 
 #ifdef MILESTONE_1
 	SceneManager::Get()->AddGameScene(new PongScene());
