@@ -76,7 +76,7 @@ float4 PS(PS_INPUT input) : SV_Target
 	float uvHeightOffset = (1.f / (float)height);
 
 	float3 totalColor = (float3)0;
-	int iterations = 9;
+	int iterations = 5;
 
 	float startW = uv.x - uvWidthOffset * (iterations / 2);
 	float startH = uv.y - uvHeightOffset * (iterations / 2);

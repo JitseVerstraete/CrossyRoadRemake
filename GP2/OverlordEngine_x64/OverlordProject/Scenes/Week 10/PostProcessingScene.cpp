@@ -9,7 +9,7 @@
 #include "Materials/DiffuseMaterial_Skinned.h"
 
 #include "Materials/Post/PostGrayscale.h"
-//#include "Materials/Post/PostBlur.h"
+#include "Materials/Post/PostBlur.h"
 
 void PostProcessingScene::Initialize()
 {
@@ -56,9 +56,10 @@ void PostProcessingScene::Initialize()
 	//Post Processing Stack
 	//=====================
 	m_pPostGrayscale = MaterialManager::Get()->CreateMaterial<PostGrayscale>();
-	//m_pPostBlur = ...
+	m_pPostBlur = MaterialManager::Get()->CreateMaterial<PostBlur>();
 
 	AddPostProcessingEffect(m_pPostGrayscale);
+	AddPostProcessingEffect(m_pPostBlur);
 
 	//TODO_W10
 	//Create and add a PostBlur material class (using Blur.fx)
@@ -72,7 +73,7 @@ void PostProcessingScene::OnGUI()
 	ImGui::Checkbox("Grayscale PP", &isEnabled);
 	m_pPostGrayscale->SetIsEnabled(isEnabled);
 
-	//isEnabled = m_pPostBlur->IsEnabled();
-	//ImGui::Checkbox("Blur PP", &isEnabled);
-	//m_pPostBlur->SetIsEnabled(isEnabled);
+	isEnabled = m_pPostBlur->IsEnabled();
+	ImGui::Checkbox("Blur PP", &isEnabled);
+	m_pPostBlur->SetIsEnabled(isEnabled);
 }

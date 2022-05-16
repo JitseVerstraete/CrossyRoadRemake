@@ -14,5 +14,14 @@ protected:
 	void Initialize() override;
 	void OnGUI() override;
 
+private:
+	//player
+	GameObject* m_pPlayerObject;
+
+	//terrainSlice
+	GameObject* m_pTerrainSlice;
+
+
+
 };
 
