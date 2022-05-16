@@ -36,6 +36,9 @@
     <ClCompile Include="Materials\Post\PostGrayscale.cpp" />
     <ClCompile Include="Scenes\CrossyRoad\CrossyRoadScene.cpp" />
     <ClCompile Include="Materials\Post\PostBlur.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\TerrainSlice.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\Terrain.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\CrossyCharacter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -72,5 +75,8 @@
     <ClInclude Include="Materials\Post\PostGrayscale.h" />
     <ClInclude Include="Scenes\CrossyRoad\CrossyRoadScene.h" />
     <ClInclude Include="Materials\Post\PostBlur.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\TerrainSlice.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\Terrain.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\CrossyCharacter.h" />
   </ItemGroup>
 </Project>

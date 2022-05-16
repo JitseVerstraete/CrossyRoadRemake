@@ -19,7 +19,8 @@ private:
 	GameObject* m_pPlayerObject;
 
 	//terrainSlice
-	GameObject* m_pTerrainSlice;
+
+	std::vector<GameObject*> m_pTerrain;
 
 
 

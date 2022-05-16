@@ -11,12 +11,12 @@
 //#define W9
 //#define W10
 
-//#define CROSSYROAD
+#define CROSSYROAD
 
 /*MILESTONE Content*/
 //#define MILESTONE_1
 //#define MILESTONE_2
-#define MILESTONE_3
+//#define MILESTONE_3
 
 #pragma region Lab/Milestone Includes
 #ifdef W3
@@ -89,11 +89,13 @@
 #pragma endregion
 
 //Game is preparing
-void MainGame::OnGamePreparing(GameContext& /*gameContext*/)
+void MainGame::OnGamePreparing(GameContext& gameContext)
 {
 	//Here you can change some game settings before engine initialize
 	//gameContext.windowWidth=... (default is 1280)
 	//gameContext.windowHeight=... (default is 720)
+	gameContext.windowWidth = 1600;
+	gameContext.windowHeight = 900;
 
 	//gameContext.windowTitle = L"GP2 - Milestone 3 (2022) | (2DAE13) Doe John";
 	//gameContext.windowTitle = L"GP2 - Exam Project (2022) | (2DAE13) Doe John";

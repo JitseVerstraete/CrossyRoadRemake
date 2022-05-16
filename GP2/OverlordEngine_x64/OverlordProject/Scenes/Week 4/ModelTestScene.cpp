@@ -17,7 +17,7 @@ void ModelTestScene::Initialize()
 	m_pChair->GetTransform()->Translate(0.f, 5.f, 0.f);
 
 	auto modelComp = m_pChair->AddComponent(new ModelComponent(L"Meshes/Chair.ovm"));
-	modelComp->SetMaterial(mat);
+	modelComp->SetMaterial(mat); 
 
 
 
