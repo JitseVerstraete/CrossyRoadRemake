@@ -39,6 +39,7 @@
     <ClCompile Include="Prefabs\CrossyRoad\TerrainSlice.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\Terrain.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\CrossyCharacter.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\CrossyFollowCam.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -78,5 +79,6 @@
     <ClInclude Include="Prefabs\CrossyRoad\TerrainSlice.h" />
     <ClInclude Include="Prefabs\CrossyRoad\Terrain.h" />
     <ClInclude Include="Prefabs\CrossyRoad\CrossyCharacter.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\CrossyFollowCam.h" />
   </ItemGroup>
 </Project>

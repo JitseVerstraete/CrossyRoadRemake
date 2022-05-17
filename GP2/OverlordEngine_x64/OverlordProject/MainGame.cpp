@@ -94,8 +94,8 @@ void MainGame::OnGamePreparing(GameContext& gameContext)
 	//Here you can change some game settings before engine initialize
 	//gameContext.windowWidth=... (default is 1280)
 	//gameContext.windowHeight=... (default is 720)
-	gameContext.windowWidth = 1600;
-	gameContext.windowHeight = 900;
+	gameContext.windowWidth = 1000;
+	gameContext.windowHeight = 800;
 
 	//gameContext.windowTitle = L"GP2 - Milestone 3 (2022) | (2DAE13) Doe John";
 	//gameContext.windowTitle = L"GP2 - Exam Project (2022) | (2DAE13) Doe John";

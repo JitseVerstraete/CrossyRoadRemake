@@ -1,5 +1,8 @@
 #pragma once
 #include "Scenegraph/GameScene.h"
+
+class Terrain;
+
 class CrossyRoadScene : public GameScene
 {
 public:
@@ -15,12 +18,14 @@ protected:
 	void OnGUI() override;
 
 private:
-	//player
-	GameObject* m_pPlayerObject;
+	//player object
+	GameObject* m_pPlayerCharacter = nullptr;
 
-	//terrainSlice
+	//terrain object
+	Terrain* m_pTerrain = nullptr;
 
-	std::vector<GameObject*> m_pTerrain;
+	//camera
+	GameObject* m_pFollowCamera = nullptr;
 
 
 

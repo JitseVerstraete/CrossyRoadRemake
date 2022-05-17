@@ -1,4 +1,13 @@
 #pragma once
+
+enum InputIds
+{
+	MoveForward,
+	MoveBackward,
+	MoveLeft,
+	MoveRight
+};
+
 class CrossyCharacter : public GameObject
 {
 public:
@@ -15,7 +24,8 @@ protected:
 	void Update(const SceneContext & sceneContext) override;
 
 private:
-
+	int m_PosX{};
+	int m_PosZ{};
 
 };
 
