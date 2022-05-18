@@ -1,6 +1,17 @@
 #pragma once
 
-#include "Prefabs/CrossyRoad/TerrainSlice.h"
+
+#include "Prefabs/CrossyRoad/GrassSlice.h"
+#include "Prefabs/CrossyRoad/RoadSlice.h"
+#include "Prefabs/CrossyRoad/RiverSlice.h"
+
+
+enum class TerrainType
+{
+	Grass,
+	Road,
+	River
+};
 
 class Terrain : public GameObject
 {
@@ -19,7 +30,7 @@ protected:
 
 private:
 
-	std::vector<TerrainSlice*> m_pSlices;
+	std::vector<GameObject*> m_pSlices;
 	int m_InitialSlices;
 	int m_currentSliceNumber;
 

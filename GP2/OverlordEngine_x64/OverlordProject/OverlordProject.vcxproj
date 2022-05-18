@@ -96,6 +96,9 @@
     <ClCompile Include="Prefabs\CrossyRoad\CrossyFollowCam.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\CrossyCharacter.cpp" />
     <ClCompile Include="Materials\Post\PostBlur.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\GrassSlice.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\RiverSlice.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\RoadSlice.cpp" />
     <ClCompile Include="Scenes\CrossyRoad\CrossyRoadScene.cpp" />
     <ClCompile Include="Materials\DiffuseMaterial_Skinned.cpp" />
     <ClCompile Include="Materials\Post\PostGrayscale.cpp" />
@@ -142,7 +145,6 @@
     </ClCompile>
     <ClCompile Include="Materials\UberMaterial.cpp" />
     <ClCompile Include="Scenes\Week 4\UberMaterialScene.cpp" />
-    <ClCompile Include="Prefabs\CrossyRoad\TerrainSlice.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +156,9 @@
     <ClInclude Include="Prefabs\CrossyRoad\CrossyFollowCam.h" />
     <ClInclude Include="Prefabs\CrossyRoad\CrossyCharacter.h" />
     <ClInclude Include="Materials\Post\PostBlur.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\GrassSlice.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\RiverSlice.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\RoadSlice.h" />
     <ClInclude Include="Scenes\CrossyRoad\CrossyRoadScene.h" />
     <ClInclude Include="Materials\DiffuseMaterial_Skinned.h" />
     <ClInclude Include="Materials\Post\PostGrayscale.h" />
@@ -187,7 +192,6 @@
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Materials\UberMaterial.h" />
     <ClInclude Include="Scenes\Week 4\UberMaterialScene.h" />
-    <ClInclude Include="Prefabs\CrossyRoad\TerrainSlice.h" />
     <ClInclude Include="Prefabs\CrossyRoad\Terrain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
