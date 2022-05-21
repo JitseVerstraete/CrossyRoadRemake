@@ -30,39 +30,24 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 	//rotation handling on pressing movement keys
 	if (sceneContext.pInput->IsActionTriggered(PressForward))
 	{
-		//++m_PosZ;
-		//jumped = true;
 		SetTargetRot(180.f);
+		m_KeyPressed = true;
 	}
 
 	if (sceneContext.pInput->IsActionTriggered(PressBackward))
 	{
-		//if (m_PosZ > 0)
-		//{
-		//	//--m_PosZ;
-		//	jumped = true;
-		//}
-
 		SetTargetRot(0.f);
-
+		m_KeyPressed = true;
 	}
 	if (sceneContext.pInput->IsActionTriggered(PressLeft))
 	{
-		//if (abs(m_PosX - 1) <= m_MaxWidth)
-		//{
-		//	--m_PosX;
-		//	jumped = true;
-		//}
 		SetTargetRot(90.f);
+		m_KeyPressed = true;
 	}
 	if (sceneContext.pInput->IsActionTriggered(PressRight))
 	{
-		//if (abs(m_PosX + 1) <= m_MaxWidth)
-		//{
-		//	++m_PosX;
-		//	jumped = true;
-		//}
 		SetTargetRot(270.f);
+		m_KeyPressed = true;
 	}
 
 
@@ -114,10 +99,20 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		if (jumped)
 		{
 			m_JumpTimer = m_JumpTime;
+			m_KeyPressed = false;
 		}
 	}
 
 	if (m_JumpTimer >= 0.f) m_JumpTimer -= sceneContext.pGameTime->GetElapsed();
+
+	if (m_KeyPressed)
+	{
+		m_SquishFactor = std::lerp(m_SquishFactor, 1.f, 0.2f);
+	}
+	else
+	{
+		m_SquishFactor = std::lerp(m_SquishFactor, 0.f, 0.2f);
+	}
 
 	//lerp transform
 	float jumpProgress = 1.f - (m_JumpTimer / m_JumpTime);
@@ -130,6 +125,9 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 	//lerp rotate
 	m_CurrentRotY = std::lerp(m_CurrentRotY, m_TargetRotY, 0.2f);
 	GetTransform()->Rotate(0.f, m_CurrentRotY, 0.f);
+
+	//lerp squish
+	GetTransform()->Scale(1.f, std::lerp(1.f, m_MaxSquishScale, m_SquishFactor), 1.f);
 
 }
 

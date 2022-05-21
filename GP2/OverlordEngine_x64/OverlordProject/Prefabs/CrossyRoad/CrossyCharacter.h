@@ -31,10 +31,6 @@ private:
 	int m_PosX{};
 	int m_PosZ{};
 
-
-	
-
-
 	int m_MaxWidth{4};
 
 	float m_CurrentRotY{};
@@ -44,6 +40,10 @@ private:
 	float m_JumpTimer{ 0.f };
 
 	ModelComponent* m_ModelComp{};
+
+	float m_SquishFactor{0};
+	float m_MaxSquishScale{ 0.6f };
+	bool m_KeyPressed{ false };
 
 	void SetTargetRot(float rot);
 

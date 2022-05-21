@@ -37,7 +37,7 @@ void CrossyFollowCam::Initialize(const SceneContext&)
 void CrossyFollowCam::Update(const SceneContext&)
 {
 	//follow the player in the z direction (forward game direction)
-	GetTransform()->Translate(m_OriginalTransform.x, m_OriginalTransform.y, m_OriginalTransform.z + m_FollowObject->GetTransform()->GetWorldPosition().z);
+	GetTransform()->Translate(m_OriginalTransform.x, m_OriginalTransform.y, m_OriginalTransform.z + std::lerp((GetTransform()->GetPosition().z - m_OriginalTransform.z),  m_FollowObject->GetTransform()->GetWorldPosition().z, 0.02f));
 
 
 }
