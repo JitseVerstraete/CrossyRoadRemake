@@ -16,7 +16,7 @@ enum class TerrainType
 class Terrain : public GameObject
 {
 public:
-	Terrain(int amount);
+	Terrain(GameObject* trackedCharacter, int slicesAhead);
 	~Terrain() override = default;
 
 	Terrain(const Terrain& other) = delete;
@@ -31,8 +31,12 @@ protected:
 private:
 
 	std::vector<GameObject*> m_pSlices;
-	int m_InitialSlices;
+	int m_SlicesAhead;
 	int m_currentSliceNumber;
+
+	GameObject* m_TrackedCharacter;
+
+	void SpawnRandomSlice();
 
 };
 

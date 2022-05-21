@@ -1,14 +1,17 @@
 #include "stdafx.h"
 #include "CrossyCharacter.h"
 
+#include <cmath>
+
 #include "Materials/DiffuseMaterial.h"
 #include "Materials/DiffuseMaterial_Skinned.h"
+
 
 void CrossyCharacter::Initialize(const SceneContext&)
 {
 	//spawn the character, visuals... and attach a child with cameraComponent to it
-	GameObject* pModelChild = AddChild(new GameObject());
 
+	GameObject* pModelChild = AddChild(new GameObject());
 
 	m_ModelComp = pModelChild->AddComponent(new ModelComponent(L"Meshes/Chicken2.ovm"));
 	DiffuseMaterial_Skinned* mat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Skinned>();
@@ -18,23 +21,65 @@ void CrossyCharacter::Initialize(const SceneContext&)
 	pModelChild->GetTransform()->Scale(0.02f);
 	m_ModelComp->GetAnimator()->SetAnimation(L"idle");
 	m_ModelComp->GetAnimator()->Play();
+
 }
 
 void CrossyCharacter::Update(const SceneContext& sceneContext)
 {
+
+	//rotation handling on pressing movement keys
+	if (sceneContext.pInput->IsActionTriggered(PressForward))
+	{
+		//++m_PosZ;
+		//jumped = true;
+		SetTargetRot(180.f);
+	}
+
+	if (sceneContext.pInput->IsActionTriggered(PressBackward))
+	{
+		//if (m_PosZ > 0)
+		//{
+		//	//--m_PosZ;
+		//	jumped = true;
+		//}
+
+		SetTargetRot(0.f);
+
+	}
+	if (sceneContext.pInput->IsActionTriggered(PressLeft))
+	{
+		//if (abs(m_PosX - 1) <= m_MaxWidth)
+		//{
+		//	--m_PosX;
+		//	jumped = true;
+		//}
+		SetTargetRot(90.f);
+	}
+	if (sceneContext.pInput->IsActionTriggered(PressRight))
+	{
+		//if (abs(m_PosX + 1) <= m_MaxWidth)
+		//{
+		//	++m_PosX;
+		//	jumped = true;
+		//}
+		SetTargetRot(270.f);
+	}
+
+
+
 	if (m_JumpTimer <= 0.f)
 	{
 		bool jumped = false;
 
-		//handle movement using registered keybinds
-		if (sceneContext.pInput->IsActionTriggered(MoveForward))
+		//handle movement (and rotation) on key release
+		if (sceneContext.pInput->IsActionTriggered(ReleaseForward))
 		{
 			++m_PosZ;
-			m_TargetRot = { 0.f, 180.f, 0.f };
 			jumped = true;
+			SetTargetRot(180.f);
 		}
 
-		if (sceneContext.pInput->IsActionTriggered(MoveBackward))
+		if (sceneContext.pInput->IsActionTriggered(ReleaseBackward))
 		{
 			if (m_PosZ > 0)
 			{
@@ -42,52 +87,76 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 				jumped = true;
 			}
 
-			m_TargetRot = { 0.f, 0.f, 0.f };
+			SetTargetRot(0.f);
 
 		}
-		if (sceneContext.pInput->IsActionTriggered(MoveLeft))
+		if (sceneContext.pInput->IsActionTriggered(ReleaseLeft))
 		{
 			if (abs(m_PosX - 1) <= m_MaxWidth)
 			{
 				--m_PosX;
 				jumped = true;
 			}
-			m_TargetRot = { 0.f, 90.f, 0.f };
+			SetTargetRot(90.f);
 		}
-		if (sceneContext.pInput->IsActionTriggered(MoveRight))
+		if (sceneContext.pInput->IsActionTriggered(ReleaseRight))
 		{
 			if (abs(m_PosX + 1) <= m_MaxWidth)
 			{
 				++m_PosX;
 				jumped = true;
 			}
-			m_TargetRot = { 0.f, 270.f, 0.f };
+			SetTargetRot(270.f);
 		}
+
 
 
 		if (jumped)
 		{
 			m_JumpTimer = m_JumpTime;
-			m_ModelComp->GetAnimator()->SetAnimation(L"jump");
-			m_ModelComp->GetAnimator()->SetAnimationSpeed(2.f);
-			m_ModelComp->GetAnimator()->Play();
 		}
 	}
 
-	if (m_JumpTimer > 0.f)
-	{
-		//go to the target position
-		GetTransform()->Translate(static_cast<float>(m_PosX), 0.f, static_cast<float>(m_PosZ));
-		GetTransform()->Rotate(m_TargetRot.x, m_TargetRot.y, m_TargetRot.z);
+	if (m_JumpTimer >= 0.f) m_JumpTimer -= sceneContext.pGameTime->GetElapsed();
 
-		m_JumpTimer -= sceneContext.pGameTime->GetElapsed();
-		if (m_JumpTimer < 0.f)	m_ModelComp->GetAnimator()->SetAnimation(L"idle");
-		
+	//lerp transform
+	float jumpProgress = 1.f - (m_JumpTimer / m_JumpTime);
+	MathHelper::Clamp(jumpProgress, 1.f, 0.f);
+	float xPos = std::lerp(GetTransform()->GetPosition().x, static_cast<float>(m_PosX), jumpProgress);
+	float zPos = std::lerp(GetTransform()->GetPosition().z, static_cast<float>(m_PosZ), jumpProgress);
+	GetTransform()->Translate(xPos, 0.f, zPos);
 
-	}
-	else
-	{
-		m_ModelComp->GetAnimator()->Play();
-	}
+
+	//lerp rotate
+	m_CurrentRotY = std::lerp(m_CurrentRotY, m_TargetRotY, 0.2f);
+	GetTransform()->Rotate(0.f, m_CurrentRotY, 0.f);
 
 }
+
+void CrossyCharacter::SetTargetRot(float rot)
+{
+	m_TargetRotY = rot;
+
+	if (fmod(m_CurrentRotY, 360.f) < 0.f)
+	{
+		m_CurrentRotY = fmod(m_CurrentRotY, 360.f) + 360.f;
+	}
+
+	float delta = (m_TargetRotY - m_CurrentRotY);
+
+	if (abs(delta) > 180.f)
+	{
+		if (delta < 0.f)
+		{
+			m_CurrentRotY -= 360.f;
+		}
+		else
+		{
+			m_CurrentRotY += 360.f;
+		}
+	}
+}
+
+
+
+

@@ -2,10 +2,14 @@
 
 enum InputIds
 {
-	MoveForward,
-	MoveBackward,
-	MoveLeft,
-	MoveRight
+	PressForward,
+	PressBackward,
+	PressLeft,
+	PressRight,
+	ReleaseForward,
+	ReleaseBackward,
+	ReleaseLeft,
+	ReleaseRight
 };
 
 class CrossyCharacter : public GameObject
@@ -27,14 +31,21 @@ private:
 	int m_PosX{};
 	int m_PosZ{};
 
+
+	
+
+
 	int m_MaxWidth{4};
 
-	XMFLOAT3 m_TargetRot{};
+	float m_CurrentRotY{};
+	float m_TargetRotY{};
 
-	const float m_JumpTime{ 0.5f };
+	const float m_JumpTime{ 0.1f };
 	float m_JumpTimer{ 0.f };
 
 	ModelComponent* m_ModelComp{};
+
+	void SetTargetRot(float rot);
 
 };
 
