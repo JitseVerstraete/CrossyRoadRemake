@@ -6,6 +6,13 @@
 #include "Materials/DiffuseMaterial.h"
 #include "Materials/DiffuseMaterial_Skinned.h"
 
+#include "Terrain.h"
+
+
+void CrossyCharacter::SetTerrain(Terrain* pTer)
+{
+	m_pTerrain = pTer;
+}
 
 void CrossyCharacter::Initialize(const SceneContext&)
 {
@@ -60,15 +67,18 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		if (sceneContext.pInput->IsActionTriggered(ReleaseForward))
 		{
 			m_KeyPressed = false;
-			++m_PosZ;
-			jumped = true;
+			if (m_pTerrain->TilePassable(m_PosX, m_PosZ + 1))
+			{
+				++m_PosZ;
+				jumped = true;
+			}
 			SetTargetRot(180.f);
 		}
 
 		if (sceneContext.pInput->IsActionTriggered(ReleaseBackward))
 		{
 			m_KeyPressed = false;
-			if (m_PosZ > 0)
+			if (m_pTerrain->TilePassable(m_PosX, m_PosZ - 1))
 			{
 				--m_PosZ;
 				jumped = true;
@@ -79,7 +89,7 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		if (sceneContext.pInput->IsActionTriggered(ReleaseLeft))
 		{
 			m_KeyPressed = false;
-			if (abs(m_PosX - 1) <= m_MaxWidth)
+			if (abs(m_PosX - 1) <= m_MaxWidth && m_pTerrain->TilePassable(m_PosX - 1, m_PosZ))
 			{
 				--m_PosX;
 				jumped = true;
@@ -89,7 +99,7 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		if (sceneContext.pInput->IsActionTriggered(ReleaseRight))
 		{
 			m_KeyPressed = false;
-			if (abs(m_PosX + 1) <= m_MaxWidth)
+			if (abs(m_PosX + 1) <= m_MaxWidth && m_pTerrain->TilePassable(m_PosX + 1, m_PosZ))
 			{
 				++m_PosX;
 				jumped = true;

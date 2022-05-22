@@ -12,16 +12,21 @@ enum InputIds
 	ReleaseRight
 };
 
+class Terrain;
+
 class CrossyCharacter : public GameObject
 {
 public:
-	CrossyCharacter() {};
+	CrossyCharacter(int width ) : m_MaxWidth{ width } {};
 	~CrossyCharacter() override = default;
 
 	CrossyCharacter(const CrossyCharacter& other) = delete;
 	CrossyCharacter(CrossyCharacter&& other) noexcept = delete;
 	CrossyCharacter& operator=(const CrossyCharacter& other) = delete;
 	CrossyCharacter& operator=(CrossyCharacter&& other) noexcept = delete;
+
+
+	void SetTerrain(Terrain* pTer);
 
 protected:
 	void Initialize(const SceneContext& sceneContext) override;
@@ -31,7 +36,7 @@ private:
 	int m_PosX{};
 	int m_PosZ{};
 
-	int m_MaxWidth{4};
+	int m_MaxWidth{};
 
 	float m_CurrentRotY{};
 	float m_TargetRotY{};
@@ -41,9 +46,11 @@ private:
 
 	ModelComponent* m_ModelComp{};
 
-	float m_SquishFactor{0};
+	float m_SquishFactor{ 0 };
 	float m_MaxSquishScale{ 0.6f };
 	bool m_KeyPressed{ false };
+
+	Terrain* m_pTerrain{};
 
 	void SetTargetRot(float rot);
 

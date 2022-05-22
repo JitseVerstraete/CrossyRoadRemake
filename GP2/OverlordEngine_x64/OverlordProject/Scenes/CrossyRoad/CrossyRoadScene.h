@@ -2,6 +2,8 @@
 #include "Scenegraph/GameScene.h"
 
 class Terrain;
+class CrossyCharacter;
+class CrossyFollowCam;
 
 class CrossyRoadScene : public GameScene
 {
@@ -19,13 +21,13 @@ protected:
 
 private:
 	//player object
-	GameObject* m_pPlayerCharacter = nullptr;
+	CrossyCharacter* m_pPlayerCharacter = nullptr;
 
 	//terrain object
 	Terrain* m_pTerrain = nullptr;
 
 	//camera
-	GameObject* m_pFollowCamera = nullptr;
+	CrossyFollowCam* m_pFollowCamera = nullptr;
 
 
 

@@ -15,9 +15,12 @@ void CrossyRoadScene::Initialize()
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this, pDefaultMaterial);
 
-	m_pPlayerCharacter = AddChild(new CrossyCharacter());
-	m_pTerrain = AddChild(new Terrain(m_pPlayerCharacter, 10));  
+
+	const int maxWidth = 4;
+	m_pPlayerCharacter = AddChild(new CrossyCharacter(maxWidth));
+	m_pTerrain = AddChild(new Terrain(m_pPlayerCharacter, 10, maxWidth));
 	m_pFollowCamera = AddChild(new CrossyFollowCam(m_pPlayerCharacter, 50.f, -10.f, 25.f, 2, 20.f));
+	m_pPlayerCharacter->SetTerrain(m_pTerrain);
 
 
 	//input actions

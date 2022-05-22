@@ -1,9 +1,23 @@
 #include "stdafx.h"
 #include "Terrain.h"
 
-Terrain::Terrain(GameObject* trackedCharacter, int slicesAhead)
-	:m_TrackedCharacter{ trackedCharacter }, m_SlicesAhead{ slicesAhead }, m_currentSliceNumber{ 0 }
+Terrain::Terrain(GameObject* trackedCharacter, int slicesAhead, int width)
+	:m_TrackedCharacter{ trackedCharacter }, m_SlicesAhead{ slicesAhead }, m_currentSliceNumber{ 0 }, m_MaxWidth{ width}
 {
+}
+
+bool Terrain::TilePassable(int x, int z)
+{
+	GrassSlice* pGrass = dynamic_cast<GrassSlice*>(m_pSliceMap.find(z)->second);
+	if (pGrass)
+	{
+		return pGrass->IsPassable(x);
+	}
+
+
+
+
+	return true;
 }
 
 void Terrain::Initialize(const SceneContext&)
@@ -20,7 +34,7 @@ void Terrain::Initialize(const SceneContext&)
 	for (int i{ -5 }; i < 0; ++i)
 	{
 		GameObject* slice = nullptr;
-		slice = AddChild(new GrassSlice());
+		slice = AddChild(new GrassSlice(100, m_MaxWidth));
 		m_pSliceMap.insert({ i, slice });
 		slice->GetTransform()->Translate(0.f, 0.f, (float)i);
 
@@ -57,7 +71,7 @@ void Terrain::SpawnRandomSlice()
 	switch (sliceType)
 	{
 	case TerrainType::Grass:
-		slice = AddChild(new GrassSlice());
+		slice = AddChild(new GrassSlice(2, m_MaxWidth));
 		break;
 	case TerrainType::Road:
 		slice = AddChild(new RoadSlice());
