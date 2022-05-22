@@ -27,19 +27,25 @@ public:
 	bool TilePassable(int x, int z);
 
 protected:
-	void Initialize(const SceneContext & sceneContext) override;
-	void Update(const SceneContext & sceneContext) override;
+	void Initialize(const SceneContext& sceneContext) override;
+	void Update(const SceneContext& sceneContext) override;
 
 private:
 
-	std::map<int, GameObject*> m_pSliceMap;
-	int m_SlicesAhead;
-	int m_currentSliceNumber;
-	int m_MaxWidth;
-
 	GameObject* m_TrackedCharacter;
 
-	void SpawnRandomSlice();
+	std::map<int, GameObject*> m_pSliceMap;
+	int m_MaxWidth;
 
+	//generation
+	int m_currentSliceNumber;
+	int m_SlicesAhead;
+	int m_NrBlankGrassSlices{ 5 };
+	void SpawnNextSlice();
+	TerrainType m_PrevTerrainType{};
+
+	//weights
+	std::map<TerrainType, int> m_TerrainWeights{};
+	int m_TotalWeight;
 };
 

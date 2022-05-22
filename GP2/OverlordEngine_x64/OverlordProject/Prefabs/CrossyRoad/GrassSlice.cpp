@@ -28,6 +28,17 @@ void GrassSlice::Initialize(const SceneContext&)
 	mc->SetMaterial(mat);
 
 
+	GameObject* pObstacle = AddChild(new CubePrefab());
+	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 1), 0.f, 0.f });
+	pObstacle = AddChild(new CubePrefab());
+	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 2), 0.f, 0.f });
+	pObstacle = AddChild(new CubePrefab());
+	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 3), 0.f, 0.f });
+	pObstacle = AddChild(new CubePrefab());
+	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(m_MaxWidth + 1), 0.f, 0.f });
+
+
+
 	std::vector<int> usedNumbers{};
 
 	if (m_NrObstacles < m_MaxWidth * 2 + 1)
@@ -43,7 +54,7 @@ void GrassSlice::Initialize(const SceneContext&)
 				if (std::find(usedNumbers.begin(), usedNumbers.end(), randomNumber) == usedNumbers.end())
 				{
 					//spawn tree at this x pos
-					GameObject* pObstacle = AddChild(new CubePrefab());
+					pObstacle = AddChild(new CubePrefab());
 					m_Obstacles.insert({ randomNumber, pObstacle });
 					pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(randomNumber), 0.f, 0.f });
 
@@ -64,7 +75,7 @@ void GrassSlice::Initialize(const SceneContext&)
 		for (int i{ -m_MaxWidth }; i < m_MaxWidth + 1; ++i)
 		{
 			//spawn tree at this x pos
-			GameObject* pObstacle = AddChild(new CubePrefab());
+			pObstacle = AddChild(new CubePrefab());
 			m_Obstacles.insert({ i, pObstacle });
 			pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(i), 0.f, 0.f });
 		}
