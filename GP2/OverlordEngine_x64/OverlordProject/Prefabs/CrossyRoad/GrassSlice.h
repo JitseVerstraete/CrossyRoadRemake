@@ -7,7 +7,7 @@ class GrassSlice final : public GameObject
 {
 
 public:
-	GrassSlice();
+	GrassSlice(int obstacles);
 	~GrassSlice() override = default;
 
 	GrassSlice(const GrassSlice& other) = delete;
@@ -20,6 +20,8 @@ protected:
 	void Update(const SceneContext& sceneContext) override;
 
 private:
+
+	int m_NrObstacles{};
 
 };
 

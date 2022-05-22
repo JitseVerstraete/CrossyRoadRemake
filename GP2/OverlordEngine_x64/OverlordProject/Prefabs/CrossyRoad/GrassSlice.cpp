@@ -3,7 +3,7 @@
 
 #include "Materials/ColorMaterial.h"
 
-GrassSlice::GrassSlice()
+GrassSlice::GrassSlice(int obstacles)
 {
 
 }

@@ -59,6 +59,7 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		//handle movement (and rotation) on key release
 		if (sceneContext.pInput->IsActionTriggered(ReleaseForward))
 		{
+			m_KeyPressed = false;
 			++m_PosZ;
 			jumped = true;
 			SetTargetRot(180.f);
@@ -66,17 +67,18 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 
 		if (sceneContext.pInput->IsActionTriggered(ReleaseBackward))
 		{
+			m_KeyPressed = false;
 			if (m_PosZ > 0)
 			{
 				--m_PosZ;
 				jumped = true;
 			}
-
 			SetTargetRot(0.f);
 
 		}
 		if (sceneContext.pInput->IsActionTriggered(ReleaseLeft))
 		{
+			m_KeyPressed = false;
 			if (abs(m_PosX - 1) <= m_MaxWidth)
 			{
 				--m_PosX;
@@ -86,6 +88,7 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		}
 		if (sceneContext.pInput->IsActionTriggered(ReleaseRight))
 		{
+			m_KeyPressed = false;
 			if (abs(m_PosX + 1) <= m_MaxWidth)
 			{
 				++m_PosX;
@@ -99,7 +102,6 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		if (jumped)
 		{
 			m_JumpTimer = m_JumpTime;
-			m_KeyPressed = false;
 		}
 	}
 

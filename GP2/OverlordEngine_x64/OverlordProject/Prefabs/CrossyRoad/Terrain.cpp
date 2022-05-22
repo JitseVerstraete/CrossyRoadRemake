@@ -21,7 +21,7 @@ void Terrain::Initialize(const SceneContext&)
 	{
 		GameObject* slice = nullptr;
 		slice = AddChild(new GrassSlice());
-		m_pSlices.push_back(slice);
+		m_pSliceMap.insert({ i, slice });
 		slice->GetTransform()->Translate(0.f, 0.f, (float)i);
 
 	}
@@ -71,7 +71,7 @@ void Terrain::SpawnRandomSlice()
 
 	
 
-	m_pSlices.push_back(slice);
+	m_pSliceMap.insert(std::pair<int,GameObject*>(m_currentSliceNumber, slice));
 	if (slice) slice->GetTransform()->Translate(0.f, 0.f, (float)m_currentSliceNumber);
 	++m_currentSliceNumber;
 }

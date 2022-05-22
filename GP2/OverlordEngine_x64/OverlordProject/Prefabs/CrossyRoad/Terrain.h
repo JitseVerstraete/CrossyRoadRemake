@@ -30,7 +30,7 @@ protected:
 
 private:
 
-	std::vector<GameObject*> m_pSlices;
+	std::map<int, GameObject*> m_pSliceMap;
 	int m_SlicesAhead;
 	int m_currentSliceNumber;
 
