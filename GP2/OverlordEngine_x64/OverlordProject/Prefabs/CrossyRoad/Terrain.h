@@ -26,6 +26,7 @@ public:
 
 	bool TilePassable(int x, int z);
 	GameObject* GetSlice(int z);
+	void Reset();
 
 protected:
 	void Initialize(const SceneContext& sceneContext) override;
@@ -41,7 +42,8 @@ private:
 	//terrain generation
 	int m_currentSliceNumber;
 	int m_SlicesAhead;
-	int m_NrBlankGrassSlices{ 5 };
+	const int m_maxBlankSlices = 5;
+	int m_NrBlankGrassSlices{};
 	void SpawnNextSlice();
 	TerrainType m_PrevTerrainType{};
 

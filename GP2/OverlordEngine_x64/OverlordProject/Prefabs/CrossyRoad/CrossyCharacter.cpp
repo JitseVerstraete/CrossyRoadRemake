@@ -58,8 +58,6 @@ void CrossyCharacter::Initialize(const SceneContext&)
 
 void CrossyCharacter::Update(const SceneContext& sceneContext)
 {
-
-
 	RiverSlice* pRiver = dynamic_cast<RiverSlice*>(m_pTerrain->GetSlice(m_CurrentZ));
 	if (pRiver)
 	{

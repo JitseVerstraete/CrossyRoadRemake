@@ -62,8 +62,7 @@ void CrossyRoadScene::Update()
 	if (m_GameOver && m_SceneContext.pInput->IsActionTriggered(Respawn))
 	{
 		//spawn new terrain
-		RemoveChild(m_pTerrain, true);
-		m_pTerrain = AddChild(new Terrain(m_pPlayerCharacter, m_TerrainSlicesAhead, m_MaxWidth));
+		m_pTerrain->Reset();
 
 		//reset player character & camera
 		m_pPlayerCharacter->Resapwn();

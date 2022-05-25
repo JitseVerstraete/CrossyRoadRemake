@@ -14,6 +14,8 @@ Terrain::Terrain(GameObject* trackedCharacter, int slicesAhead, int width)
 	{
 		m_TotalWeight += pair.second;
 	}
+
+	m_NrBlankGrassSlices = m_maxBlankSlices;
 }
 
 Terrain::~Terrain()
@@ -34,7 +36,36 @@ bool Terrain::TilePassable(int x, int z)
 
 GameObject* Terrain::GetSlice(int z)
 {
-	return m_pSliceMap.find(z)->second;
+	auto it = m_pSliceMap.find(z);
+	if (it == m_pSliceMap.end())
+	{
+		return nullptr;
+	}
+	
+	return it->second;
+}
+
+void Terrain::Reset()
+{
+	for (auto& pair : m_pSliceMap)
+	{
+		RemoveChild(pair.second, true);
+	}
+	m_pSliceMap.clear();
+
+
+	m_currentSliceNumber = 0;
+	m_NrBlankGrassSlices = m_maxBlankSlices;
+
+	//first 5 slices before slice 0
+	for (int i{ -5 }; i < 0; ++i)
+	{
+		GameObject* slice = nullptr;
+		slice = AddChild(new GrassSlice(100, m_MaxWidth));
+		m_pSliceMap.insert({ i, slice });
+		slice->GetTransform()->Translate(0.f, 0.f, (float)i);
+	}
+
 }
 
 void Terrain::Initialize(const SceneContext&)
@@ -72,7 +103,7 @@ void Terrain::Update(const SceneContext&)
 {
 	//update the terrain, spawn new slices when going forward, and despawn old slices when they go out of screen
 
-	if (static_cast<int>(round(m_TrackedCharacter->GetTransform()->GetPosition().z)) + m_SlicesAhead >= m_currentSliceNumber)
+	while (static_cast<int>(round(m_TrackedCharacter->GetTransform()->GetPosition().z)) + m_SlicesAhead >= m_currentSliceNumber)
 	{
 		SpawnNextSlice();
 	}
