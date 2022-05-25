@@ -118,7 +118,6 @@ void Terrain::SpawnNextSlice()
 		}
 
 
-
 		for (auto pair : consideredSlices)
 		{
 

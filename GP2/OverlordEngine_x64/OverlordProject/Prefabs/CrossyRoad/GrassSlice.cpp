@@ -28,6 +28,8 @@ void GrassSlice::Initialize(const SceneContext&)
 	mc->SetMaterial(mat);
 
 
+
+	//add obstacles to the left & right edges of the slice
 	GameObject* pObstacle = AddChild(new CubePrefab());
 	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 1), 0.f, 0.f });
 	pObstacle = AddChild(new CubePrefab());

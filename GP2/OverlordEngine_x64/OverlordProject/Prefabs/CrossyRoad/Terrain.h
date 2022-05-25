@@ -37,7 +37,7 @@ private:
 	std::map<int, GameObject*> m_pSliceMap;
 	int m_MaxWidth;
 
-	//generation
+	//terrain generation
 	int m_currentSliceNumber;
 	int m_SlicesAhead;
 	int m_NrBlankGrassSlices{ 5 };
