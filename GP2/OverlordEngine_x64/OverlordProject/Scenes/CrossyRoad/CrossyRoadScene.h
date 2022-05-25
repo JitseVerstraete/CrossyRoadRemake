@@ -9,7 +9,7 @@ class CrossyRoadScene : public GameScene
 {
 public:
 	CrossyRoadScene() :GameScene(L"CrossyRoadScene") {}
-	~CrossyRoadScene() override = default;
+	~CrossyRoadScene() override ;
 	CrossyRoadScene(const CrossyRoadScene& other) = delete;
 	CrossyRoadScene(CrossyRoadScene&& other) noexcept = delete;
 	CrossyRoadScene& operator=(const CrossyRoadScene& other) = delete;
@@ -17,9 +17,14 @@ public:
 
 protected:
 	void Initialize() override;
+	void Update() override;
 	void OnGUI() override;
 
 private:
+	bool m_GameOver{ false };
+	const int m_MaxWidth{ 4 };
+	const int m_TerrainSlicesAhead{ 16 };
+
 	//player object
 	CrossyCharacter* m_pPlayerCharacter = nullptr;
 
@@ -28,8 +33,5 @@ private:
 
 	//camera
 	CrossyFollowCam* m_pFollowCamera = nullptr;
-
-
-
 };
 

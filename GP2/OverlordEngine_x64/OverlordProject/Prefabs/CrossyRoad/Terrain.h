@@ -17,7 +17,7 @@ class Terrain : public GameObject
 {
 public:
 	Terrain(GameObject* trackedCharacter, int slicesAhead, int width);
-	~Terrain() override = default;
+	~Terrain() override;
 
 	Terrain(const Terrain& other) = delete;
 	Terrain(Terrain&& other) noexcept = delete;
@@ -25,6 +25,7 @@ public:
 	Terrain& operator=(Terrain&& other) noexcept = delete;
 
 	bool TilePassable(int x, int z);
+	GameObject* GetSlice(int z);
 
 protected:
 	void Initialize(const SceneContext& sceneContext) override;

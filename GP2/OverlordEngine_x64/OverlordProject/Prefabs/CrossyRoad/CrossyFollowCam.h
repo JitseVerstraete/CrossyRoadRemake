@@ -11,6 +11,8 @@ public:
 	CrossyFollowCam& operator=(const CrossyFollowCam& other) = delete;
 	CrossyFollowCam& operator=(CrossyFollowCam&& other) noexcept = delete;
 
+	void Reset() { GetTransform()->Translate(m_OriginalTransform); };
+
 protected:
 	void Initialize(const SceneContext& sceneContext) override;
 	void Update(const SceneContext& sceneContext) override;

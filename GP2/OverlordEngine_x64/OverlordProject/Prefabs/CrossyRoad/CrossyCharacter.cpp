@@ -14,25 +14,60 @@ void CrossyCharacter::SetTerrain(Terrain* pTer)
 	m_pTerrain = pTer;
 }
 
+void CrossyCharacter::Resapwn()
+{
+	m_IsDead = false;
+	GetTransform()->Translate(0.f, 0.f, 0.f);
+	GetTransform()->Rotate(0.f, 0.f, 0.f);
+	m_TargetPosX = m_TargetPosZ = m_CurrentX = m_CurrentZ = 0;
+}
+
 void CrossyCharacter::Initialize(const SceneContext&)
 {
 	//spawn the character, visuals... and attach a child with cameraComponent to it
 
-	GameObject* pModelChild = AddChild(new GameObject());
+	m_ModelChild = AddChild(new GameObject());
 
-	m_ModelComp = pModelChild->AddComponent(new ModelComponent(L"Meshes/Chicken2.ovm"));
+	auto pModComp = m_ModelChild->AddComponent(new ModelComponent(L"Meshes/Chicken2.ovm"));
 	DiffuseMaterial_Skinned* mat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Skinned>();
 	mat->SetDiffuseTexture(L"Textures/Chicken2.png");
-	m_ModelComp->SetMaterial(mat);
+	pModComp->SetMaterial(mat);
 
-	pModelChild->GetTransform()->Scale(0.02f);
-	m_ModelComp->GetAnimator()->SetAnimation(L"idle");
-	m_ModelComp->GetAnimator()->Play();
+	m_ModelChild->GetTransform()->Scale(0.02f);
+	pModComp->GetAnimator()->SetAnimation(L"idle");
+	pModComp->GetAnimator()->Play();
+
+
+	PxMaterial* carMat = PxGetPhysics().createMaterial(0.f, 0.f, 0.f);
+
+	auto rigi = AddComponent(new RigidBodyComponent(false));
+	rigi->SetKinematic(true);
+	rigi->AddCollider(PxSphereGeometry(0.3f), *carMat, true);
+
+	SetOnTriggerCallBack([=](GameObject* /*pTrigger*/, GameObject* /*pOther*/, PxTriggerAction action)
+		{
+			if (action == PxTriggerAction::ENTER)
+			{
+				m_IsDead = true;
+			}
+		});
+
+
 
 }
 
 void CrossyCharacter::Update(const SceneContext& sceneContext)
 {
+
+
+	RiverSlice* pRiver = dynamic_cast<RiverSlice*>(m_pTerrain->GetSlice(m_CurrentZ));
+	if (pRiver)
+	{
+		if (!pRiver->HasLily(m_CurrentX))
+		{
+			m_IsDead = true;
+		}
+	}
 
 	//rotation handling on pressing movement keys
 	if (sceneContext.pInput->IsActionTriggered(PressForward))
@@ -40,18 +75,17 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		SetTargetRot(180.f);
 		m_KeyPressed = true;
 	}
-
-	if (sceneContext.pInput->IsActionTriggered(PressBackward))
+	else if (sceneContext.pInput->IsActionTriggered(PressBackward))
 	{
 		SetTargetRot(0.f);
 		m_KeyPressed = true;
 	}
-	if (sceneContext.pInput->IsActionTriggered(PressLeft))
+	else if (sceneContext.pInput->IsActionTriggered(PressLeft))
 	{
 		SetTargetRot(90.f);
 		m_KeyPressed = true;
 	}
-	if (sceneContext.pInput->IsActionTriggered(PressRight))
+	else if (sceneContext.pInput->IsActionTriggered(PressRight))
 	{
 		SetTargetRot(270.f);
 		m_KeyPressed = true;
@@ -61,47 +95,49 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 
 	if (m_JumpTimer <= 0.f)
 	{
+		m_CurrentX = m_TargetPosX;
+		m_CurrentZ = m_TargetPosZ;
+
 		bool jumped = false;
 
 		//handle movement (and rotation) on key release
 		if (sceneContext.pInput->IsActionTriggered(ReleaseForward))
 		{
 			m_KeyPressed = false;
-			if (m_pTerrain->TilePassable(m_PosX, m_PosZ + 1))
+			if (m_pTerrain->TilePassable(m_TargetPosX, m_TargetPosZ + 1))
 			{
-				++m_PosZ;
+				++m_TargetPosZ;
 				jumped = true;
 			}
 			SetTargetRot(180.f);
 		}
-
-		if (sceneContext.pInput->IsActionTriggered(ReleaseBackward))
+		else if (sceneContext.pInput->IsActionTriggered(ReleaseBackward))
 		{
 			m_KeyPressed = false;
-			if (m_pTerrain->TilePassable(m_PosX, m_PosZ - 1))
+			if (m_pTerrain->TilePassable(m_TargetPosX, m_TargetPosZ - 1))
 			{
-				--m_PosZ;
+				--m_TargetPosZ;
 				jumped = true;
 			}
 			SetTargetRot(0.f);
 
 		}
-		if (sceneContext.pInput->IsActionTriggered(ReleaseLeft))
+		else if (sceneContext.pInput->IsActionTriggered(ReleaseLeft))
 		{
 			m_KeyPressed = false;
-			if (abs(m_PosX - 1) <= m_MaxWidth && m_pTerrain->TilePassable(m_PosX - 1, m_PosZ))
+			if (abs(m_TargetPosX - 1) <= m_MaxWidth && m_pTerrain->TilePassable(m_TargetPosX - 1, m_TargetPosZ))
 			{
-				--m_PosX;
+				--m_TargetPosX;
 				jumped = true;
 			}
 			SetTargetRot(90.f);
 		}
-		if (sceneContext.pInput->IsActionTriggered(ReleaseRight))
+		else if (sceneContext.pInput->IsActionTriggered(ReleaseRight))
 		{
 			m_KeyPressed = false;
-			if (abs(m_PosX + 1) <= m_MaxWidth && m_pTerrain->TilePassable(m_PosX + 1, m_PosZ))
+			if (abs(m_TargetPosX + 1) <= m_MaxWidth && m_pTerrain->TilePassable(m_TargetPosX + 1, m_TargetPosZ))
 			{
-				++m_PosX;
+				++m_TargetPosX;
 				jumped = true;
 			}
 			SetTargetRot(270.f);
@@ -129,8 +165,8 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 	//lerp transform
 	float jumpProgress = 1.f - (m_JumpTimer / m_JumpTime);
 	MathHelper::Clamp(jumpProgress, 1.f, 0.f);
-	float xPos = std::lerp(GetTransform()->GetPosition().x, static_cast<float>(m_PosX), jumpProgress);
-	float zPos = std::lerp(GetTransform()->GetPosition().z, static_cast<float>(m_PosZ), jumpProgress);
+	float xPos = std::lerp(GetTransform()->GetPosition().x, static_cast<float>(m_TargetPosX), jumpProgress);
+	float zPos = std::lerp(GetTransform()->GetPosition().z, static_cast<float>(m_TargetPosZ), jumpProgress);
 	GetTransform()->Translate(xPos, 0.f, zPos);
 
 

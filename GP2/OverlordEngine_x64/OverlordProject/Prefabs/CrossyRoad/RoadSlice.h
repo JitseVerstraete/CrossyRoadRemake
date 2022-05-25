@@ -1,11 +1,18 @@
 #pragma once
 
+class CrossyCar;
+
+enum class CarDir 
+{
+	Left = -1,
+	Right = 1
+};
 
 class RoadSlice final : public GameObject
 {
 
 public:
-	RoadSlice();
+	RoadSlice(int width, CarDir dir, float carSpeed, float spawnInterval);
 	~RoadSlice() override = default;
 
 	RoadSlice(const RoadSlice& other) = delete;
@@ -18,6 +25,13 @@ protected:
 	void Update(const SceneContext& sceneContext) override;
 
 private:
+	int m_Width;
+	int m_CarDir;
+	float m_CarSpeed;
+	float m_SpawnInterval;
 
+	float m_SpawnTimer;
+
+	std::vector<CrossyCar*> m_pCars;
 };
 

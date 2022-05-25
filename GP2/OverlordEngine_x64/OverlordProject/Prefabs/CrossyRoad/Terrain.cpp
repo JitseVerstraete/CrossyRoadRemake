@@ -16,6 +16,11 @@ Terrain::Terrain(GameObject* trackedCharacter, int slicesAhead, int width)
 	}
 }
 
+Terrain::~Terrain()
+{
+
+}
+
 bool Terrain::TilePassable(int x, int z)
 {
 	GrassSlice* pGrass = dynamic_cast<GrassSlice*>(m_pSliceMap.find(z)->second);
@@ -24,10 +29,12 @@ bool Terrain::TilePassable(int x, int z)
 		return pGrass->IsPassable(x);
 	}
 
-
-
-
 	return true;
+}
+
+GameObject* Terrain::GetSlice(int z)
+{
+	return m_pSliceMap.find(z)->second;
 }
 
 void Terrain::Initialize(const SceneContext&)
@@ -75,7 +82,6 @@ void Terrain::Update(const SceneContext&)
 
 void Terrain::SpawnNextSlice()
 {
-	std::cout << (int)m_PrevTerrainType << std::endl;
 
 	GameObject* slice = nullptr;
 	if (m_NrBlankGrassSlices > 0)
@@ -130,11 +136,11 @@ void Terrain::SpawnNextSlice()
 					m_PrevTerrainType = TerrainType::Grass;
 					break;
 				case TerrainType::Road:
-					slice = AddChild(new RoadSlice());
+					slice = AddChild(new RoadSlice(m_MaxWidth, rand() % 2 == 0 ? CarDir::Left : CarDir::Right, 3.f, 2.f));
 					m_PrevTerrainType = TerrainType::Road;
 					break;
 				case TerrainType::River:
-					slice = AddChild(new RiverSlice());
+					slice = AddChild(new RiverSlice(3, m_MaxWidth));
 					m_PrevTerrainType = TerrainType::River;
 					break;
 				default:

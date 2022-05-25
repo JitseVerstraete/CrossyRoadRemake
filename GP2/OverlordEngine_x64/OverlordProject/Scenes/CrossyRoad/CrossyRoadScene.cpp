@@ -10,15 +10,22 @@
 #include "Prefabs/CrossyRoad/CrossyFollowCam.h"
 
 
+CrossyRoadScene::~CrossyRoadScene()
+{
+	if (m_pPlayerCharacter->IsDead())
+	{
+		delete m_pPlayerCharacter;
+	};
+}
+
 void CrossyRoadScene::Initialize()
 {
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this, pDefaultMaterial);
 
 
-	const int maxWidth = 4;
-	m_pPlayerCharacter = AddChild(new CrossyCharacter(maxWidth));
-	m_pTerrain = AddChild(new Terrain(m_pPlayerCharacter, 10, maxWidth));
+	m_pPlayerCharacter = AddChild(new CrossyCharacter(m_MaxWidth));
+	m_pTerrain = AddChild(new Terrain(m_pPlayerCharacter, m_TerrainSlicesAhead, m_MaxWidth));
 	m_pFollowCamera = AddChild(new CrossyFollowCam(m_pPlayerCharacter, 50.f, -10.f, 25.f, 2, 20.f));
 	m_pPlayerCharacter->SetTerrain(m_pTerrain);
 
@@ -40,7 +47,34 @@ void CrossyRoadScene::Initialize()
 	m_SceneContext.pInput->AddInputAction(inputAction);
 	inputAction = InputAction(ReleaseRight, InputState::released, VK_RIGHT);
 	m_SceneContext.pInput->AddInputAction(inputAction);
+	inputAction = InputAction(Respawn, InputState::pressed, VK_SPACE);
+	m_SceneContext.pInput->AddInputAction(inputAction);
+}
 
+void CrossyRoadScene::Update()
+{
+	if (m_pPlayerCharacter->IsDead() && !m_GameOver)
+	{
+		RemoveChild(m_pPlayerCharacter, false);
+		m_GameOver = true;
+	}
+
+	if (m_GameOver && m_SceneContext.pInput->IsActionTriggered(Respawn))
+	{
+		//spawn new terrain
+		RemoveChild(m_pTerrain, true);
+		m_pTerrain = AddChild(new Terrain(m_pPlayerCharacter, m_TerrainSlicesAhead, m_MaxWidth));
+
+		//reset player character & camera
+		m_pPlayerCharacter->Resapwn();
+		m_pFollowCamera->Reset();
+
+		//add child back to the game
+		AddChild(m_pPlayerCharacter);
+
+		//reset game over bool
+		m_GameOver = false;
+	}
 }
 
 void CrossyRoadScene::OnGUI()

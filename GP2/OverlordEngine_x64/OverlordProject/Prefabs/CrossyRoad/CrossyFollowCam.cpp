@@ -34,10 +34,12 @@ void CrossyFollowCam::Initialize(const SceneContext&)
 	m_pCamComp->SetActive(true);
 }
 
-void CrossyFollowCam::Update(const SceneContext&)
+void CrossyFollowCam::Update(const SceneContext& sceneContext)
 {
 	//follow the player in the z direction (forward game direction)
-	GetTransform()->Translate(m_OriginalTransform.x, m_OriginalTransform.y, m_OriginalTransform.z + std::lerp((GetTransform()->GetPosition().z - m_OriginalTransform.z),  m_FollowObject->GetTransform()->GetWorldPosition().z, 0.02f));
+	float lerp{ 2.f *  sceneContext.pGameTime->GetElapsed() };
+	MathHelper::Clamp(lerp, 1.f, 0.f);
+	GetTransform()->Translate(m_OriginalTransform.x, m_OriginalTransform.y, m_OriginalTransform.z + std::lerp((GetTransform()->GetPosition().z - m_OriginalTransform.z), m_FollowObject->GetTransform()->GetWorldPosition().z, lerp));
 
 
 }
