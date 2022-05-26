@@ -90,5 +90,6 @@
     <ClInclude Include="Prefabs\CrossyRoad\CrossyCar.h" />
     <ClInclude Include="Prefabs\CrossyRoad\Tree.h" />
     <ClInclude Include="Prefabs\CrossyRoad\CrossyUI.h" />
+    <ClInclude Include="Todo.h" />
   </ItemGroup>
 </Project>
