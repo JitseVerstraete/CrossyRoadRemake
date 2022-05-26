@@ -18,8 +18,8 @@ void ShadowMapRenderer::Initialize()
 	RENDERTARGET_DESC renDesc{};
 	renDesc.enableColorBuffer = false;
 	renDesc.enableDepthSRV = true;
-	renDesc.width = 1280;
-	renDesc.height = 720;
+	renDesc.width = m_GameContext.windowWidth;
+	renDesc.height = m_GameContext.windowHeight;
 	m_pShadowRenderTarget->Create(renDesc);
 
 	//2. Create a new ShadowMapMaterial, this will be the material that 'generated' the ShadowMap, store in m_pShadowMapGenerator
@@ -83,7 +83,8 @@ void ShadowMapRenderer::Begin(const SceneContext& sceneContext)
 	//		*focusPosition: Calculate using the Direction Light position and direction
 	//- Use the Projection & View Matrix to calculate the ViewProjection of this Light, store in m_LightVP
 
-	float aspectRatio{ 1280.f / 720.f };
+	
+	float aspectRatio{ sceneContext.windowWidth / sceneContext.windowHeight };
 	XMMATRIX projMatrix = XMMatrixOrthographicLH(100.f * aspectRatio, 100.f, 0.1f, 500.f);
 
 	XMVECTOR lightPos = XMLoadFloat4(&sceneContext.pLights->GetDirectionalLight().position);

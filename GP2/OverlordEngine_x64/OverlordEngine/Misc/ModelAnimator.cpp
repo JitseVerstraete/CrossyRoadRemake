@@ -47,16 +47,16 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 		//keyB > Closest Key with Tick after/bigger than m_TickCount
 
 		keyA = m_CurrentClip.keys.at(0);
-		for (auto key : m_CurrentClip.keys)
+		for (const auto& key : m_CurrentClip.keys)
 		{
-			auto tempKey = key;
+			const auto& tempKey = key;
 			if (tempKey.tick > m_TickCount)
 				break;
 
 			keyA = tempKey;
 		}
 
-		for (auto key : m_CurrentClip.keys)
+		for (const auto& key : m_CurrentClip.keys)
 		{
 			if (key.tick > m_TickCount)
 			{
@@ -89,28 +89,30 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 		ASSERT_IF((blendFactor < 0 || blendFactor > 1), L"blendfactor is not between 0 and 1");
 
 		m_Transforms.clear();
+		
+		XMVECTOR posA{};
+		XMVECTOR rotA{};
+		XMVECTOR scaleA{};
+		XMVECTOR posB{};
+		XMVECTOR rotB{};
+		XMVECTOR scaleB{};
+		XMVECTOR pos{};
+		XMVECTOR rot{};
+		XMVECTOR scale{};
 
 		for (int i{}; i < keyA.boneTransforms.size(); ++i)
 		{
 			auto transformA = XMLoadFloat4x4(&keyA.boneTransforms[i]);
 			auto transformB = XMLoadFloat4x4(&keyB.boneTransforms[i]);
 
-			XMVECTOR posA{};
-			XMVECTOR rotA{};
-			XMVECTOR scaleA{};
-
-			XMVECTOR posB{};
-			XMVECTOR rotB{};
-			XMVECTOR scaleB{};
-
 
 			XMMatrixDecompose(&scaleA, &rotA, &posA, transformA);
 			XMMatrixDecompose(&scaleB, &rotB, &posB, transformB);
 
 
-			XMVECTOR pos = XMVectorLerp(posA, posB, blendFactor);
-			XMVECTOR rot = XMQuaternionSlerp(rotA, rotB, blendFactor);
-			XMVECTOR scale = XMVectorLerp(scaleA, scaleB, blendFactor);
+			pos = XMVectorLerp(posA, posB, blendFactor);
+			rot = XMQuaternionSlerp(rotA, rotB, blendFactor);
+			scale = XMVectorLerp(scaleA, scaleB, blendFactor);
 
 			XMMATRIX transform =  XMMatrixAffineTransformation(scale, XMVectorZero(), rot, pos);
 

@@ -18,6 +18,7 @@ public:
 protected:
 	void Initialize() override;
 	void Update() override;
+	void PostDraw() override;
 	void OnGUI() override;
 
 private:
