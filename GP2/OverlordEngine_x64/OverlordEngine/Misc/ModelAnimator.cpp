@@ -10,7 +10,6 @@ ModelAnimator::ModelAnimator(MeshFilter* pMeshFilter) :
 void ModelAnimator::Update(const SceneContext& sceneContext)
 {
 
-
 	//We only update the transforms if the animation is running and the clip is set
 	if (m_IsPlaying && m_ClipSet)
 	{
@@ -47,22 +46,17 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 		//keyA > Closest Key with Tick before/smaller than m_TickCount
 		//keyB > Closest Key with Tick after/bigger than m_TickCount
 
-
 		keyA = m_CurrentClip.keys.at(0);
-
-
-
-		for (const auto& key : m_CurrentClip.keys)
+		for (auto key : m_CurrentClip.keys)
 		{
-			const auto& tempKey = key;
+			auto tempKey = key;
 			if (tempKey.tick > m_TickCount)
 				break;
 
 			keyA = tempKey;
 		}
 
-
-		for (const auto& key : m_CurrentClip.keys)
+		for (auto key : m_CurrentClip.keys)
 		{
 			if (key.tick > m_TickCount)
 			{
@@ -96,33 +90,29 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 
 		m_Transforms.clear();
 
-
-		XMVECTOR posA{};
-		XMVECTOR rotA{};
-		XMVECTOR scaleA{};
-
-		XMVECTOR posB{};
-		XMVECTOR rotB{};
-		XMVECTOR scaleB{};
-
-		XMVECTOR pos{};
-		XMVECTOR rot{};
-		XMVECTOR scale{};
-
-
 		for (int i{}; i < keyA.boneTransforms.size(); ++i)
 		{
 			auto transformA = XMLoadFloat4x4(&keyA.boneTransforms[i]);
 			auto transformB = XMLoadFloat4x4(&keyB.boneTransforms[i]);
 
+			XMVECTOR posA{};
+			XMVECTOR rotA{};
+			XMVECTOR scaleA{};
+
+			XMVECTOR posB{};
+			XMVECTOR rotB{};
+			XMVECTOR scaleB{};
+
+
 			XMMatrixDecompose(&scaleA, &rotA, &posA, transformA);
 			XMMatrixDecompose(&scaleB, &rotB, &posB, transformB);
 
-			pos = XMVectorLerp(posA, posB, blendFactor);
-			rot = XMQuaternionSlerp(rotA, rotB, blendFactor);
-			scale = XMVectorLerp(scaleA, scaleB, blendFactor);
 
-			XMMATRIX transform = XMMatrixAffineTransformation(scale, XMVectorZero(), rot, pos);
+			XMVECTOR pos = XMVectorLerp(posA, posB, blendFactor);
+			XMVECTOR rot = XMQuaternionSlerp(rotA, rotB, blendFactor);
+			XMVECTOR scale = XMVectorLerp(scaleA, scaleB, blendFactor);
+
+			XMMATRIX transform =  XMMatrixAffineTransformation(scale, XMVectorZero(), rot, pos);
 
 			XMFLOAT4X4 finalTransform{};
 			XMStoreFloat4x4(&finalTransform, transform);
@@ -130,13 +120,8 @@ void ModelAnimator::Update(const SceneContext& sceneContext)
 			m_Transforms.push_back(finalTransform);
 		}
 
-
-
 	}
-
-
-
-	return;
+		return;
 }
 
 void ModelAnimator::SetAnimation(const std::wstring& clipName)

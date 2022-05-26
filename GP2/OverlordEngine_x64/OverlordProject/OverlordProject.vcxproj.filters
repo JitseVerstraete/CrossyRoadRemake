@@ -43,6 +43,7 @@
     <ClCompile Include="Prefabs\CrossyRoad\RiverSlice.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\GrassSlice.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\CrossyCar.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -86,5 +87,6 @@
     <ClInclude Include="Prefabs\CrossyRoad\RiverSlice.h" />
     <ClInclude Include="Prefabs\CrossyRoad\GrassSlice.h" />
     <ClInclude Include="Prefabs\CrossyRoad\CrossyCar.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\Tree.h" />
   </ItemGroup>
 </Project>

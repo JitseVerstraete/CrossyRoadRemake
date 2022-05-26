@@ -66,7 +66,7 @@ void CrossyRoadScene::Update()
 
 		//reset player character & camera
 		m_pPlayerCharacter->Resapwn();
-		m_pFollowCamera->Reset();
+		if (m_pFollowCamera) m_pFollowCamera->Reset();
 
 		//add child back to the game
 		AddChild(m_pPlayerCharacter);

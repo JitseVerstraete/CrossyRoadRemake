@@ -11,7 +11,7 @@ public:
 	DiffuseMaterial& operator=(const DiffuseMaterial& other) = delete;
 	DiffuseMaterial& operator=(DiffuseMaterial&& other) noexcept = delete;
 
-	void SetDiffuseTexture(const std::wstring& color);
+	void SetDiffuseTexture(const std::wstring& path);
 
 protected:
 	void InitializeEffectVariables() override;

@@ -147,6 +147,7 @@
     <ClCompile Include="Materials\UberMaterial.cpp" />
     <ClCompile Include="Scenes\Week 4\UberMaterialScene.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\Terrain.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OverlordEngine\OverlordEngine.vcxproj">
@@ -195,6 +196,7 @@
     <ClInclude Include="Materials\UberMaterial.h" />
     <ClInclude Include="Scenes\Week 4\UberMaterialScene.h" />
     <ClInclude Include="Prefabs\CrossyRoad\Terrain.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\Tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

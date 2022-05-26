@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "GrassSlice.h"
 
-#include "Materials/ColorMaterial.h"
-#include "Prefabs/CubePrefab.h"
+#include "Materials/Shadow/DiffuseMaterial_Shadow.h"
+#include "Prefabs/CrossyRoad/Tree.h"
 
 GrassSlice::GrassSlice(int obstacles, int maxWidth)
 	:m_NrObstacles{ obstacles }, m_MaxWidth{ maxWidth }
@@ -20,23 +20,21 @@ bool GrassSlice::IsPassable(int x)
 void GrassSlice::Initialize(const SceneContext&)
 {
 
-	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm"));
-	ColorMaterial* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial>();
-
-	mat->SetColor(XMFLOAT4(Colors::Green));
-
+	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm", false));
+	DiffuseMaterial_Shadow* mat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow>();
+	mat->SetDiffuseTexture(L"Textures/Grass.png");
 	mc->SetMaterial(mat);
 
 
 
 	//add obstacles to the left & right edges of the slice
-	GameObject* pObstacle = AddChild(new CubePrefab());
+	GameObject* pObstacle = AddChild(new Tree());
 	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 1), 0.f, 0.f });
-	pObstacle = AddChild(new CubePrefab());
+	pObstacle = AddChild(new Tree());
 	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 2), 0.f, 0.f });
-	pObstacle = AddChild(new CubePrefab());
+	pObstacle = AddChild(new Tree());
 	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 3), 0.f, 0.f });
-	pObstacle = AddChild(new CubePrefab());
+	pObstacle = AddChild(new Tree());
 	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(m_MaxWidth + 1), 0.f, 0.f });
 
 
@@ -56,7 +54,7 @@ void GrassSlice::Initialize(const SceneContext&)
 				if (std::find(usedNumbers.begin(), usedNumbers.end(), randomNumber) == usedNumbers.end())
 				{
 					//spawn tree at this x pos
-					pObstacle = AddChild(new CubePrefab());
+					pObstacle = AddChild(new Tree());
 					m_Obstacles.insert({ randomNumber, pObstacle });
 					pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(randomNumber), 0.f, 0.f });
 
@@ -77,7 +75,7 @@ void GrassSlice::Initialize(const SceneContext&)
 		for (int i{ -m_MaxWidth }; i < m_MaxWidth + 1; ++i)
 		{
 			//spawn tree at this x pos
-			pObstacle = AddChild(new CubePrefab());
+			pObstacle = AddChild(new Tree());
 			m_Obstacles.insert({ i, pObstacle });
 			pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(i), 0.f, 0.f });
 		}
