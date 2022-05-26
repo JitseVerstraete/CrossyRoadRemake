@@ -84,5 +84,5 @@ void GrassSlice::Initialize(const SceneContext&)
 
 void GrassSlice::Update(const SceneContext&)
 {
-	//todo: update the terrain slice (spawn cars, spawn logs on river...)
+	
 }

@@ -44,11 +44,16 @@ private:
 	int m_SlicesAhead;
 	const int m_maxBlankSlices = 5;
 	int m_NrBlankGrassSlices{};
-	void SpawnNextSlice();
+
+	
 	TerrainType m_PrevTerrainType{};
 
 	//weights
 	std::map<TerrainType, int> m_TerrainWeights{};
 	int m_TotalWeight;
+
+
+	//private func 
+	void SpawnNextSlice();
 };
 

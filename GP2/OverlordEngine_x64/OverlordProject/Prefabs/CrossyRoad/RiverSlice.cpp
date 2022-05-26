@@ -72,5 +72,5 @@ void RiverSlice::Initialize(const SceneContext&)
 
 void RiverSlice::Update(const SceneContext&)
 {
-	//todo: update the terrain slice 
+	
 }

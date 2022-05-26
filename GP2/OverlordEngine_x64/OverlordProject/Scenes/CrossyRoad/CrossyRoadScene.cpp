@@ -75,6 +75,8 @@ void CrossyRoadScene::Update()
 	{
 		RemoveChild(m_pPlayerCharacter, false);
 		m_GameOver = true;
+
+
 	}
 
 	if (m_GameOver && m_SceneContext.pInput->IsActionTriggered(Respawn))
@@ -95,8 +97,8 @@ void CrossyRoadScene::Update()
 
 	
 	m_SceneContext.pLights->SetDirectionalLight({ -5.f, 5.f, (float)m_pPlayerCharacter->GetScore() - 3.f}, m_LightDir);
-
-
+	m_pUiObject->SetScore(m_pPlayerCharacter->GetScore());
+	m_pUiObject->SetGameOver(m_GameOver);
 }
 
 void CrossyRoadScene::PostDraw()
