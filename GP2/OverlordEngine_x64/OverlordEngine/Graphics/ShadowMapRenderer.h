@@ -19,6 +19,7 @@ public:
 	const XMFLOAT4X4& GetLightVP() const { return m_LightVP; }
 
 	void Debug_DrawDepthSRV(const XMFLOAT2& position = { 0.f,0.f }, const XMFLOAT2& scale = { 1.f,1.f }, const XMFLOAT2& pivot = {0.f,0.f}) const;
+	void SetProjectionSize(float size) { m_MapProjectionSize = size; }
 
 protected:
 	void Initialize() override;
@@ -34,6 +35,8 @@ private:
 
 	//Light ViewProjection (perspective used to render ShadowMap)
 	XMFLOAT4X4 m_LightVP{};
+
+	float m_MapProjectionSize{ 100.f };
 
 	//Shadow Generator is responsible of drawing all shadow casting meshes to the ShadowMap
 	//There are two techniques, one for static (non-skinned) meshes, and another for skinned meshes (with bones, blendIndices, blendWeights)

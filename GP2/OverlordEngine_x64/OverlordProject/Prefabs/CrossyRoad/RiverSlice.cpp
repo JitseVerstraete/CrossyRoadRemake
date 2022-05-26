@@ -19,8 +19,8 @@ bool RiverSlice::HasLily(int x)
 
 void RiverSlice::Initialize(const SceneContext&)
 {
-
-	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm"));
+	GetTransform()->Translate(0.f, -0.2f, 0.f);
+	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm", false));
 	ColorMaterial* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial>();
 
 	mat->SetColor(XMFLOAT4(Colors::Blue));
@@ -31,7 +31,6 @@ void RiverSlice::Initialize(const SceneContext&)
 	GameObject* pLily{ nullptr };
 	if (m_NrLilys < m_MaxWidth * 2 + 1)
 	{
-
 		//spawn obstacles at random locations
 		for (int i{}; i < m_NrLilys; ++i)
 		{

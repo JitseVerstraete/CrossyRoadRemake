@@ -8,11 +8,15 @@
 #include "Prefabs/CrossyRoad/Terrain.h"
 #include "Prefabs/CrossyRoad/CrossyCharacter.h"
 #include "Prefabs/CrossyRoad/CrossyFollowCam.h"
+#include "Prefabs/CrossyRoad/CrossyUI.h"
+
+#include "Materials/Shadow/DiffuseMaterial_Shadow.h"
+#include "Materials/Shadow/DiffuseMaterial_Shadow_Skinned.h"
 
 
 CrossyRoadScene::~CrossyRoadScene()
 {
-	if (m_pPlayerCharacter->IsDead())
+	if (m_pPlayerCharacter && m_pPlayerCharacter->IsDead())
 	{
 		delete m_pPlayerCharacter;
 	};
@@ -20,9 +24,13 @@ CrossyRoadScene::~CrossyRoadScene()
 
 void CrossyRoadScene::Initialize()
 {
+
 	m_SceneContext.settings.drawGrid = false;
 	m_SceneContext.settings.drawPhysXDebug = false;
-	m_SceneContext.pLights->SetDirectionalLight({ -95.6139526f,66.1346436f,-41.1850471f }, { 0.740129888f, -0.597205281f, 0.309117377f });
+	m_SceneContext.pLights->SetDirectionalLight({ -5.f, 10.f, 0.f }, m_LightDir);
+
+	ShadowMapRenderer::Get()->SetProjectionSize(14.f);
+
 
 
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
@@ -33,6 +41,10 @@ void CrossyRoadScene::Initialize()
 	m_pTerrain = AddChild(new Terrain(m_pPlayerCharacter, m_TerrainSlicesAhead, m_MaxWidth));
 	m_pFollowCamera = AddChild(new CrossyFollowCam(m_pPlayerCharacter, 50.f, -10.f, 25.f, 2, 20.f));
 	m_pPlayerCharacter->SetTerrain(m_pTerrain);
+	m_pUiObject = AddChild(new CrossyUI());
+
+
+
 
 
 	//input actions
@@ -58,6 +70,7 @@ void CrossyRoadScene::Initialize()
 
 void CrossyRoadScene::Update()
 {
+
 	if (m_pPlayerCharacter->IsDead() && !m_GameOver)
 	{
 		RemoveChild(m_pPlayerCharacter, false);
@@ -79,12 +92,16 @@ void CrossyRoadScene::Update()
 		//reset game over bool
 		m_GameOver = false;
 	}
+
+	
+	m_SceneContext.pLights->SetDirectionalLight({ -5.f, 5.f, (float)m_pPlayerCharacter->GetScore() - 3.f}, m_LightDir);
+
+
 }
 
 void CrossyRoadScene::PostDraw()
 {
-	//Draw ShadowMap (Debug Visualization)
-	ShadowMapRenderer::Get()->Debug_DrawDepthSRV({ m_SceneContext.windowWidth - 10.f, 10.f }, { 0.8f, 0.8f}, { 1.f,0.f });
+	ShadowMapRenderer::Get()->Debug_DrawDepthSRV({ m_SceneContext.windowWidth - 10.f, 10.f }, { 0.2f, 0.2f }, { 1.f,0.f });
 
 }
 

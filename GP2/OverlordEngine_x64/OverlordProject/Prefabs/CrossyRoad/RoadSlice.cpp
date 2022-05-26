@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "RoadSlice.h" 
 
-#include "Materials/ColorMaterial.h"
+#include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 #include "CrossyCar.h"
 
 RoadSlice::RoadSlice(int width, CarDir dir, float carSpeed, float spawnInterval)
@@ -18,11 +18,10 @@ RoadSlice::RoadSlice(int width, CarDir dir, float carSpeed, float spawnInterval)
 void RoadSlice::Initialize(const SceneContext&)
 {
 
-	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm"));
-	ColorMaterial* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial>();
+	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm", false));
+	DiffuseMaterial_Shadow* mat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow>();
 
-
-	mat->SetColor(XMFLOAT4(Colors::Gray));
+	mat->SetDiffuseTexture(L"Textures/Road.jpg");
 
 	mc->SetMaterial(mat);
 }
@@ -60,7 +59,4 @@ void RoadSlice::Update(const SceneContext& sceneContext)
 
 		++it;
 	}
-
-
-
 }

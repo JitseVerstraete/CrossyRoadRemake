@@ -30,6 +30,7 @@ public:
 	void SetTerrain(Terrain* pTer);
 	bool IsDead() { return m_IsDead; }
 	void Resapwn();
+	int GetScore() { return m_CurrentZ; };
 
 protected:
 	void Initialize(const SceneContext& sceneContext) override;

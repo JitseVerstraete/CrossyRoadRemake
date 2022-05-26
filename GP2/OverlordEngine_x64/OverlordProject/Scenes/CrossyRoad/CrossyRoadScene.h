@@ -4,6 +4,7 @@
 class Terrain;
 class CrossyCharacter;
 class CrossyFollowCam;
+class CrossyUI;
 
 class CrossyRoadScene : public GameScene
 {
@@ -34,5 +35,12 @@ private:
 
 	//camera
 	CrossyFollowCam* m_pFollowCamera = nullptr;
+
+	//UI
+	CrossyUI* m_pUiObject = nullptr;
+
+	const XMFLOAT3 m_LightDir = XMFLOAT3(0.5298129428260175f, -0.6622661785325219f, 0.5298129428260175f);
+
+	
 };
 

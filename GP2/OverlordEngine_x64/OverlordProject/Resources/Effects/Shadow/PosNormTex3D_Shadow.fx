@@ -2,7 +2,7 @@ float4x4 gWorld : WORLD;
 float4x4 gWorldViewProj : WORLDVIEWPROJECTION; 
 float4x4 gWorldViewProj_Light;
 float3 gLightDirection = float3(-0.577f, -0.577f, 0.577f);
-float gShadowMapBias = 0.01f;
+float gShadowMapBias = 0.0001f;
 
 Texture2D gDiffuseMap;
 Texture2D gShadowMap;
@@ -85,8 +85,8 @@ VS_OUTPUT VS(VS_INPUT input)
 float2 texOffset(int u, int v)
 {
 	//TODO: return offseted value (our shadow map has the following dimensions: 1280 * 720)
-	const float w = 1280;
-	const float h = 720;
+	const float w = 1280.f;
+	const float h = 720.f;
 
 	return float2(u * 1.0f / w, v * 1.0f / h);
 }
@@ -110,23 +110,27 @@ float EvaluateShadowMap(float4 lpos)
 	lpos.x = lpos.x / 2 + 0.5;
 	lpos.y = lpos.y / -2 + 0.5;
 
-	lpos.z -= gShadowMapBias;
+	lpos.z = lpos.z - gShadowMapBias;
 
 
 	float sum = 0;
 	float x, y;
 
-	for (y = -1.5; y <= 1.5; y += 1.0)
+	
+	for (y = -1.5f; y <= 1.5f; y += 1.0f)
 	{
-		for (x = -1.5; x <= 1.5; x += 1.0)
+		for (x = -1.5f; x <= 1.5f; x += 1.0f)
 		{
-			sum += gShadowMap.SampleCmpLevelZero(cmpSampler, lpos.xy + texOffset(x, y), lpos.z);
+			sum = sum + gShadowMap.SampleCmpLevelZero(cmpSampler, lpos.xy + texOffset(x, y), lpos.z);
 		}
 	}
 
 	float shadowFactor = sum / 16.f;	
+	
 
-	shadowFactor = lerp(0.3f, 1.f, shadowFactor);
+	//float shadowFactor = gShadowMap.SampleCmpLevelZero(cmpSampler, lpos.xy + texOffset(x, y), lpos.z);
+
+	shadowFactor = lerp(shadowVal, lightVal, shadowFactor);
 
 	return shadowFactor;
 
@@ -149,7 +153,7 @@ float4 PS(VS_OUTPUT input) : SV_TARGET
 	diffuseStrength = saturate(diffuseStrength);
 	color_rgb = color_rgb * diffuseStrength;
 
-	return float4( color_rgb * shadowValue , /*color_a*/1.f);
+	return float4( color_rgb * shadowValue , color_a);
 
 }
 
