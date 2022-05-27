@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "CrossyCar.h"
 
-#include "Materials/DiffuseMaterial.h"
+#include "Materials/CrossyRoad/CrossyCarMaterial.h"
+
 
 CrossyCar::CrossyCar(float speed, int dir)
 	: m_Speed{ speed }
@@ -19,18 +20,21 @@ void CrossyCar::Initialize(const SceneContext&)
 {
 	//initialize "car" model & set scale & rotation
 	auto model = AddComponent(new ModelComponent(L"Meshes/Car.ovm"));
-	auto mat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial>();
+	auto mat = MaterialManager::Get()->CreateMaterial<CrossyCarMaterial>();
 	model->SetMaterial(mat);
 	mat->SetDiffuseTexture(L"Textures/Car.jpg");
+	mat->SetChassisMap(L"Textures/CarChassis.jpg");
+	mat->SetCustomColor(MathHelper::HSLtoRGB(MathHelper::randF(0.f, 1.f), 0.4f, 0.6f, 1.f));
 	GetTransform()->Scale(0.02f);
 	GetTransform()->Rotate(0.f, 90.f * -m_Direction, 0.f, true);
 
-	PxMaterial* carMat = PxGetPhysics().createMaterial(0.f, 0.f, 0.f);
+	//collider
+	PxMaterial* carPhysMat = PxGetPhysics().createMaterial(0.f, 0.f, 0.f);
 	m_pCarCollider = AddChild(new GameObject());
 	m_pCarCollider->GetTransform()->Translate(0.f, 100.f, 0.f);
 	auto rigi = m_pCarCollider->AddComponent(new RigidBodyComponent(false));
 	rigi->SetKinematic(true);
-	rigi->AddCollider(PxBoxGeometry(0.4f, 0.4f, 0.5f), *carMat, false);
+	rigi->AddCollider(PxBoxGeometry(0.4f, 0.4f, 0.5f), *carPhysMat, false);
 }
 
 void CrossyCar::Update(const SceneContext& sceneContext)

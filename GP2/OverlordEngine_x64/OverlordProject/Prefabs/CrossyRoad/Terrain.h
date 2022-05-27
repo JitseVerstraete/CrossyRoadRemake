@@ -1,10 +1,8 @@
 #pragma once
 
-
 #include "Prefabs/CrossyRoad/GrassSlice.h"
 #include "Prefabs/CrossyRoad/RoadSlice.h"
 #include "Prefabs/CrossyRoad/RiverSlice.h"
-
 
 enum class TerrainType
 {
@@ -27,6 +25,7 @@ public:
 	bool TilePassable(int x, int z);
 	GameObject* GetSlice(int z);
 	void Reset();
+	GameObject* GetPreviousSlice() { return GetSlice(m_currentSliceNumber - 1); }
 
 protected:
 	void Initialize(const SceneContext& sceneContext) override;
@@ -45,7 +44,7 @@ private:
 	const int m_maxBlankSlices = 5;
 	int m_NrBlankGrassSlices{};
 
-	
+
 	TerrainType m_PrevTerrainType{};
 
 	//weights

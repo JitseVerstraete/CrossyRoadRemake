@@ -52,4 +52,48 @@ namespace MathHelper
 		if (value < lo)
 			value = lo;
 	}
+
+
+	inline float hueToColor(float p, float q, float hue)
+	{
+		if (hue < 0.f) hue += 1.f;
+		if (hue > 1.f) hue -= 1.f;
+		if (hue * 6.f < 1.f) return p + (q - p) * 6 * hue;
+		if (hue * 2.f < 1.f) return q;
+		if (hue * 3.f < 2.f) return p + (q - p) * (2.f / 3.f - hue) * 6.f;
+
+		return p;
+	}
+
+
+	//all parameter values must range from 0.f to 1.f
+	inline XMFLOAT4 HSLtoRGB(float h, float s, float l, float a)
+	{
+		Clamp(h, 1.f, 0.f);
+		Clamp(s, 1.f, 0.f);
+		Clamp(l, 1.f, 0.f);
+
+		float r{}, g{}, b{};
+
+		if (s == 0.f)
+		{
+			r = g = b = l;
+		}
+		else
+		{
+			float q = l < 0.5f ? l * (1 + s) : l + s - l * s;
+			float p = 2 * l - q;
+
+			float tempR{ h + (1.f / 3.f) };
+			float tempG{ h };
+			float tempB{ h - (1.f / 3.f) };
+
+			r = hueToColor(p, q, tempR);
+			g = hueToColor(p, q, tempG);
+			b = hueToColor(p, q, tempB);
+		}
+
+
+		return XMFLOAT4(r, g, b, a);
+	}
 }

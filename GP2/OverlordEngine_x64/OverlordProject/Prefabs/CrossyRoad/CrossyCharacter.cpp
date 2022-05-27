@@ -20,6 +20,8 @@ void CrossyCharacter::Resapwn()
 	GetTransform()->Translate(0.f, 0.f, 0.f);
 	GetTransform()->Rotate(0.f, 0.f, 0.f);
 	m_TargetPosX = m_TargetPosZ = m_CurrentX = m_CurrentZ = 0;
+	m_SquishFactor = 0.f;
+	m_KeyPressed = false;
 }
 
 void CrossyCharacter::Initialize(const SceneContext&)
@@ -51,8 +53,6 @@ void CrossyCharacter::Initialize(const SceneContext&)
 				m_IsDead = true;
 			}
 		});
-
-
 
 }
 

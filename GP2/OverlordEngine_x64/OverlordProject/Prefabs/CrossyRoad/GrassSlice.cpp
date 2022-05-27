@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GrassSlice.h"
 
+#include "Terrain.h"
+
 #include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 #include "Prefabs/CrossyRoad/Tree.h"
 
@@ -40,6 +42,21 @@ void GrassSlice::Initialize(const SceneContext&)
 
 
 	std::vector<int> usedNumbers{};
+	Terrain* pTerrain = dynamic_cast<Terrain*>(GetParent());
+
+	//if previous slice is a river slice, don't spawn trees behind lilypads (so you never block the way)
+	RiverSlice* pGrass = dynamic_cast<RiverSlice*>(pTerrain->GetPreviousSlice());
+	if (pGrass)
+	{
+		for (int i{ -m_MaxWidth }; i <= m_MaxWidth; ++i)
+		{
+			if (pGrass->HasLily(i))
+			{
+				usedNumbers.emplace_back(i);
+			}
+		}
+	}
+
 
 	if (m_NrObstacles < m_MaxWidth * 2 + 1)
 	{

@@ -128,7 +128,7 @@ void Terrain::SpawnNextSlice()
 
 		//determine what slices to consider (no 2 rivers after each other)
 		std::map<TerrainType, int> consideredSlices{};
-		for (auto pair : m_TerrainWeights)
+		for (const auto& pair : m_TerrainWeights)
 		{
 			switch (pair.first)
 			{
@@ -155,7 +155,7 @@ void Terrain::SpawnNextSlice()
 		}
 
 
-		for (auto pair : consideredSlices)
+		for (const auto& pair : consideredSlices)
 		{
 
 			if (rand() % totalWeight < pair.second)
