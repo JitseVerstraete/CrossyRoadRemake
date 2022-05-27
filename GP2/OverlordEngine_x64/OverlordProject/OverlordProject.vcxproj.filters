@@ -46,6 +46,7 @@
     <ClCompile Include="Prefabs\CrossyRoad\Tree.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\CrossyUI.cpp" />
     <ClCompile Include="Materials\CrossyRoad\CrossyCarMaterial.cpp" />
+    <ClCompile Include="Materials\Post\PostVignette.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -93,5 +94,6 @@
     <ClInclude Include="Prefabs\CrossyRoad\CrossyUI.h" />
     <ClInclude Include="Todo.h" />
     <ClInclude Include="Materials\CrossyRoad\CrossyCarMaterial.h" />
+    <ClInclude Include="Materials\Post\PostVignette.h" />
   </ItemGroup>
 </Project>

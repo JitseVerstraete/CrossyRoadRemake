@@ -31,6 +31,7 @@ void CrossyCarMaterial::InitializeEffectVariables()
 
 void CrossyCarMaterial::OnUpdateModelVariables(const SceneContext& sceneContext, const ModelComponent* ) const
 {
-	SetVariable_Vector(L"gLightDirection", sceneContext.pLights->GetDirectionalLight().direction);
+	XMFLOAT4 lightDir{ sceneContext.pLights->GetDirectionalLight().direction };
+	SetVariable_Vector(L"gLightDirection", lightDir);
 }
 

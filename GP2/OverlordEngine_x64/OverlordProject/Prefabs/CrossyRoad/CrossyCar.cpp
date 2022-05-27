@@ -24,7 +24,7 @@ void CrossyCar::Initialize(const SceneContext&)
 	model->SetMaterial(mat);
 	mat->SetDiffuseTexture(L"Textures/Car.jpg");
 	mat->SetChassisMap(L"Textures/CarChassis.jpg");
-	mat->SetCustomColor(MathHelper::HSLtoRGB(MathHelper::randF(0.f, 1.f), 0.4f, 0.6f, 1.f));
+	mat->SetCustomColor(MathHelper::HSLtoRGB(MathHelper::randF(0.f, 1.f), 0.6f, 0.6f, 1.f));
 	GetTransform()->Scale(0.02f);
 	GetTransform()->Rotate(0.f, 90.f * -m_Direction, 0.f, true);
 

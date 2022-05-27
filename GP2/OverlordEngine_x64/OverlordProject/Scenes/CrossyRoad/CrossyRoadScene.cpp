@@ -4,14 +4,12 @@
 
 #include "Materials/ColorMaterial.h"
 #include "Materials/DiffuseMaterial.h"
+#include "Materials/Post/PostVignette.h"
 
 #include "Prefabs/CrossyRoad/Terrain.h"
 #include "Prefabs/CrossyRoad/CrossyCharacter.h"
 #include "Prefabs/CrossyRoad/CrossyFollowCam.h"
 #include "Prefabs/CrossyRoad/CrossyUI.h"
-
-#include "Materials/Shadow/DiffuseMaterial_Shadow.h"
-#include "Materials/Shadow/DiffuseMaterial_Shadow_Skinned.h"
 
 
 CrossyRoadScene::~CrossyRoadScene()
@@ -29,7 +27,7 @@ void CrossyRoadScene::Initialize()
 	m_SceneContext.settings.drawPhysXDebug = false;
 	m_SceneContext.pLights->SetDirectionalLight({ -5.f, 10.f, 0.f }, m_LightDir);
 
-	ShadowMapRenderer::Get()->SetProjectionSize(14.f);
+	ShadowMapRenderer::Get()->SetProjectionSize(15.f);
 
 
 
@@ -43,9 +41,7 @@ void CrossyRoadScene::Initialize()
 	m_pPlayerCharacter->SetTerrain(m_pTerrain);
 	m_pUiObject = AddChild(new CrossyUI());
 
-
-
-
+	AddPostProcessingEffect(MaterialManager::Get()->CreateMaterial<PostVignette>());
 
 	//input actions
 	auto inputAction = InputAction(PressForward, InputState::pressed, VK_UP);
@@ -96,14 +92,14 @@ void CrossyRoadScene::Update()
 	}
 
 	
-	m_SceneContext.pLights->SetDirectionalLight({ -5.f, 5.f, (float)m_pPlayerCharacter->GetScore() - 3.f}, m_LightDir);
+	m_SceneContext.pLights->SetDirectionalLight({ -5.f, 5.f, (float)m_pPlayerCharacter->GetScore() - 2.1f}, m_LightDir);
 	m_pUiObject->SetScore(m_pPlayerCharacter->GetScore());
 	m_pUiObject->SetGameOver(m_GameOver);
 }
 
 void CrossyRoadScene::PostDraw()
 {
-	ShadowMapRenderer::Get()->Debug_DrawDepthSRV({ m_SceneContext.windowWidth - 10.f, 10.f }, { 0.2f, 0.2f }, { 1.f,0.f });
+	//ShadowMapRenderer::Get()->Debug_DrawDepthSRV({ m_SceneContext.windowWidth - 10.f, 10.f }, { 0.2f, 0.2f }, { 1.f,0.f });
 
 }
 

@@ -2,11 +2,11 @@
 
 //	TODO: Crossy Todo's
 // 
+//	LilyPad tile
+//	Improve jump visual (add height & jump into river)
 //	Death particle (feathers)
 //	Water Shader
-//	LilyPad tile
-//	Custom car shader (color customization)
-//	Post-Processing: vignette, color saturations...
-//	Improve jump visual (add height & jump into river)
-//	Add main menu
 //	Geometry shader for grass
+//	Custom car shader (add metallic reflections)
+//	Add main menu
+//	Post-Processing: color saturations?
