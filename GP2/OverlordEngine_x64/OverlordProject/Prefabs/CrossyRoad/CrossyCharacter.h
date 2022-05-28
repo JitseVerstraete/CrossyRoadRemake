@@ -30,23 +30,29 @@ public:
 	void SetTerrain(Terrain* pTer);
 	bool IsDead() { return m_IsDead; }
 	void Resapwn();
-	int GetScore() { return m_CurrentZ; };
+	int GetScore() { return m_PrevZ; };
 
 protected:
 	void Initialize(const SceneContext& sceneContext) override;
 	void Update(const SceneContext& sceneContext) override;
 
 private:
-	int m_TargetPosX{};
-	int m_TargetPosZ{};
-
-	int m_CurrentX{};
-	int m_CurrentZ{};
-
 	int m_MaxWidth{};
 
-	float m_CurrentRotY{};
+	//movement vars
+	int m_TargetPosX{};
+	int m_TargetPosZ{};
+	int m_PrevX{};
+	int m_PrevZ{};
+	const float m_JumpHeight{ 0.3f };
+	float m_CurrentHeight;
+
+
+	//rotation vars
+	float m_PrevRotY{};
 	float m_TargetRotY{};
+	float m_RotTimer{};
+	const float m_RotTime{0.08f};
 
 	const float m_JumpTime{ 0.1f };
 	float m_JumpTimer{ 0.f };
@@ -54,7 +60,7 @@ private:
 	GameObject* m_ModelChild{};
 
 	float m_SquishFactor{ 0 };
-	float m_MaxSquishScale{ 0.6f };
+	float m_MaxSquishScale{ 0.7f };
 	bool m_KeyPressed{ false };
 
 	//not owner

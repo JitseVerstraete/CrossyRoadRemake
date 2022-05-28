@@ -37,9 +37,11 @@ void CrossyRoadScene::Initialize()
 
 	m_pPlayerCharacter = AddChild(new CrossyCharacter(m_MaxWidth));
 	m_pTerrain = AddChild(new Terrain(m_pPlayerCharacter, m_TerrainSlicesAhead, m_MaxWidth));
-	m_pFollowCamera = AddChild(new CrossyFollowCam(m_pPlayerCharacter, 50.f, -10.f, 25.f, 2, 20.f));
+	m_pFollowCamera = AddChild(new CrossyFollowCam(m_pPlayerCharacter, 50.f, -15.f, 60.f, 2, 8.f));
 	m_pPlayerCharacter->SetTerrain(m_pTerrain);
 	m_pUiObject = AddChild(new CrossyUI());
+
+	m_pTerrain->Reset();
 
 	AddPostProcessingEffect(MaterialManager::Get()->CreateMaterial<PostVignette>());
 
@@ -71,8 +73,6 @@ void CrossyRoadScene::Update()
 	{
 		RemoveChild(m_pPlayerCharacter, false);
 		m_GameOver = true;
-
-
 	}
 
 	if (m_GameOver && m_SceneContext.pInput->IsActionTriggered(Respawn))

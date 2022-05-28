@@ -93,6 +93,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Materials\CrossyRoad\ColorMaterial_Shadow.cpp" />
     <ClCompile Include="Materials\CrossyRoad\CrossyCarMaterial.cpp" />
     <ClCompile Include="Materials\Post\PostVignette.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\CrossyUI.cpp" />
@@ -101,6 +102,7 @@
     <ClCompile Include="Prefabs\CrossyRoad\CrossyCharacter.cpp" />
     <ClCompile Include="Materials\Post\PostBlur.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\GrassSlice.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\Lily.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\RiverSlice.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\RoadSlice.cpp" />
     <ClCompile Include="Scenes\CrossyRoad\CrossyRoadScene.cpp" />
@@ -158,6 +160,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Materials\CrossyRoad\ColorMaterial_Shadow.h" />
     <ClInclude Include="Materials\CrossyRoad\CrossyCarMaterial.h" />
     <ClInclude Include="Materials\Post\PostVignette.h" />
     <ClInclude Include="Prefabs\CrossyRoad\CrossyUI.h" />
@@ -166,6 +169,7 @@
     <ClInclude Include="Prefabs\CrossyRoad\CrossyCharacter.h" />
     <ClInclude Include="Materials\Post\PostBlur.h" />
     <ClInclude Include="Prefabs\CrossyRoad\GrassSlice.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\Lily.h" />
     <ClInclude Include="Prefabs\CrossyRoad\RiverSlice.h" />
     <ClInclude Include="Prefabs\CrossyRoad\RoadSlice.h" />
     <ClInclude Include="Scenes\CrossyRoad\CrossyRoadScene.h" />

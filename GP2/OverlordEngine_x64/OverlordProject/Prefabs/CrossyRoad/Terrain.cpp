@@ -41,7 +41,7 @@ GameObject* Terrain::GetSlice(int z)
 	{
 		return nullptr;
 	}
-	
+
 	return it->second;
 }
 
@@ -117,7 +117,7 @@ void Terrain::SpawnNextSlice()
 	GameObject* slice = nullptr;
 	if (m_NrBlankGrassSlices > 0)
 	{
-		slice = AddChild(new GrassSlice(0, m_MaxWidth));
+		slice = new GrassSlice(0, m_MaxWidth);
 		--m_NrBlankGrassSlices;
 
 	}
@@ -163,20 +163,21 @@ void Terrain::SpawnNextSlice()
 				switch (pair.first)
 				{
 				case TerrainType::Grass:
-					slice = AddChild(new GrassSlice(2, m_MaxWidth));
+					slice = new GrassSlice(2, m_MaxWidth);
 					m_PrevTerrainType = TerrainType::Grass;
 					break;
 				case TerrainType::Road:
-					slice = AddChild(new RoadSlice(m_MaxWidth, rand() % 2 == 0 ? CarDir::Left : CarDir::Right, 3.f, 2.f));
+					slice = new RoadSlice(m_MaxWidth, rand() % 2 == 0 ? CarDir::Left : CarDir::Right, 3.f, 2.f);
 					m_PrevTerrainType = TerrainType::Road;
 					break;
 				case TerrainType::River:
-					slice = AddChild(new RiverSlice(3, m_MaxWidth));
+					slice = new RiverSlice(3, m_MaxWidth);
 					m_PrevTerrainType = TerrainType::River;
 					break;
 				default:
 					break;
 				}
+
 				break;
 			}
 			else
@@ -186,8 +187,11 @@ void Terrain::SpawnNextSlice()
 		}
 	}
 
+
+	slice->GetTransform()->Translate(0.f, 0.f, (float)m_currentSliceNumber);
+	AddChild(slice);
+
 	m_pSliceMap.insert(std::pair<int, GameObject*>(m_currentSliceNumber, slice));
-	if (slice) slice->GetTransform()->Translate(0.f, 0.f, (float)m_currentSliceNumber);
 	++m_currentSliceNumber;
 
 

@@ -15,3 +15,5 @@ void DiffuseMaterial::SetDiffuseTexture(const std::wstring& path)
 void DiffuseMaterial::InitializeEffectVariables()
 {
 }
+
+

@@ -3,8 +3,8 @@
 
 #include "Terrain.h"
 
-#include "Materials/ColorMaterial.h"
-#include "Prefabs/CubePrefab.h"
+#include "Materials/CrossyRoad/ColorMaterial_Shadow.h"
+#include "Prefabs/CrossyRoad/Lily.h"
 
 RiverSlice::RiverSlice(int nrLilys, int width)
 	: m_NrLilys{ nrLilys }
@@ -21,14 +21,15 @@ bool RiverSlice::HasLily(int x)
 
 void RiverSlice::Initialize(const SceneContext&)
 {
-	GetTransform()->Translate(0.f, -0.2f, 0.f);
 	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm", false));
-	ColorMaterial* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial>();
+	ColorMaterial_Shadow* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial_Shadow>();
 
-	mat->SetColor(XMFLOAT4(Colors::Blue));
+	mat->SetColor(XMFLOAT4(MathHelper::HSLtoRGB(0.55f, 0.7f, 0.5f, 1.f)));
 
 	mc->SetMaterial(mat);
 
+	XMFLOAT3 pos = GetTransform()->GetPosition();
+	GetTransform()->Translate(pos.x, -0.16f, pos.z);
 
 
 
@@ -64,7 +65,7 @@ void RiverSlice::Initialize(const SceneContext&)
 				if (std::find(usedNumbers.begin(), usedNumbers.end(), randomNumber) == usedNumbers.end())
 				{
 					//spawn tree at this x pos
-					pLily = AddChild(new CubePrefab(0.9f, 0.1f, 0.9f, XMFLOAT4{ Colors::LightGreen }));
+					pLily = AddChild(new Lily());
 					m_pLilyPads.insert({ randomNumber, pLily });
 					pLily->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(randomNumber), 0.f, 0.f });
 
@@ -84,7 +85,7 @@ void RiverSlice::Initialize(const SceneContext&)
 		for (int i{ -m_MaxWidth }; i < m_MaxWidth + 1; ++i)
 		{
 			//spawn tree at this x pos
-			pLily = AddChild(new CubePrefab(0.8f, 0.8f, 0.1f, XMFLOAT4{ Colors::LightGreen }));
+			pLily = AddChild(new Lily());
 			m_pLilyPads.insert({ i, pLily });
 			pLily->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(i), 0.f, 0.f });
 		}

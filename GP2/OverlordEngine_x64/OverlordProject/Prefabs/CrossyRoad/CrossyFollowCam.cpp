@@ -17,6 +17,8 @@ CrossyFollowCam::CrossyFollowCam(GameObject* objToFollow, float pitch, float yaw
 void CrossyFollowCam::Initialize(const SceneContext&)
 {
 	m_pCamComp = AddComponent(new CameraComponent());
+	//m_pCamComp->UseOrthographicProjection();
+	//m_pCamComp->SetOrthoSize(8.f);
 	m_pCamComp->SetFieldOfView(XMConvertToRadians(m_FovDegrees));
 	//rotation
 	GetTransform()->Rotate(m_Pitch, m_Yaw, 0.f);

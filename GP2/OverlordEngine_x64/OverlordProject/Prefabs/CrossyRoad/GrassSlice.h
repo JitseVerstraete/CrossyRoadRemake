@@ -28,5 +28,8 @@ private:
 	int m_NrObstacles{};
 	int m_MaxWidth{};
 
+	static int m_GrassCounter;
+	const XMFLOAT4 m_DarkGrassColor = MathHelper::HSLtoRGB(100.f / 360, 0.6f, 0.46f, 1.f);
+	const XMFLOAT4 m_LightGrassColor = MathHelper::HSLtoRGB(100.f / 360, 0.6f, 0.5f, 1.f);
 };
 

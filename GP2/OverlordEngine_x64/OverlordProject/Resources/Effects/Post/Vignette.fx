@@ -52,8 +52,8 @@ PS_INPUT VS(VS_INPUT input)
 //------------
 float4 PS(PS_INPUT input) : SV_Target
 {
-	float inner = 0.7f;
-	float outer = 1.6f;
+	float inner = 0.f;
+	float outer = 2.f;
 
 
 	//float vOffset = 0;
@@ -66,11 +66,11 @@ float4 PS(PS_INPUT input) : SV_Target
 	float2 imageCoord = float2(input.TexCoord.x * 2 - 1, input.TexCoord.y * 2 - 1);
 
 
-	float factor = sqrt(imageCoord.x * imageCoord.x + imageCoord.y * imageCoord.y);
+	float factor = (imageCoord.x * imageCoord.x + imageCoord.y * imageCoord.y);
 
 
 	factor = saturate(lerp(0.f, 1.f, (factor - inner) / (outer - inner)));
-	//factor = sqrt(factor);
+
 	float3 finalColor = (float3)lerp(imageColor, vignetteColor, factor);
 
 

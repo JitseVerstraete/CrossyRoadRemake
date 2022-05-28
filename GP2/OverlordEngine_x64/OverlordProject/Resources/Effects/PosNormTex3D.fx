@@ -1,6 +1,6 @@
 float4x4 gWorld : WORLD;
 float4x4 gWorldViewProj : WORLDVIEWPROJECTION; 
-float3 gLightDirection = float3(-0.577f, -0.577f, 0.577f);
+float3 gLightDirection = float3(0.f, -1.f, 0.f);
 
 Texture2D gDiffuseMap;
 SamplerState samLinear

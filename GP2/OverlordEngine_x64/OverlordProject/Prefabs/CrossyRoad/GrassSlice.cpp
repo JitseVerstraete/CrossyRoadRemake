@@ -3,12 +3,15 @@
 
 #include "Terrain.h"
 
-#include "Materials/Shadow/DiffuseMaterial_Shadow.h"
+#include "Materials/CrossyRoad/ColorMaterial_Shadow.h"
 #include "Prefabs/CrossyRoad/Tree.h"
+
+int GrassSlice::m_GrassCounter = 0;
 
 GrassSlice::GrassSlice(int obstacles, int maxWidth)
 	:m_NrObstacles{ obstacles }, m_MaxWidth{ maxWidth }
 {
+	++m_GrassCounter;
 }
 
 
@@ -23,8 +26,8 @@ void GrassSlice::Initialize(const SceneContext&)
 {
 
 	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm", false));
-	DiffuseMaterial_Shadow* mat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow>();
-	mat->SetDiffuseTexture(L"Textures/Grass.png");
+	ColorMaterial_Shadow* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial_Shadow>();
+	mat->SetColor(m_GrassCounter % 2 == 0 ? m_LightGrassColor : m_DarkGrassColor);
 	mc->SetMaterial(mat);
 
 
@@ -37,7 +40,9 @@ void GrassSlice::Initialize(const SceneContext&)
 	pObstacle = AddChild(new Tree());
 	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 3), 0.f, 0.f });
 	pObstacle = AddChild(new Tree());
-	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(m_MaxWidth + 1), 0.f, 0.f });
+	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(m_MaxWidth + 1), 0.f, 0.f });	
+	pObstacle = AddChild(new Tree());
+	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(m_MaxWidth + 2), 0.f, 0.f });
 
 
 
