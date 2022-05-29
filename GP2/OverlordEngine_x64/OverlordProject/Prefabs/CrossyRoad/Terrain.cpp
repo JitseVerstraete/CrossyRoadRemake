@@ -3,12 +3,20 @@
 
 #include <numeric>
 
+#include "Prefabs/CrossyRoad/GrassSlice.h"
+#include "Prefabs/CrossyRoad/RoadSlice.h"
+#include "Prefabs/CrossyRoad/RiverSlice.h"
+#include "Prefabs/CrossyRoad/RailSlice.h"
+
+#include "Prefabs/CrossyRoad/CrossyCharacter.h"
+
 Terrain::Terrain(GameObject* trackedCharacter, int slicesAhead, int width)
 	:m_TrackedCharacter{ trackedCharacter }, m_SlicesAhead{ slicesAhead }, m_currentSliceNumber{ 0 }, m_MaxWidth{ width }, m_TotalWeight{}
 {
 	m_TerrainWeights.insert({ TerrainType::Grass, 5 });
 	m_TerrainWeights.insert({ TerrainType::Road, 3 });
 	m_TerrainWeights.insert({ TerrainType::River, 1 });
+	m_TerrainWeights.insert({ TerrainType::Rail, 1 });
 
 	for (auto pair : m_TerrainWeights)
 	{
@@ -148,6 +156,8 @@ void Terrain::SpawnNextSlice()
 					consideredSlices.insert(pair);
 				}
 				break;
+			case TerrainType::Rail:
+				consideredSlices.insert(pair);
 			default:
 				break;
 
@@ -167,12 +177,16 @@ void Terrain::SpawnNextSlice()
 					m_PrevTerrainType = TerrainType::Grass;
 					break;
 				case TerrainType::Road:
-					slice = new RoadSlice(m_MaxWidth, rand() % 2 == 0 ? CarDir::Left : CarDir::Right, 3.f, 2.f);
+					slice = new RoadSlice(m_MaxWidth, 2.f, 3.f, 4.f, 8.f);
 					m_PrevTerrainType = TerrainType::Road;
 					break;
 				case TerrainType::River:
 					slice = new RiverSlice(3, m_MaxWidth);
 					m_PrevTerrainType = TerrainType::River;
+					break;
+				case TerrainType::Rail:
+					slice = new RailSlice(m_MaxWidth, 30.f, 1.f, 3.f, dynamic_cast<CrossyCharacter*>(m_TrackedCharacter));
+					m_PrevTerrainType = TerrainType::Rail;
 					break;
 				default:
 					break;
@@ -188,7 +202,7 @@ void Terrain::SpawnNextSlice()
 	}
 
 
-	slice->GetTransform()->Translate(0.f, 0.f, (float)m_currentSliceNumber);
+	if (slice) slice->GetTransform()->Translate(0.f, 0.f, (float)m_currentSliceNumber);
 	AddChild(slice);
 
 	m_pSliceMap.insert(std::pair<int, GameObject*>(m_currentSliceNumber, slice));

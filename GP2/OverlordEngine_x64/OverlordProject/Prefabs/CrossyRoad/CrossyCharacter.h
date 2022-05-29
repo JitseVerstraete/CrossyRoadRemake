@@ -68,6 +68,15 @@ private:
 
 	bool m_IsDead{ false };
 
+	//sound
+	FMOD::Channel* m_pChannelJump{};
+	FMOD::Sound* m_pJumpSound{};
+	FMOD::Channel* m_pChannelSplash{};
+	FMOD::Sound* m_pSplashSound{};
+	FMOD::Channel* m_pChannelSplat{};
+	FMOD::Sound* m_pSplatSound{};
+
+
 	void SetTargetRot(float rot);
 
 };

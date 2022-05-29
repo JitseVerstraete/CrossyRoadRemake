@@ -18,7 +18,7 @@ void ShadowMapRenderer::Initialize()
 	RENDERTARGET_DESC renDesc{};
 	renDesc.enableColorBuffer = false;
 	renDesc.enableDepthSRV = true;
-	renDesc.width = m_GameContext.windowWidth;
+	renDesc.width = m_GameContext.windowWidth; 
 	renDesc.height = m_GameContext.windowHeight;
 	m_pShadowRenderTarget->Create(renDesc);
 

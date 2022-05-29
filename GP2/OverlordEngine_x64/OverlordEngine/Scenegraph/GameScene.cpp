@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "GameScene.h"
 
-GameScene::GameScene(std::wstring sceneName):
+GameScene::GameScene(std::wstring sceneName) :
 	m_SceneName(std::move(sceneName))
 {
 }
@@ -64,7 +64,7 @@ void GameScene::RemoveChild(GameObject* pObject, bool deleteObject)
 	if (deleteObject)
 	{
 		SafeDelete(pObject);
-	}		
+	}
 }
 
 void GameScene::RootInitialize(const GameContext& gameContext)
@@ -173,6 +173,7 @@ void GameScene::RootDraw()
 	//User-Scene Draw
 	Draw();
 
+
 	//Object-Scene Draw
 	for (const auto pChild : m_pChildren)
 	{
@@ -182,8 +183,17 @@ void GameScene::RootDraw()
 	//SpriteRenderer Draw
 	SpriteRenderer::Get()->Draw(m_SceneContext);
 
+
+	//TODO: trying to fix the ui rendered behind the terrain
+	CameraComponent* pCachedCam = m_pActiveCamera;
+	m_SceneContext.pCamera->SetActive(false);
+
 	//TextRenderer Draw
 	TextRenderer::Get()->Draw(m_SceneContext);
+
+	pCachedCam->SetActive(true);
+
+
 
 	//Object-Scene Post-Draw
 	PostDraw();
@@ -224,7 +234,7 @@ void GameScene::RootDraw()
 
 		RenderTarget* INIT_RT = m_pGame->GetRenderTarget();
 		RenderTarget* PREV_RT = INIT_RT;
-		
+
 		for (PostProcessingMaterial* pMat : m_PostProcessingMaterials)
 		{
 			if (!pMat->IsEnabled()) continue;
@@ -243,7 +253,7 @@ void GameScene::RootDraw()
 		//Done!
 	}
 #pragma endregion
-}  
+}
 
 void GameScene::RootOnSceneActivated()
 {
@@ -397,7 +407,7 @@ void GameScene::RemovePostProcessingEffect(PostProcessingMaterial* pMaterial)
 	if (std::ranges::find(m_PostProcessingMaterials, pMaterial) != m_PostProcessingMaterials.end())
 		m_PostProcessingMaterials.erase(std::ranges::remove(m_PostProcessingMaterials, pMaterial).begin());
 }
- 
+
 void GameScene::SetActiveCamera(CameraComponent* pCameraComponent)
 {
 	//Prevent recursion!

@@ -3,8 +3,9 @@
 
 #include "Terrain.h"
 
-#include "Materials/CrossyRoad/ColorMaterial_Shadow.h"
+#include "Materials/CrossyRoad/TerrainSliceMaterial.h"
 #include "Prefabs/CrossyRoad/Lily.h"
+#include "Prefabs/CrossyRoad/GrassSlice.h"
 
 RiverSlice::RiverSlice(int nrLilys, int width)
 	: m_NrLilys{ nrLilys }
@@ -22,16 +23,14 @@ bool RiverSlice::HasLily(int x)
 void RiverSlice::Initialize(const SceneContext&)
 {
 	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm", false));
-	ColorMaterial_Shadow* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial_Shadow>();
+	TerrainSliceMaterial* mat = MaterialManager::Get()->CreateMaterial<TerrainSliceMaterial>();
 
 	mat->SetColor(XMFLOAT4(MathHelper::HSLtoRGB(0.55f, 0.7f, 0.5f, 1.f)));
-
+	mat->SetWidth(m_MaxWidth + 0.5f);
 	mc->SetMaterial(mat);
 
 	XMFLOAT3 pos = GetTransform()->GetPosition();
 	GetTransform()->Translate(pos.x, -0.16f, pos.z);
-
-
 
 
 	std::vector<int> usedNumbers{};
@@ -49,8 +48,6 @@ void RiverSlice::Initialize(const SceneContext&)
 			}
 		}
 	}
-
-
 
 	GameObject* pLily{ nullptr };
 	if (m_NrLilys < (m_MaxWidth * 2) + 1 - (int)usedNumbers.size())

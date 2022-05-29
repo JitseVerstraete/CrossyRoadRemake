@@ -1,29 +1,50 @@
 #include "stdafx.h"
 #include "RoadSlice.h" 
 
-#include "Materials/CrossyRoad/ColorMaterial_Shadow.h"
+#include "Materials/CrossyRoad/TerrainSliceMaterial.h"
 #include "CrossyCar.h"
 
-RoadSlice::RoadSlice(int width, CarDir dir, float carSpeed, float spawnInterval)
+int RoadSlice::m_LeftWeight = 1;
+int RoadSlice::m_RightWeight = 1;
+
+RoadSlice::RoadSlice(int width, float minSpeed, float maxSpeed, float minDist, float maxDist)
 	: m_Width{ width }
-	, m_CarDir{ static_cast<int>(dir) }
-	, m_CarSpeed{ carSpeed }
-	, m_SpawnInterval{ spawnInterval }
+	, m_CarSpeed{}
+	, m_SpawnInterval{}
 	, m_SpawnTimer{ 0.f }
 {
+	//calculate car speed & interval variations
+	m_CarSpeed = MathHelper::randF(minSpeed, maxSpeed);
+	m_SpawnInterval = MathHelper::randF(minDist, maxDist) / m_CarSpeed;
+	m_SpawnTimer = m_SpawnInterval;
 
-	m_SpawnTimer = MathHelper::randF(0.f, spawnInterval);;
+
+	//calculate car direction
+	if (rand() % (m_LeftWeight + m_RightWeight) < m_LeftWeight)
+	{
+		//direction is left (increace the chance for right direction for the next slice & reset the chance for the left direction)
+		m_CarDir = static_cast<int>(CarDir::Left);
+		m_RightWeight++;
+		m_LeftWeight = 1;
+	}
+	else
+	{
+		//direction is right
+		m_CarDir = static_cast<int>(CarDir::Right);
+		m_LeftWeight++;
+		m_RightWeight = 1;
+	}
+	
 }
 
 void RoadSlice::Initialize(const SceneContext&)
 {
-
 	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm", false));
-	ColorMaterial_Shadow* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial_Shadow>();
+	TerrainSliceMaterial* mat = MaterialManager::Get()->CreateMaterial<TerrainSliceMaterial>();
 
 	float greyVal{ 0.4f };
 	mat->SetColor(XMFLOAT4{ greyVal , greyVal, greyVal, 1.f });
-
+	mat->SetWidth(m_Width + 0.5f);
 	mc->SetMaterial(mat);
 
 	XMFLOAT3 pos = GetTransform()->GetPosition();

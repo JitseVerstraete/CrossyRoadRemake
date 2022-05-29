@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Prefabs/CrossyRoad/GrassSlice.h"
-#include "Prefabs/CrossyRoad/RoadSlice.h"
-#include "Prefabs/CrossyRoad/RiverSlice.h"
+
 
 enum class TerrainType
 {
 	Grass,
 	Road,
-	River
+	River,
+	Rail
 };
 
 class Terrain : public GameObject

@@ -7,7 +7,6 @@
 //	Geometry shader for grass
 //	Add main menu
 //	sounds
-// 
 
 //	IF TIME
 //	Post-Processing: color saturations?

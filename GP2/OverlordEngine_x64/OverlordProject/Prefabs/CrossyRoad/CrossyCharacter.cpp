@@ -5,6 +5,9 @@
 
 #include "Materials/DiffuseMaterial.h"
 
+#include "Prefabs/CrossyRoad/GrassSlice.h"
+#include "Prefabs/CrossyRoad/RiverSlice.h"
+
 
 #include "Terrain.h"
 
@@ -50,12 +53,21 @@ void CrossyCharacter::Initialize(const SceneContext& sceneContext)
 
 	SetOnTriggerCallBack([=](GameObject* /*pTrigger*/, GameObject* /*pOther*/, PxTriggerAction action)
 		{
-			if (action == PxTriggerAction::ENTER)
+			if (action == PxTriggerAction::ENTER && m_PrevZ > 1)
 			{
 				m_IsDead = true;
+				SoundManager::Get()->GetSystem()->playSound(m_pSplatSound, nullptr, false, &m_pChannelSplat);
+				m_pChannelSplat->setVolume(0.7f);
+
 			}
 		});
 
+	//sound
+	FMOD::System* pFmod = SoundManager::Get()->GetSystem();
+	pFmod->createStream("Resources/Sounds/jump.wav", FMOD_DEFAULT, nullptr, &m_pJumpSound);
+	pFmod->createStream("Resources/Sounds/water.wav", FMOD_DEFAULT, nullptr, &m_pSplashSound);
+	pFmod->createStream("Resources/Sounds/splat.wav", FMOD_DEFAULT, nullptr, &m_pSplatSound);
+	
 }
 
 void CrossyCharacter::Update(const SceneContext& sceneContext)
@@ -72,6 +84,9 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		if (!pRiver->HasLily(m_PrevX))
 		{
 			m_IsDead = true;
+			SoundManager::Get()->GetSystem()->playSound(m_pSplashSound, nullptr, false, &m_pChannelSplash);
+			m_pChannelSplash->setVolume(0.6f);
+
 		}
 	}
 
@@ -98,6 +113,13 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 	}
 
 
+	if (sceneContext.pInput->IsActionTriggered(ReleaseForward)
+		|| sceneContext.pInput->IsActionTriggered(ReleaseBackward)
+		|| sceneContext.pInput->IsActionTriggered(ReleaseRight)
+		|| sceneContext.pInput->IsActionTriggered(ReleaseLeft))
+		m_KeyPressed = false;
+
+
 
 	if (m_JumpTimer <= 0.f)
 	{
@@ -109,7 +131,6 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		//handle movement (and rotation) on key release
 		if (sceneContext.pInput->IsActionTriggered(ReleaseForward))
 		{
-			m_KeyPressed = false;
 			if (m_pTerrain->TilePassable(m_TargetPosX, m_TargetPosZ + 1))
 			{
 				++m_TargetPosZ;
@@ -119,7 +140,6 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		}
 		else if (sceneContext.pInput->IsActionTriggered(ReleaseBackward))
 		{
-			m_KeyPressed = false;
 			if (m_pTerrain->TilePassable(m_TargetPosX, m_TargetPosZ - 1))
 			{
 				--m_TargetPosZ;
@@ -130,7 +150,6 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		}
 		else if (sceneContext.pInput->IsActionTriggered(ReleaseLeft))
 		{
-			m_KeyPressed = false;
 			if (abs(m_TargetPosX - 1) <= m_MaxWidth && m_pTerrain->TilePassable(m_TargetPosX - 1, m_TargetPosZ))
 			{
 				--m_TargetPosX;
@@ -140,7 +159,6 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		}
 		else if (sceneContext.pInput->IsActionTriggered(ReleaseRight))
 		{
-			m_KeyPressed = false;
 			if (abs(m_TargetPosX + 1) <= m_MaxWidth && m_pTerrain->TilePassable(m_TargetPosX + 1, m_TargetPosZ))
 			{
 				++m_TargetPosX;
@@ -154,6 +172,8 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 		if (jumped)
 		{
 			m_JumpTimer = m_JumpTime;
+			SoundManager::Get()->GetSystem()->playSound(m_pJumpSound, nullptr, false, &m_pChannelJump);
+			m_pChannelJump->setVolume(0.3f);
 		}
 	}
 

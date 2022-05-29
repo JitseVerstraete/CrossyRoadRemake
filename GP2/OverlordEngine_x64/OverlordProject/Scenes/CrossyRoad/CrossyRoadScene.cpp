@@ -12,6 +12,9 @@
 #include "Prefabs/CrossyRoad/CrossyUI.h"
 
 
+#include "Prefabs/CrossyRoad/CrossyTrain.h"
+
+
 CrossyRoadScene::~CrossyRoadScene()
 {
 	if (m_pPlayerCharacter && m_pPlayerCharacter->IsDead())
@@ -41,6 +44,7 @@ void CrossyRoadScene::Initialize()
 	m_pPlayerCharacter->SetTerrain(m_pTerrain);
 	m_pUiObject = AddChild(new CrossyUI());
 
+
 	m_pTerrain->Reset();
 
 	AddPostProcessingEffect(MaterialManager::Get()->CreateMaterial<PostVignette>());
@@ -64,6 +68,13 @@ void CrossyRoadScene::Initialize()
 	m_SceneContext.pInput->AddInputAction(inputAction);
 	inputAction = InputAction(Respawn, InputState::pressed, VK_SPACE);
 	m_SceneContext.pInput->AddInputAction(inputAction);
+
+	SoundManager::Get()->GetSystem()->createStream("Resources/Sounds/Music.wav", FMOD_DEFAULT, nullptr, &m_pMusic);
+	m_pMusic->setLoopCount(-1);
+	FMOD::Channel* pTempChannel{};
+	SoundManager::Get()->GetSystem()->playSound(m_pMusic, nullptr, false, &pTempChannel);
+	pTempChannel->setVolume(0.3f);
+
 }
 
 void CrossyRoadScene::Update()

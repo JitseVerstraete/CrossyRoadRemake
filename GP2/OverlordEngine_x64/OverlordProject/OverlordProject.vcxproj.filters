@@ -47,8 +47,10 @@
     <ClCompile Include="Prefabs\CrossyRoad\CrossyUI.cpp" />
     <ClCompile Include="Materials\CrossyRoad\CrossyCarMaterial.cpp" />
     <ClCompile Include="Materials\Post\PostVignette.cpp" />
-    <ClCompile Include="Materials\CrossyRoad\ColorMaterial_Shadow.cpp" />
+    <ClCompile Include="Materials\CrossyRoad\TerrainSliceMaterial.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\Lily.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\RailSlice.cpp" />
+    <ClCompile Include="Prefabs\CrossyRoad\CrossyTrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -97,7 +99,9 @@
     <ClInclude Include="Todo.h" />
     <ClInclude Include="Materials\CrossyRoad\CrossyCarMaterial.h" />
     <ClInclude Include="Materials\Post\PostVignette.h" />
-    <ClInclude Include="Materials\CrossyRoad\ColorMaterial_Shadow.h" />
+    <ClInclude Include="Materials\CrossyRoad\TerrainSliceMaterial.h" />
     <ClInclude Include="Prefabs\CrossyRoad\Lily.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\RailSlice.h" />
+    <ClInclude Include="Prefabs\CrossyRoad\CrossyTrain.h" />
   </ItemGroup>
 </Project>

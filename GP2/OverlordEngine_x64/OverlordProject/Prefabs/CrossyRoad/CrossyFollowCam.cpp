@@ -8,6 +8,7 @@ CrossyFollowCam::CrossyFollowCam(GameObject* objToFollow, float pitch, float yaw
 	, m_Distance{ distance }
 	, m_FovDegrees{ fovDegrees }
 	, m_zOffset{ zOffset }
+	, m_OriginalTransform{}
 
 {
 

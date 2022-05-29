@@ -3,8 +3,9 @@
 
 #include "Terrain.h"
 
-#include "Materials/CrossyRoad/ColorMaterial_Shadow.h"
+#include "Materials/CrossyRoad/TerrainSliceMaterial.h"
 #include "Prefabs/CrossyRoad/Tree.h"
+#include "Prefabs/CrossyRoad/RiverSlice.h"
 
 int GrassSlice::m_GrassCounter = 0;
 
@@ -26,8 +27,9 @@ void GrassSlice::Initialize(const SceneContext&)
 {
 
 	ModelComponent* mc = AddComponent(new ModelComponent(L"Meshes/Slice.ovm", false));
-	ColorMaterial_Shadow* mat = MaterialManager::Get()->CreateMaterial<ColorMaterial_Shadow>();
+	TerrainSliceMaterial* mat = MaterialManager::Get()->CreateMaterial<TerrainSliceMaterial>();
 	mat->SetColor(m_GrassCounter % 2 == 0 ? m_LightGrassColor : m_DarkGrassColor);
+	mat->SetWidth(m_MaxWidth + 0.5f);
 	mc->SetMaterial(mat);
 
 
@@ -40,7 +42,7 @@ void GrassSlice::Initialize(const SceneContext&)
 	pObstacle = AddChild(new Tree());
 	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(-m_MaxWidth - 3), 0.f, 0.f });
 	pObstacle = AddChild(new Tree());
-	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(m_MaxWidth + 1), 0.f, 0.f });	
+	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(m_MaxWidth + 1), 0.f, 0.f });
 	pObstacle = AddChild(new Tree());
 	pObstacle->GetTransform()->Translate(XMFLOAT3{ static_cast<float>(m_MaxWidth + 2), 0.f, 0.f });
 
@@ -50,18 +52,51 @@ void GrassSlice::Initialize(const SceneContext&)
 	Terrain* pTerrain = dynamic_cast<Terrain*>(GetParent());
 
 	//if previous slice is a river slice, don't spawn trees behind lilypads (so you never block the way)
-	RiverSlice* pGrass = dynamic_cast<RiverSlice*>(pTerrain->GetPreviousSlice());
-	if (pGrass)
+	RiverSlice* pRiver = dynamic_cast<RiverSlice*>(pTerrain->GetPreviousSlice());
+	if (pRiver)
 	{
 		for (int i{ -m_MaxWidth }; i <= m_MaxWidth; ++i)
 		{
-			if (pGrass->HasLily(i))
+			if (pRiver->HasLily(i))
 			{
 				usedNumbers.emplace_back(i);
 			}
 		}
 	}
 
+	GrassSlice* pGrass = dynamic_cast<GrassSlice*>(pTerrain->GetPreviousSlice());
+	if (pGrass)
+	{
+		if (!pGrass->IsPassable(-m_MaxWidth) && std::find(usedNumbers.begin(), usedNumbers.end(), -m_MaxWidth + 1) == usedNumbers.end())
+		{
+			usedNumbers.emplace_back(-m_MaxWidth + 1);
+		}
+
+		if (!pGrass->IsPassable(-m_MaxWidth + 1) && std::find(usedNumbers.begin(), usedNumbers.end(), -m_MaxWidth) == usedNumbers.end())
+		{
+			usedNumbers.emplace_back(-m_MaxWidth);
+		}
+
+		if (!pGrass->IsPassable(-m_MaxWidth + 1) && std::find(usedNumbers.begin(), usedNumbers.end(), -m_MaxWidth + 2) == usedNumbers.end())
+		{
+			usedNumbers.emplace_back(-m_MaxWidth + 2);
+		}
+
+		if (!pGrass->IsPassable(m_MaxWidth) && std::find(usedNumbers.begin(), usedNumbers.end(), m_MaxWidth - 1) == usedNumbers.end())
+		{
+			usedNumbers.emplace_back(m_MaxWidth - 1);
+		}
+
+		if (!pGrass->IsPassable(m_MaxWidth - 1) && std::find(usedNumbers.begin(), usedNumbers.end(), m_MaxWidth) == usedNumbers.end())
+		{
+			usedNumbers.emplace_back(m_MaxWidth);
+		}
+
+		if (!pGrass->IsPassable(m_MaxWidth - 1) && std::find(usedNumbers.begin(), usedNumbers.end(), m_MaxWidth - 2) == usedNumbers.end())
+		{
+			usedNumbers.emplace_back(m_MaxWidth - 2);
+		}
+	}
 
 	if (m_NrObstacles < m_MaxWidth * 2 + 1)
 	{
@@ -106,5 +141,5 @@ void GrassSlice::Initialize(const SceneContext&)
 
 void GrassSlice::Update(const SceneContext&)
 {
-	
+
 }

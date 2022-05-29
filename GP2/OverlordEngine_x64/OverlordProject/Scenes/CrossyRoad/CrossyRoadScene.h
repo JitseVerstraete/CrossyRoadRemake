@@ -41,5 +41,7 @@ private:
 
 	const XMFLOAT3 m_LightDir = XMFLOAT3(0.5298129428260175f, -0.6622661785325219f, 0.5298129428260175f);
 
+	FMOD::Sound* m_pMusic{};
+
 };
 

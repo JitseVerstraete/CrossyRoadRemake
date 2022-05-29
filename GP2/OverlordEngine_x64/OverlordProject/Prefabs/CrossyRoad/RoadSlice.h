@@ -12,7 +12,7 @@ class RoadSlice final : public GameObject
 {
 
 public:
-	RoadSlice(int width, CarDir dir, float carSpeed, float spawnInterval);
+	RoadSlice(int width, float minSpeed, float maxSpeed, float minDist, float maxDist);
 	~RoadSlice() override = default;
 
 	RoadSlice(const RoadSlice& other) = delete;
@@ -31,6 +31,10 @@ private:
 	float m_SpawnInterval;
 
 	float m_SpawnTimer;
+
+	static int m_LeftWeight;
+	static int m_RightWeight;
+
 
 	std::vector<CrossyCar*> m_pCars;
 };
