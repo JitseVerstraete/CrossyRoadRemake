@@ -28,5 +28,5 @@ void CrossyUI::Update(const SceneContext& sceneContext)
 		TextRenderer::Get()->DrawText(m_pSmallFont, m_RestartText, { sceneContext.windowWidth / 2 - 300.f, sceneContext.windowHeight / 2 + 20.f }, XMFLOAT4{ Colors::LightYellow });
 	}
 
-	TextRenderer::Get()->DrawText(m_pSmallFont, m_ScoreText, { sceneContext.windowWidth / 2 - 90.f, 0.f });
+	TextRenderer::Get()->DrawText(m_pSmallFont, m_ScoreText, { sceneContext.windowWidth / 2 - 90.f, 20.f });
 }

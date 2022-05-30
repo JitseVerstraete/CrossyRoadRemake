@@ -13,9 +13,9 @@
 Terrain::Terrain(GameObject* trackedCharacter, int slicesAhead, int width)
 	:m_TrackedCharacter{ trackedCharacter }, m_SlicesAhead{ slicesAhead }, m_currentSliceNumber{ 0 }, m_MaxWidth{ width }, m_TotalWeight{}
 {
-	m_TerrainWeights.insert({ TerrainType::Grass, 5 });
-	m_TerrainWeights.insert({ TerrainType::Road, 3 });
-	m_TerrainWeights.insert({ TerrainType::River, 1 });
+	m_TerrainWeights.insert({ TerrainType::Grass, 10 });
+	m_TerrainWeights.insert({ TerrainType::Road, 6 });
+	m_TerrainWeights.insert({ TerrainType::River, 2 });
 	m_TerrainWeights.insert({ TerrainType::Rail, 1 });
 
 	for (auto pair : m_TerrainWeights)
@@ -110,10 +110,13 @@ void Terrain::Initialize(const SceneContext&)
 void Terrain::Update(const SceneContext&)
 {
 	//update the terrain, spawn new slices when going forward, and despawn old slices when they go out of screen
-
-	while (static_cast<int>(round(m_TrackedCharacter->GetTransform()->GetPosition().z)) + m_SlicesAhead >= m_currentSliceNumber)
+	if (m_TrackedCharacter)
 	{
-		SpawnNextSlice();
+
+		while (static_cast<int>(round(m_TrackedCharacter->GetTransform()->GetPosition().z)) + m_SlicesAhead >= m_currentSliceNumber)
+		{
+			SpawnNextSlice();
+		}
 	}
 
 

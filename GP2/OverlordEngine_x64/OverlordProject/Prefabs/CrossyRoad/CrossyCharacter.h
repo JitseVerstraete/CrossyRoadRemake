@@ -77,6 +77,11 @@ private:
 	FMOD::Sound* m_pSplatSound{};
 
 
+	//Particles
+	GameObject* m_pFeatherObject;
+	ParticleEmitterSettings m_FeatherSettings;
+	ParticleEmitterComponent* m_pFeathers;
+
 	void SetTargetRot(float rot);
 
 };

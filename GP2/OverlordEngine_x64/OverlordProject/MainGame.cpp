@@ -62,6 +62,7 @@
 
 #ifdef CROSSYROAD
 #include "Scenes/CrossyRoad/CrossyRoadScene.h"
+#include "Scenes/CrossyRoad/CrossyMenu.h"
 #endif
 
 #ifdef MILESTONE_1
@@ -146,6 +147,7 @@ void MainGame::Initialize()
 #endif
 
 #ifdef CROSSYROAD
+	SceneManager::Get()->AddGameScene(new CrossyMenu());
 	SceneManager::Get()->AddGameScene(new CrossyRoadScene());
 #endif
 

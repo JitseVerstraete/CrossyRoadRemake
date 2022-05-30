@@ -51,6 +51,7 @@
     <ClCompile Include="Prefabs\CrossyRoad\Lily.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\RailSlice.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\CrossyTrain.cpp" />
+    <ClCompile Include="Scenes\CrossyRoad\CrossyMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -103,5 +104,6 @@
     <ClInclude Include="Prefabs\CrossyRoad\Lily.h" />
     <ClInclude Include="Prefabs\CrossyRoad\RailSlice.h" />
     <ClInclude Include="Prefabs\CrossyRoad\CrossyTrain.h" />
+    <ClInclude Include="Scenes\CrossyRoad\CrossyMenu.h" />
   </ItemGroup>
 </Project>

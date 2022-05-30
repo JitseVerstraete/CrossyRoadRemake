@@ -107,6 +107,7 @@
     <ClCompile Include="Prefabs\CrossyRoad\RailSlice.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\RiverSlice.cpp" />
     <ClCompile Include="Prefabs\CrossyRoad\RoadSlice.cpp" />
+    <ClCompile Include="Scenes\CrossyRoad\CrossyMenu.cpp" />
     <ClCompile Include="Scenes\CrossyRoad\CrossyRoadScene.cpp" />
     <ClCompile Include="Materials\DiffuseMaterial_Skinned.cpp" />
     <ClCompile Include="Materials\Post\PostGrayscale.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Prefabs\CrossyRoad\RailSlice.h" />
     <ClInclude Include="Prefabs\CrossyRoad\RiverSlice.h" />
     <ClInclude Include="Prefabs\CrossyRoad\RoadSlice.h" />
+    <ClInclude Include="Scenes\CrossyRoad\CrossyMenu.h" />
     <ClInclude Include="Scenes\CrossyRoad\CrossyRoadScene.h" />
     <ClInclude Include="Materials\DiffuseMaterial_Skinned.h" />
     <ClInclude Include="Materials\Post\PostGrayscale.h" />

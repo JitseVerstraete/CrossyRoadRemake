@@ -4,12 +4,13 @@
 
 ParticleMaterial* ParticleEmitterComponent::m_pParticleMaterial{};
 
-ParticleEmitterComponent::ParticleEmitterComponent(const std::wstring& assetFile, const ParticleEmitterSettings& emitterSettings, UINT particleCount) :
+ParticleEmitterComponent::ParticleEmitterComponent(const std::wstring& assetFile, const ParticleEmitterSettings& emitterSettings, UINT particleCount, bool oneShot) :
 	m_ParticlesArray(new Particle[particleCount]),
 	m_ParticleCount(particleCount), //How big is our particle buffer?
 	m_MaxParticles(particleCount), //How many particles to draw (max == particleCount)
 	m_AssetFile(assetFile),
-	m_EmitterSettings(emitterSettings)
+	m_EmitterSettings(emitterSettings),
+	m_OneShot{ oneShot }
 {
 	m_enablePostDraw = true; //This enables the PostDraw function for the component
 	m_LastParticleSpawn = (m_EmitterSettings.maxEnergy + m_EmitterSettings.minEnergy) / 2;
@@ -31,6 +32,8 @@ void ParticleEmitterComponent::Initialize(const SceneContext& sceneContext)
 	}
 	CreateVertexBuffer(sceneContext);
 	m_pParticleTexture = ContentManager::Load<TextureData>(m_AssetFile);
+
+
 }
 
 void ParticleEmitterComponent::CreateVertexBuffer(const SceneContext& sceneContext)
@@ -63,7 +66,7 @@ void ParticleEmitterComponent::Update(const SceneContext& sceneContext)
 
 	int missingParts{ (int)m_ParticleCount - totalActiveParticles };
 	//particle interval is low when there are few particles
-	float particleInterval{ ((m_EmitterSettings.minEnergy + m_EmitterSettings.maxEnergy) / 2) /  
+	float particleInterval{ ((m_EmitterSettings.minEnergy + m_EmitterSettings.maxEnergy) / 2) /
 							(missingParts * missingParts + 1) };
 
 	m_LastParticleSpawn += deltaT;
@@ -86,18 +89,22 @@ void ParticleEmitterComponent::Update(const SceneContext& sceneContext)
 			UpdateParticle(particle, deltaT);
 		}
 
-		if (!particle.isActive && m_LastParticleSpawn >= particleInterval)
+		//only spawn new particles if the particle system is not in oneshot mode
+		if (!m_OneShot)
 		{
-			SpawnParticle(particle);
-			m_LastParticleSpawn = 0.f;
+			if (!particle.isActive && m_LastParticleSpawn >= particleInterval)
+			{
+				SpawnParticle(particle);
+				m_LastParticleSpawn = 0.f;
+			}
 		}
-		
+
 		if (particle.isActive)
 		{
 			if (pBuffer) pBuffer[m_ActiveParticles] = particle.vertexInfo;
 			++m_ActiveParticles;
 		}
-		
+
 	}
 
 	//unmap
@@ -115,16 +122,16 @@ void ParticleEmitterComponent::UpdateParticle(Particle& p, float elapsedTime) co
 
 	//check the lifespan
 	p.currentEnergy -= elapsedTime;
-	if (p.currentEnergy < 0.f) 
+	if (p.currentEnergy < 0.f)
 	{
 		p.isActive = false;
 		return;
 	}
-	
+
 	//update the particleVertex info
 
 	//position
-	XMVECTOR newPosition = XMLoadFloat3(&p.vertexInfo.Position) + (XMLoadFloat3( &m_EmitterSettings.velocity ) * elapsedTime);
+	XMVECTOR newPosition = XMLoadFloat3(&p.vertexInfo.Position) + (XMLoadFloat3(&m_EmitterSettings.velocity) * elapsedTime);
 	XMStoreFloat3(&p.vertexInfo.Position, newPosition);
 
 	float lifePercent = p.currentEnergy / p.totalEnergy; //1 at the start, 0 at the end
@@ -132,14 +139,14 @@ void ParticleEmitterComponent::UpdateParticle(Particle& p, float elapsedTime) co
 	//color & transparancy
 	p.vertexInfo.Color = m_EmitterSettings.color;
 	p.vertexInfo.Color.w = (p.vertexInfo.Color.w * lifePercent);
-	
+
 	//size
 	float startSize = p.initialSize;
 	float endSize = p.initialSize * p.sizeChange;
 
-	p.vertexInfo.Size = std::lerp(startSize, endSize, (1 - lifePercent) );
+	p.vertexInfo.Size = std::lerp(startSize, endSize, (1 - lifePercent));
 
-	
+
 
 }
 
@@ -151,14 +158,14 @@ void ParticleEmitterComponent::SpawnParticle(Particle& p)
 	//init energy
 	p.totalEnergy = MathHelper::randF(m_EmitterSettings.minEnergy, m_EmitterSettings.maxEnergy);
 	p.currentEnergy = p.totalEnergy;
-	
-		
+
+
 	//init pos
 	XMFLOAT3 randomVector = XMFLOAT3(MathHelper::randF(-1.f, 1.f), MathHelper::randF(-1.f, 1.f), MathHelper::randF(-1.f, 1.f));
 	XMVECTOR RandUnitVector = XMVector3Normalize(XMLoadFloat3(&randomVector));
 
 	float spawnDistance = MathHelper::randF(m_EmitterSettings.minEmitterRadius, m_EmitterSettings.maxEmitterRadius);
-	
+
 	XMStoreFloat3(&p.vertexInfo.Position, XMLoadFloat3(&GetGameObject()->GetTransform()->GetPosition()) + (RandUnitVector * spawnDistance));
 
 	//init size
@@ -173,17 +180,17 @@ void ParticleEmitterComponent::SpawnParticle(Particle& p)
 	//color initialization
 	p.vertexInfo.Color = m_EmitterSettings.color;
 
-	
-	
-	
+
+
+
 }
 
 void ParticleEmitterComponent::PostDraw(const SceneContext& sceneContext)
 {
 	//TODO_W9(L"Implement PostDraw");
-	
+
 	//set variables
-	
+
 	m_pParticleMaterial->SetVariable_Matrix(L"gWorldViewProj", sceneContext.pCamera->GetViewProjection());
 	m_pParticleMaterial->SetVariable_Matrix(L"gViewInverse", sceneContext.pCamera->GetViewInverse());
 	m_pParticleMaterial->SetVariable_Texture(L"gParticleTexture", m_pParticleTexture);
@@ -224,5 +231,23 @@ void ParticleEmitterComponent::DrawImGui()
 		ImGui::InputFloatRange("Radius Bounds", &m_EmitterSettings.minEmitterRadius, &m_EmitterSettings.maxEmitterRadius);
 		ImGui::InputFloat3("Velocity", &m_EmitterSettings.velocity.x);
 		ImGui::ColorEdit4("Color", &m_EmitterSettings.color.x, ImGuiColorEditFlags_NoInputs);
+	}
+}
+
+void ParticleEmitterComponent::SetParticleAmount(int particles)
+{
+	MathHelper::Clamp(particles, 0, (int)m_MaxParticles);
+	m_ParticleCount = particles;
+}
+
+void ParticleEmitterComponent::SpawnOneShot()
+{
+	if (m_OneShot)
+	{
+		for (int i{}; i < (int)m_ParticleCount; ++i)
+		{
+			Particle& particle = m_ParticlesArray[i];
+			SpawnParticle(particle);
+		}
 	}
 }

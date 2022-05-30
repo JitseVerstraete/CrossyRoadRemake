@@ -17,10 +17,12 @@
 
 CrossyRoadScene::~CrossyRoadScene()
 {
+	/*
 	if (m_pPlayerCharacter && m_pPlayerCharacter->IsDead())
 	{
 		delete m_pPlayerCharacter;
 	};
+	*/
 }
 
 void CrossyRoadScene::Initialize()
@@ -28,6 +30,7 @@ void CrossyRoadScene::Initialize()
 
 	m_SceneContext.settings.drawGrid = false;
 	m_SceneContext.settings.drawPhysXDebug = false;
+	m_SceneContext.settings.showInfoOverlay = false;
 	m_SceneContext.pLights->SetDirectionalLight({ -5.f, 10.f, 0.f }, m_LightDir);
 
 	ShadowMapRenderer::Get()->SetProjectionSize(15.f);
@@ -68,6 +71,7 @@ void CrossyRoadScene::Initialize()
 	m_SceneContext.pInput->AddInputAction(inputAction);
 	inputAction = InputAction(Respawn, InputState::pressed, VK_SPACE);
 	m_SceneContext.pInput->AddInputAction(inputAction);
+	
 
 	SoundManager::Get()->GetSystem()->createStream("Resources/Sounds/Music.wav", FMOD_DEFAULT, nullptr, &m_pMusic);
 	m_pMusic->setLoopCount(-1);
@@ -82,7 +86,8 @@ void CrossyRoadScene::Update()
 
 	if (m_pPlayerCharacter->IsDead() && !m_GameOver)
 	{
-		RemoveChild(m_pPlayerCharacter, false);
+		//hide the player under the scene
+		m_pPlayerCharacter->GetTransform()->Translate(m_pPlayerCharacter->GetTransform()->GetPosition().x, -2.f, m_pPlayerCharacter->GetTransform()->GetPosition().z);
 		m_GameOver = true;
 	}
 
@@ -95,8 +100,7 @@ void CrossyRoadScene::Update()
 		m_pPlayerCharacter->Resapwn();
 		if (m_pFollowCamera) m_pFollowCamera->Reset();
 
-		//add child back to the game
-		AddChild(m_pPlayerCharacter);
+
 
 		//reset game over bool
 		m_GameOver = false;

@@ -45,11 +45,12 @@ void CrossyCharacter::Initialize(const SceneContext& sceneContext)
 	//pModComp->GetAnimator()->Play();
 
 
+
 	PxMaterial* carMat = PxGetPhysics().createMaterial(0.f, 0.f, 0.f);
 
 	auto rigi = AddComponent(new RigidBodyComponent(false));
 	rigi->SetKinematic(true);
-	rigi->AddCollider(PxSphereGeometry(0.3f), *carMat, true);
+	rigi->AddCollider(PxSphereGeometry(0.1f), *carMat, true);
 
 	SetOnTriggerCallBack([=](GameObject* /*pTrigger*/, GameObject* /*pOther*/, PxTriggerAction action)
 		{
@@ -58,6 +59,7 @@ void CrossyCharacter::Initialize(const SceneContext& sceneContext)
 				m_IsDead = true;
 				SoundManager::Get()->GetSystem()->playSound(m_pSplatSound, nullptr, false, &m_pChannelSplat);
 				m_pChannelSplat->setVolume(0.7f);
+				m_pFeathers->SpawnOneShot();
 
 			}
 		});
@@ -67,11 +69,32 @@ void CrossyCharacter::Initialize(const SceneContext& sceneContext)
 	pFmod->createStream("Resources/Sounds/jump.wav", FMOD_DEFAULT, nullptr, &m_pJumpSound);
 	pFmod->createStream("Resources/Sounds/water.wav", FMOD_DEFAULT, nullptr, &m_pSplashSound);
 	pFmod->createStream("Resources/Sounds/splat.wav", FMOD_DEFAULT, nullptr, &m_pSplatSound);
+
+
+	//particles
+	m_pFeatherObject = AddChild(new GameObject());
+
+	m_FeatherSettings.minEmitterRadius = 1.f;
+	m_FeatherSettings.maxEmitterRadius = 1.f;
+	m_FeatherSettings.minScale = 1.f;
+	m_FeatherSettings.maxScale = 1.f;
+	m_FeatherSettings.velocity = { 0.f, -0.3f, 0.f };
+	m_FeatherSettings.minSize = 0.3f;
+	m_FeatherSettings.maxSize = 0.3f;
+	m_FeatherSettings.minEnergy = 3.f;
+	m_FeatherSettings.maxEnergy = 3.f;
 	
+
+	m_pFeathers = m_pFeatherObject->AddComponent(new ParticleEmitterComponent(L"Textures/feather.png", m_FeatherSettings, 100, true));
+
 }
 
 void CrossyCharacter::Update(const SceneContext& sceneContext)
 {
+	if (m_IsDead) return;
+
+	m_pFeatherObject->GetTransform()->Translate((float)m_PrevX, 0.2f, (float)m_PrevZ);
+
 
 	RiverSlice* pRiver{};
 	if (m_pTerrain)
@@ -86,7 +109,7 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 			m_IsDead = true;
 			SoundManager::Get()->GetSystem()->playSound(m_pSplashSound, nullptr, false, &m_pChannelSplash);
 			m_pChannelSplash->setVolume(0.6f);
-
+			
 		}
 	}
 
@@ -224,6 +247,8 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 
 	//lerp squish
 	GetTransform()->Scale(1.f, std::lerp(1.f, m_MaxSquishScale, m_SquishFactor), 1.f);
+
+
 
 }
 
