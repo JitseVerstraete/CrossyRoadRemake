@@ -23,6 +23,7 @@ public:
 protected:
 	void Initialize(const SceneContext& sceneContext) override;
 	void Update(const SceneContext& sceneContext) override;
+	void Draw(const SceneContext& sceneContext) override;
 
 private:
 	int m_Width;
@@ -39,6 +40,18 @@ private:
 	std::vector<CrossyCar*> m_pCars;
 
 	//road stripes
+
+	ID3DX11Effect* m_pStripesEffect{};
+	ID3DX11EffectTechnique* m_pStripesTechnique{};
+	ID3D11InputLayout* m_pStripesInputLayout{};
+	ID3D11Buffer* m_pStripesVertexBuffer{};
+
+	const float m_StripeLength{0.7f};
+	const float m_StripeWidth{0.08f};
+	const float m_StripesInterval{ 1.5f };
+
+	std::vector<VertexStripe> m_Stripes;
+
 
 };
 

@@ -97,7 +97,6 @@
     <ClInclude Include="Prefabs\CrossyRoad\CrossyCar.h" />
     <ClInclude Include="Prefabs\CrossyRoad\Tree.h" />
     <ClInclude Include="Prefabs\CrossyRoad\CrossyUI.h" />
-    <ClInclude Include="Todo.h" />
     <ClInclude Include="Materials\CrossyRoad\CrossyCarMaterial.h" />
     <ClInclude Include="Materials\Post\PostVignette.h" />
     <ClInclude Include="Materials\CrossyRoad\TerrainSliceMaterial.h" />

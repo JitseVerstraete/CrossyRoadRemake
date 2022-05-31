@@ -136,3 +136,11 @@ struct VertexGrass
 	XMFLOAT3 Position{};
 	XMFLOAT4 color{};
 };
+
+struct VertexStripe
+{
+	XMFLOAT3 Position{};
+	XMFLOAT4 color{};
+	XMFLOAT2 WidthLength{};
+	 
+};

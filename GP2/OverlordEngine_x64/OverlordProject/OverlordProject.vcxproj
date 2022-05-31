@@ -213,7 +213,6 @@
     <ClInclude Include="Scenes\Week 4\UberMaterialScene.h" />
     <ClInclude Include="Prefabs\CrossyRoad\Terrain.h" />
     <ClInclude Include="Prefabs\CrossyRoad\Tree.h" />
-    <ClInclude Include="Todo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

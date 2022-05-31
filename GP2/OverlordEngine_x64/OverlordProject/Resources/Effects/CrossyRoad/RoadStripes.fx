@@ -46,6 +46,7 @@ struct VS_DATA
 {
 	float3 Position : POSITION;
 	float4 Color : COLOR;
+	float2 WidthLength : TEXCOORD;
 };
 
 struct GS_DATA
@@ -75,25 +76,29 @@ void CreateVertex(inout TriangleStream<GS_DATA> triStream, float3 pos, float4 co
 	triStream.Append(geomData);
 }
 
-[maxvertexcount(3)]
+[maxvertexcount(4)]
 void MainGS(point VS_DATA vertex[1], inout TriangleStream<GS_DATA> triStream)
 {
 	float3 p = vertex[0].Position; //Extract the position data from the VS_DATA vertex struct
 
-	float width = 0.03f;
-	float height = 0.3f;
+	float halfWidth = vertex[0].WidthLength.x / 2;
+	float halfLength = vertex[0].WidthLength.y / 2;
 
 	float4 col = vertex[0].Color;
 
-	//VERTEX 1 [LT]
-	CreateVertex(triStream, float3(p.x - width, p.y, p.z), col); //Change the color data too!
+	float verticalBias = 0.0001f;
+	//VERTEX 1
+	CreateVertex(triStream, float3(p.x - halfLength, p.y + verticalBias, p.z + halfWidth), col);
 
-	//VERTEX 2 [RT]
-	CreateVertex(triStream, float3(p.x, p.y + height, p.z), col); //Change the color data too!
+	//VERTEX 2
+	CreateVertex(triStream, float3(p.x + halfLength, p.y + verticalBias, p.z + halfWidth), col);
 
-	//VERTEX 3 [LB]
-	CreateVertex(triStream, float3(p.x + width, p.y, p.z), col); //Change the color data too!
+	//VERTEX 3
+	CreateVertex(triStream, float3(p.x - halfLength, p.y + verticalBias, p.z - halfWidth), col);
 
+	//VERTEX 4
+	CreateVertex(triStream, float3(p.x + halfLength, p.y + verticalBias, p.z - halfWidth), col);
+	
 }
 
 //PIXEL SHADER
