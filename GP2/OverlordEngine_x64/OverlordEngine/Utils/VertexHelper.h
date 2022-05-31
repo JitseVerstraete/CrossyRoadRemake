@@ -130,3 +130,9 @@ struct VertexParticle
 	float Size{5.f};
 	float Rotation{0.f};
 };
+
+struct VertexGrass
+{
+	XMFLOAT3 Position{};
+	XMFLOAT4 color{};
+};

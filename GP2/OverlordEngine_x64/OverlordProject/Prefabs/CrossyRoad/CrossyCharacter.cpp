@@ -59,8 +59,8 @@ void CrossyCharacter::Initialize(const SceneContext& sceneContext)
 				m_IsDead = true;
 				SoundManager::Get()->GetSystem()->playSound(m_pSplatSound, nullptr, false, &m_pChannelSplat);
 				m_pChannelSplat->setVolume(0.7f);
-				m_pFeathers->SpawnOneShot();
-
+				m_pBrownFeathers->SpawnOneShot();
+				m_pGreenFeathers->SpawnOneShot();
 			}
 		});
 
@@ -72,20 +72,38 @@ void CrossyCharacter::Initialize(const SceneContext& sceneContext)
 
 
 	//particles
-	m_pFeatherObject = AddChild(new GameObject());
+	m_pBrownFeathersObject = AddChild(new GameObject());
 
-	m_FeatherSettings.minEmitterRadius = 1.f;
-	m_FeatherSettings.maxEmitterRadius = 1.f;
-	m_FeatherSettings.minScale = 1.f;
-	m_FeatherSettings.maxScale = 1.f;
-	m_FeatherSettings.velocity = { 0.f, -0.3f, 0.f };
-	m_FeatherSettings.minSize = 0.3f;
-	m_FeatherSettings.maxSize = 0.3f;
-	m_FeatherSettings.minEnergy = 3.f;
-	m_FeatherSettings.maxEnergy = 3.f;
+	m_BrownFeatherSettings.minEmitterRadius = 1.f;
+	m_BrownFeatherSettings.maxEmitterRadius = 1.f;
+	m_BrownFeatherSettings.minScale = 1.f;
+	m_BrownFeatherSettings.maxScale = 1.f;
+	m_BrownFeatherSettings.velocity = { 0.f, -0.3f, 0.f };
+	m_BrownFeatherSettings.minSize = 0.3f;
+	m_BrownFeatherSettings.maxSize = 0.3f;
+	m_BrownFeatherSettings.minEnergy = 3.f;
+	m_BrownFeatherSettings.maxEnergy = 3.f;
+	m_BrownFeatherSettings.color = MathHelper::HSLtoRGB(338 / 360.f, 0.4f, 0.42f, 1.f);
 	
 
-	m_pFeathers = m_pFeatherObject->AddComponent(new ParticleEmitterComponent(L"Textures/feather.png", m_FeatherSettings, 100, true));
+	m_pBrownFeathers = m_pBrownFeathersObject->AddComponent(new ParticleEmitterComponent(L"Textures/feather.png", m_BrownFeatherSettings, 100, true));
+
+
+	m_pGreenFeathersObject = AddChild(new GameObject());
+
+	m_GreenFeatherSettings.minEmitterRadius = 1.f;
+	m_GreenFeatherSettings.maxEmitterRadius = 1.f;
+	m_GreenFeatherSettings.minScale = 1.f;
+	m_GreenFeatherSettings.maxScale = 1.f;
+	m_GreenFeatherSettings.velocity = { 0.f, -0.3f, 0.f };
+	m_GreenFeatherSettings.minSize = 0.3f;
+	m_GreenFeatherSettings.maxSize = 0.3f;
+	m_GreenFeatherSettings.minEnergy = 3.f;
+	m_GreenFeatherSettings.maxEnergy = 3.f;
+	m_GreenFeatherSettings.color = MathHelper::HSLtoRGB(111 / 360.f, 0.3f, 0.3f, 1.f);
+
+
+	m_pGreenFeathers = m_pGreenFeathersObject->AddComponent(new ParticleEmitterComponent(L"Textures/feather.png", m_GreenFeatherSettings, 100, true));
 
 }
 
@@ -93,7 +111,8 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 {
 	if (m_IsDead) return;
 
-	m_pFeatherObject->GetTransform()->Translate((float)m_PrevX, 0.2f, (float)m_PrevZ);
+	m_pBrownFeathersObject->GetTransform()->Translate((float)m_PrevX, 0.2f, (float)m_PrevZ);
+	m_pGreenFeathersObject->GetTransform()->Translate((float)m_PrevX, 0.2f, (float)m_PrevZ);
 
 
 	RiverSlice* pRiver{};
@@ -109,6 +128,8 @@ void CrossyCharacter::Update(const SceneContext& sceneContext)
 			m_IsDead = true;
 			SoundManager::Get()->GetSystem()->playSound(m_pSplashSound, nullptr, false, &m_pChannelSplash);
 			m_pChannelSplash->setVolume(0.6f);
+			m_pBrownFeathers->SpawnOneShot();
+			m_pGreenFeathers->SpawnOneShot();
 			
 		}
 	}

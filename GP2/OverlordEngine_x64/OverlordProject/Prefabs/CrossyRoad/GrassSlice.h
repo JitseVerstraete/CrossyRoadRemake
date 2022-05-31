@@ -1,13 +1,10 @@
 #pragma once
 
-
-
-
 class GrassSlice final : public GameObject
 {
 
 public:
-	GrassSlice(int obstacles, int maxWidth);
+	GrassSlice(int obstacles, int maxWidth,unsigned int grassAmount = 0);
 	~GrassSlice() override = default;
 
 	GrassSlice(const GrassSlice& other) = delete;
@@ -20,6 +17,7 @@ public:
 protected:
 	void Initialize(const SceneContext& sceneContext) override;
 	void Update(const SceneContext& sceneContext) override;
+	void Draw(const SceneContext& sceneContext) override;
 
 private:
 
@@ -28,8 +26,17 @@ private:
 	int m_NrObstacles{};
 	int m_MaxWidth{};
 
-	static int m_GrassCounter;
+	static int m_GrassSliceCounter;
 	const XMFLOAT4 m_DarkGrassColor = MathHelper::HSLtoRGB(100.f / 360, 0.6f, 0.46f, 1.f);
 	const XMFLOAT4 m_LightGrassColor = MathHelper::HSLtoRGB(100.f / 360, 0.6f, 0.5f, 1.f);
+
+	//grass shader
+	ID3DX11Effect* m_pGrassEffect{};
+	ID3DX11EffectTechnique* m_pGrassTechnique{};
+	ID3D11InputLayout* m_pGrassInputLayout{};
+
+	ID3D11Buffer* m_pGrassVertexBuffer{};
+	unsigned int m_NrGrassBlades{};
+	std::vector<VertexGrass> m_GrassPoints{};
 };
 

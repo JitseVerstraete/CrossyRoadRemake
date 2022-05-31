@@ -37,5 +37,8 @@ private:
 
 
 	std::vector<CrossyCar*> m_pCars;
+
+	//road stripes
+
 };
 

@@ -78,9 +78,13 @@ private:
 
 
 	//Particles
-	GameObject* m_pFeatherObject;
-	ParticleEmitterSettings m_FeatherSettings;
-	ParticleEmitterComponent* m_pFeathers;
+	GameObject* m_pBrownFeathersObject;
+	ParticleEmitterSettings m_BrownFeatherSettings;
+	ParticleEmitterComponent* m_pBrownFeathers;
+
+	GameObject* m_pGreenFeathersObject;
+	ParticleEmitterSettings m_GreenFeatherSettings;
+	ParticleEmitterComponent* m_pGreenFeathers;
 
 	void SetTargetRot(float rot);
 

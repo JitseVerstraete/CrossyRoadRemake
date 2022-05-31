@@ -76,7 +76,7 @@ void CrossyRoadScene::Initialize()
 	SoundManager::Get()->GetSystem()->createStream("Resources/Sounds/Music.wav", FMOD_DEFAULT, nullptr, &m_pMusic);
 	m_pMusic->setLoopCount(-1);
 	FMOD::Channel* pTempChannel{};
-	SoundManager::Get()->GetSystem()->playSound(m_pMusic, nullptr, false, &pTempChannel);
+	//SoundManager::Get()->GetSystem()->playSound(m_pMusic, nullptr, false, &pTempChannel);
 	pTempChannel->setVolume(0.3f);
 
 }

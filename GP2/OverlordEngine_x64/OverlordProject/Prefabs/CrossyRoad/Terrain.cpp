@@ -128,7 +128,7 @@ void Terrain::SpawnNextSlice()
 	GameObject* slice = nullptr;
 	if (m_NrBlankGrassSlices > 0)
 	{
-		slice = new GrassSlice(0, m_MaxWidth);
+		slice = new GrassSlice(0, m_MaxWidth, 30);
 		--m_NrBlankGrassSlices;
 
 	}
@@ -176,7 +176,7 @@ void Terrain::SpawnNextSlice()
 				switch (pair.first)
 				{
 				case TerrainType::Grass:
-					slice = new GrassSlice(2, m_MaxWidth);
+					slice = new GrassSlice(2, m_MaxWidth, 30);
 					m_PrevTerrainType = TerrainType::Grass;
 					break;
 				case TerrainType::Road:
