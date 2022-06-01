@@ -168,7 +168,7 @@ void GrassSlice::Draw(const SceneContext& sceneContext)
 
 
 		//todo: only build the vertex buffer if it hasn't been done before!
-		if (true)
+		if (!m_BufferMade)
 		{
 			//build buffer
 			SafeRelease(m_pGrassVertexBuffer);
@@ -196,6 +196,8 @@ void GrassSlice::Draw(const SceneContext& sceneContext)
 				memcpy(mappedResource.pData, m_GrassPoints.data(), sizeof(VertexGrass) * m_NrGrassBlades);
 				sceneContext.d3dContext.pDeviceContext->Unmap(m_pGrassVertexBuffer, 0);
 			}
+
+			m_BufferMade = true;
 
 		}
 

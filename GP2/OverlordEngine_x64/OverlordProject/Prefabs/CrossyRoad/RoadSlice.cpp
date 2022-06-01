@@ -113,7 +113,7 @@ void RoadSlice::Draw(const SceneContext& sceneContext)
 	if (pPrevRoad)
 	{
 		//todo: only build the vertex buffer if it hasn't been done before!
-		if (true)
+		if (!m_BufferMade)
 		{
 			UINT nrStripes{ (UINT)m_Stripes.size() };
 
@@ -143,6 +143,8 @@ void RoadSlice::Draw(const SceneContext& sceneContext)
 				memcpy(mappedResource.pData, m_Stripes.data(), sizeof(VertexStripe) * nrStripes);
 				sceneContext.d3dContext.pDeviceContext->Unmap(m_pStripesVertexBuffer, 0);
 			}
+
+			m_BufferMade = true;
 
 		}
 

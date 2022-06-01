@@ -46,6 +46,8 @@ private:
 	ID3D11InputLayout* m_pStripesInputLayout{};
 	ID3D11Buffer* m_pStripesVertexBuffer{};
 
+	bool m_BufferMade{};
+
 	const float m_StripeLength{0.7f};
 	const float m_StripeWidth{0.08f};
 	const float m_StripesInterval{ 1.5f };

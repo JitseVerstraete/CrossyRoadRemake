@@ -35,6 +35,8 @@ private:
 	ID3DX11EffectTechnique* m_pGrassTechnique{};
 	ID3D11InputLayout* m_pGrassInputLayout{};
 
+	bool m_BufferMade{};
+
 	ID3D11Buffer* m_pGrassVertexBuffer{};
 	unsigned int m_NrGrassBlades{};
 	std::vector<VertexGrass> m_GrassPoints{};
